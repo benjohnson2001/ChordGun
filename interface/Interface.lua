@@ -15,8 +15,8 @@ function Interface:init(name, x, y, width, height)
   setmetatable(self, Interface)
 
   self.name = name
-  self.x = y
-  self.x = y
+  self.x = x
+  self.y = y
   self.width = width
   self.height = height
 
@@ -28,7 +28,8 @@ end
 function Interface:addMainWindow()
 
 	gfx.clear = reaper.ColorToNative(36, 36, 36)
-	gfx.init(self.name, self.width, self.height, 0, self.x, self.y)
+	local dockState = 0
+	gfx.init(self.name, self.width, self.height, dockState, self.x, self.y)
 end
 
 function doThis()
@@ -45,13 +46,9 @@ function Interface:addButton(buttonText)
 	table.insert(self.elements, button)
 end
 
-function Interface:addHeader(headerText)
+function Interface:addHeader(headerText, x, y, width, height)
 
-	local x = 300
-	local y = 250
-	local headerWidth = 73
-	local headerHeight = 25
-	local header = Header:new(headerText, x, y, headerWidth, headerHeight)
+	local header = Header:new(headerText, x, y, width, height)
 	table.insert(self.elements, header)
 end
 

@@ -16,3 +16,6 @@ defaultSelectedInversionStates = {}
 for i = 1, #chords do
   table.insert(defaultSelectedInversionStates, 0)
 end
+
+defaultScaleNoteNames = {'C', 'D', 'E', 'F', 'G', 'A', 'B'}
+defaultScaleDegreeHeaders = {'I', 'ii', 'iii', 'IV', 'V', 'vi', 'viio'}

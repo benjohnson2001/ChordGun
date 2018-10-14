@@ -1,6 +1,6 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
 require(workingDirectory .. "/interface/colors")
-require(workingDirectory .. "/interface/interfaceUtil")
+require(workingDirectory .. "/util")
 
 Label = {}
 Label.__index = Label

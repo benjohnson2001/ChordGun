@@ -1,7 +1,7 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
 require(workingDirectory .. "/scales")
 require(workingDirectory .. "/chords")
-
+require(workingDirectory .. "/preferences")
 
 notes = { 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B' };
 flatNotes = { 'C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B' };
@@ -28,7 +28,7 @@ function getNoteName(note)
 
   local noteName = getSharpNoteName(note)
   
-  if not string.match(preferences.scaleNotesText.value, noteName) then
+  if not string.match(getScaleNotesText(), noteName) then
     return getFlatNoteName(note)
   else
     return noteName
@@ -74,6 +74,7 @@ function getScaleChordsForRootNote(rootNote)
     end
   end
     
+  --[[  
   if preferences.enableModalMixtureCheckbox.value then
 
     for chordIndex, chord in ipairs(chords) do
@@ -84,17 +85,17 @@ function getScaleChordsForRootNote(rootNote)
       end
     end
   end
-    
-  if preferences.enableAllChordsCheckbox.value then
+  ]]--
 
-    for chordIndex, chord in ipairs(chords) do
-             
-      if chordIsNotAlreadyIncluded(scaleChordsForRootNote, chord.code) then
-        chordCount = chordCount + 1
-        scaleChordsForRootNote[chordCount] = chord
-      end
+
+  -- here is where you color the chord buttons differently
+  for chordIndex, chord in ipairs(chords) do
+           
+    if chordIsNotAlreadyIncluded(scaleChordsForRootNote, chord.code) then
+      chordCount = chordCount + 1
+      scaleChordsForRootNote[chordCount] = chord
     end
-  end  
+  end
   
   return scaleChordsForRootNote
 end
@@ -124,7 +125,8 @@ end
 
 function noteIsInModalMixtureScale(note)
 
-  local modalMixtureScalePattern = getScalePattern(preferences.scaleTonicNote.value, scales[preferences.modalMixtureScaleType.value])
+  local modalMixtureScaleType = 2
+  local modalMixtureScalePattern = getScalePattern(getScaleTonicNote(), scales[modalMixtureScaleType])
   return modalMixtureScalePattern[getNotesIndex(note)]
 end
 
