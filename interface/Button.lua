@@ -1,8 +1,7 @@
-local resourcePath = reaper.GetResourcePath()
-require(resourcePath .. "/Scripts/util")
-require(resourcePath .. "/Scripts/ChordGun/Interface/colors")
-require(resourcePath .. "/Scripts/ChordGun/Interface/util")
-require(resourcePath .. "/Scripts/ChordGun/Interface/globalState")
+local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
+require(workingDirectory .. "/interface/colors")
+require(workingDirectory .. "/interface/util")
+require(workingDirectory .. "/interface/globalState")
 
 Button = {}
 Button.__index = Button
@@ -63,16 +62,16 @@ function Button:drawText()
 		if self.selected then
 
 			if mouseIsHoveringOver(self) then
-				setDrawColorToSelectedText()
+				setDrawColorToSelectedButtonText()
 			else
-				setDrawColorToHighlightedSelectedText()
+				setDrawColorToHighlightedSelectedButtonText()
 			end
 		else
 
 			if mouseIsHoveringOver(self) then
-				setDrawColorToHighlightedText()
+				setDrawColorToHighlightedButtonText()
 			else
-				setDrawColorToNormalText()
+				setDrawColorToNormalButtonText()
 			end	
 		end
 

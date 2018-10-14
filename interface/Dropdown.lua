@@ -1,8 +1,9 @@
-local resourcePath = reaper.GetResourcePath()
-require(resourcePath .. "/Scripts/util")
-require(resourcePath .. "/Scripts/ChordGun/Interface/colors")
-require(resourcePath .. "/Scripts/ChordGun/Interface/util")
-require(resourcePath .. "/Scripts/ChordGun/Interface/globalState")
+local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
+require(workingDirectory .. "/interface/colors")
+require(workingDirectory .. "/interface/util")
+require(workingDirectory .. "/interface/globalState")
+
+
 
 Dropdown = {}
 Dropdown.__index = Dropdown
@@ -53,7 +54,7 @@ end
 
 function Dropdown:drawImage()
 
-	local imagePath = resourcePath .. "/Scripts/ChordGun/Interface/dropdownIcon.png"
+	local imagePath = workingDirectory .. "/interface/dropdownIcon.png"
 	local imageWidth = 14
 	gfx.x = self.x + self.width - imageWidth - 1
 	gfx.y = self.y

@@ -7,3 +7,13 @@ function mouseIsHoveringOver(button)
 	local isInVerticalRegion = (y >= button.y and y < button.y+button.height)
 	return isInHorizontalRegion and isInVerticalRegion
 end
+
+function clearConsoleWindow()
+  
+  reaper.ShowConsoleMsg("")
+end
+
+function print(arg)
+  
+  reaper.ShowConsoleMsg(tostring(arg) .. "\n")
+end

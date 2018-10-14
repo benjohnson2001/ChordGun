@@ -41,36 +41,36 @@ function setDrawColorToButtonOutline()
 	setColor("1D1D1D")
 end
 
---[[ text ]]--
+--[[ button text ]]--
 
-function setDrawColorToNormalText()
+function setDrawColorToNormalButtonText()
 	setColor("D7D7D7")
 end
 
-function setDrawColorToHighlightedText()
+function setDrawColorToHighlightedButtonText()
 	setColor("EEEEEE")
 end
 
-function setDrawColorToSelectedText()
+function setDrawColorToSelectedButtonText()
 	setColor("121212")
 end
 
-function setDrawColorToHighlightedSelectedText()
+function setDrawColorToHighlightedSelectedButtonText()
 	setColor("000000")
 end
 
 
 --[[ buttons ]]--
 
-function setDrawColorToLabelOutline()
+function setDrawColorToHeaderOutline()
 	setColor("151515")
 end
 
-function setDrawColorToLabelBackground()
+function setDrawColorToHeaderBackground()
 	setColor("242424")
 end
 
-function setDrawColorToLabelText()
+function setDrawColorToHeaderText()
 	setColor("818181")
 end
 
@@ -98,11 +98,21 @@ function setDrawColorToDropdownText()
 	setColor("D7D7D7")
 end
 
+--[[ text ]]--
+function setDrawColorToText()
+	setColor("878787")
+end
+
+
 --[[ debug ]]--
 
 function setDrawColorToRed()
 	setColor("FF0000")
 end
+
+
+
+
 
 --[[
 function setDrawColorToBackground()
