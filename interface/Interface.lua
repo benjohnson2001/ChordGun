@@ -1,9 +1,10 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
-require(workingDirectory .. "/interface/Button")
-require(workingDirectory .. "/interface/Header")
-require(workingDirectory .. "/interface/Label")
-require(workingDirectory .. "/interface/Frame")
-require(workingDirectory .. "/interface/Dropdown")
+require(workingDirectory .. "/interface/classes/Button")
+require(workingDirectory .. "/interface/classes/Header")
+require(workingDirectory .. "/interface/classes/Label")
+require(workingDirectory .. "/interface/classes/Frame")
+require(workingDirectory .. "/interface/classes/Dropdown")
+
 
 Interface = {}
 Interface.__index = Interface
@@ -60,31 +61,16 @@ function Interface:addFrame(x, y, frameWidth, frameHeight)
 	table.insert(self.elements, frame)
 end
 
-function Interface:addLabel(text, x, y, frameWidth, frameHeight)
+function Interface:addLabel(text, x, y, width, height)
 
-	local label = Label:new(text, x, y, frameWidth, frameHeight)
+	local label = Label:new(text, x, y, width, height)
 	table.insert(self.elements, label)
 end
 
-function Interface:addDropdown(dropdownText)
+function Interface:addDropdown(x, y, width, height, options, defaultOptionIndex)
 
-	local x = 200
-	local y = 150
-
-	local dropdownWidth = 73
-	local dropdownHeight = 14+1
-	local dropdown = Dropdown:new(dropdownText, x, y, dropdownWidth, dropdownHeight, {"option1", "option2", "option3", "option4"}, 2)
+	local dropdown = Dropdown:new(x, y, width, height, options, defaultOptionIndex)
 	table.insert(self.elements, dropdown)
-end
-
-
-local keySelectionFrameHeight = 50
-function Interface:addKeySelectionComponents()
-
-	local margin = 9
-	self:addFrame(margin, margin, self.width-2*margin, keySelectionFrameHeight)
-
-	self:addDropdown("Major")
 end
 
 function Interface:addChordButtonComponents()
@@ -110,3 +96,6 @@ function Interface:update()
 
 	gfx.update()
 end
+
+require(workingDirectory .. "/interface/frames/InterfaceTopFrame")
+require(workingDirectory .. "/interface/frames/InterfaceBottomFrame")

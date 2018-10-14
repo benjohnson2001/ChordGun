@@ -3,23 +3,20 @@ require(workingDirectory .. "/interface/colors")
 require(workingDirectory .. "/interface/util")
 require(workingDirectory .. "/interface/globalState")
 
-
-
 Dropdown = {}
 Dropdown.__index = Dropdown
 
-function Dropdown:new(text, x, y, width, height, options, defaultOptionIndex)
+function Dropdown:new(x, y, width, height, options, defaultOptionIndex)
 
   local self = {}
   setmetatable(self, Dropdown)
 
-  self.text = text
   self.x = x
   self.y = y
   self.width = width
   self.height = height
-  self.selectedIndex = defaultOptionIndex
   self.options = options
+  self.selectedIndex = defaultOptionIndex
   self.dropdownList = {}
   self:updateDropdownList()
   return self
@@ -45,11 +42,13 @@ end
 
 function Dropdown:drawText()
 
+	local text = self.options[self.selectedIndex]
+
 	setDrawColorToDropdownText()
-	local stringWidth, stringHeight = gfx.measurestr(self.text)
-	gfx.x = self.x + ((self.width - stringWidth) * 1 / 5)
+	local stringWidth, stringHeight = gfx.measurestr(text)
+	gfx.x = self.x + 7
 	gfx.y = self.y + ((self.height - stringHeight) / 2)
-	gfx.drawstr(self.text)
+	gfx.drawstr(text)
 end
 
 function Dropdown:drawImage()

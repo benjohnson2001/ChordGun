@@ -21,12 +21,12 @@ end
 
 function Label:drawText()
 
+	setDrawColorToText()
 	local stringWidth, stringHeight = gfx.measurestr(self.text)
 	gfx.x = self.x + ((self.width - stringWidth) / 2)
 	gfx.y = self.y + ((self.height - stringHeight) / 2)
 	gfx.drawstr(self.text)
 end
-
 
 function Label:update()
 		self:drawText()
