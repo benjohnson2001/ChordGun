@@ -1,13 +1,13 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
 require(workingDirectory .. "/interface/colors")
-require(workingDirectory .. "/interface/util")
+require(workingDirectory .. "/interface/interfaceUtil")
 
 Label = {}
 Label.__index = Label
 
 function Label:new(text, x, y, width, height)
 
-  local Label = {}
+  local self = {}
   setmetatable(self, Label)
 
   self.text = text
@@ -17,6 +17,11 @@ function Label:new(text, x, y, width, height)
   self.height = height
 
   return self
+end
+
+function Label:drawRedOutline()
+  setDrawColorToRed()
+  gfx.rect(self.x, self.y, self.width, self.height, false)
 end
 
 function Label:drawText()
@@ -29,5 +34,6 @@ function Label:drawText()
 end
 
 function Label:update()
-		self:drawText()
+  --self:drawRedOutline()
+  self:drawText()
 end

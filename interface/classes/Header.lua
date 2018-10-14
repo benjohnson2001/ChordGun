@@ -1,6 +1,6 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
 require(workingDirectory .. "/interface/colors")
-require(workingDirectory .. "/interface/util")
+require(workingDirectory .. "/interface/interfaceUtil")
 
 Header = {}
 Header.__index = Header
@@ -56,7 +56,6 @@ function Header:drawRoundedRectangles()
   self:drawHeaderOutline()
   self:drawRoundedRectangle()
 end
-
 
 function Header:drawText()
 

@@ -1,6 +1,6 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
 require(workingDirectory .. "/interface/colors")
-require(workingDirectory .. "/interface/util")
+require(workingDirectory .. "/interface/interfaceUtil")
 
 Frame = {}
 Frame.__index = Frame
