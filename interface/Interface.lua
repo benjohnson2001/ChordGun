@@ -3,6 +3,7 @@ require(resourcePath .. "/Scripts/util")
 require(resourcePath .. "/Scripts/ChordGun/Interface/Button")
 require(resourcePath .. "/Scripts/ChordGun/Interface/Label")
 require(resourcePath .. "/Scripts/ChordGun/Interface/Frame")
+require(resourcePath .. "/Scripts/ChordGun/Interface/Dropdown")
 
 Interface = {}
 Interface.__index = Interface
@@ -76,4 +77,14 @@ function Interface:addFrame(x, y, frameWidth, frameHeight)
 
 	local frame = Frame:new(x, y, frameWidth, frameHeight)
 	table.insert(self.elements, frame)
+end
+
+function Interface:addDropdown(dropdownText)
+
+	local x = 200
+	local y = 150
+	local dropdownWidth = 73
+	local dropdownHeight = 25
+	local dropdown = Dropdown:new(dropdownText, x, y, dropdownWidth, dropdownHeight)
+	table.insert(self.elements, dropdown)
 end

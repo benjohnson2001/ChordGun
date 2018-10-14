@@ -2,11 +2,10 @@ local resourcePath = reaper.GetResourcePath()
 require(resourcePath .. "/Scripts/util")
 require(resourcePath .. "/Scripts/ChordGun/Interface/colors")
 require(resourcePath .. "/Scripts/ChordGun/Interface/util")
+require(resourcePath .. "/Scripts/ChordGun/Interface/globalState")
 
 Button = {}
 Button.__index = Button
-
-mouseButtonIsNotPressedDown = true
 
 function Button:new(text, x, y, width, height, onPressCallback, onShiftPressCallback)
 

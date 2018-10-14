@@ -1,0 +1,1 @@
+mouseButtonIsNotPressedDown = true

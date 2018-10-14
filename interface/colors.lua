@@ -85,6 +85,20 @@ function setDrawColorToFrameBackground()
 end
 
 
+--[[ dropdown ]]--
+function setDrawColorToDropdownOutline()
+	setColor("090909")
+end
+
+function setDrawColorToDropdownBackground()
+	setColor("1D1D1D")
+end
+
+function setDrawColorToDropdownText()
+	setColor("D7D7D7")
+end
+
+--[[ debug ]]--
 
 function setDrawColorToRed()
 	setColor("FF0000")

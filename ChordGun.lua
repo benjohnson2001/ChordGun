@@ -10,6 +10,7 @@ interface:show()
 interface:addFrame(9, 9, 400, 400)
 interface:addButton("Cm")
 interface:addLabel("iii")
+interface:addDropdown("Major")
 
 local function Main()
 

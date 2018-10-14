@@ -22,47 +22,34 @@ function Label:new(text, x, y, width, height)
   return self
 end
 
-function Label:drawOutlineCorners()
-  gfx.circle(self.x + radius - 1, self.y + radius - 1,  radius, false)
-  gfx.circle(self.x + self.width - radius + 1, self.y + radius - 1, radius, false)
+function Label:drawCorners(offset)
+  gfx.circle(self.x + radius + offset, self.y + radius + offset, radius, true)
+  gfx.circle(self.x + self.width - radius - offset, self.y + radius + offset, radius, true)
 end
 
-function Label:drawOutlineEnds()
-  gfx.rect(self.x - 1, self.y + radius - 1, radius, self.height - radius * 2 + 2, false)
-  gfx.rect(self.x + self.width - radius + 1, self.y + radius - 1, radius + 1, self.height - radius * 2 + 2, false)
+function Label:drawEnds(offset)
+  gfx.rect(self.x + offset, self.y + radius + offset, radius, self.height - radius * 2 - 2 * offset, true)
+  gfx.rect(self.x + self.width - radius - offset, self.y + radius + offset, radius + 1, self.height - radius * 2 - 2 * offset, true)
 end
 
-function Label:drawOutlineBodyAndSides()
-  gfx.rect(self.x + radius - 1, self.y - 1, self.width - radius * 2 + 2, self.height - radius + 2, false)
+function Label:drawBodyAndSides(offset)
+  gfx.rect(self.x + radius + offset, self.y + offset, self.width - radius * 2 - 2 * offset, self.height - radius - 2 * offset, true)
 end
 
-function Label:drawCorners()
-  gfx.circle(self.x + radius, self.y + radius, radius, true)
-  gfx.circle(self.x + self.width - radius, self.y + radius, radius, true)
-end
+function Label:drawLabelOutline()
 
-function Label:drawEnds()
-  gfx.rect(self.x, self.y + radius, radius, self.height - radius * 2, true)
-  gfx.rect(self.x + self.width - radius, self.y + radius, radius + 1, self.height - radius * 2, true)
-end
-
-function Label:drawBodyAndSides()
-  gfx.rect(self.x + radius, self.y, self.width - radius * 2, self.height - radius, true)
+  setDrawColorToLabelOutline()
+  self:drawCorners(0)
+  self:drawEnds(0)
+  self:drawBodyAndSides(0)
 end
 
 function Label:drawRoundedRectangle()
 
   setDrawColorToLabelBackground()
-  self:drawCorners()
-  self:drawEnds()
-  self:drawBodyAndSides()
-end
-
-function Label:drawLabelOutline()
-  setDrawColorToLabelOutline()
-  self:drawOutlineCorners()
-  self:drawOutlineEnds()
-  self:drawOutlineBodyAndSides()
+  self:drawCorners(1)
+  self:drawEnds(1)
+  self:drawBodyAndSides(1)
 end
 
 function Label:drawRoundedRectangles()
@@ -70,6 +57,7 @@ function Label:drawRoundedRectangles()
   self:drawLabelOutline()
   self:drawRoundedRectangle()
 end
+
 
 function Label:drawText()
 
