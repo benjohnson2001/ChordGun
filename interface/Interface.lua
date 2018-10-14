@@ -83,8 +83,9 @@ function Interface:addDropdown(dropdownText)
 
 	local x = 200
 	local y = 150
+
 	local dropdownWidth = 73
-	local dropdownHeight = 25
-	local dropdown = Dropdown:new(dropdownText, x, y, dropdownWidth, dropdownHeight)
+	local dropdownHeight = 14+1
+	local dropdown = Dropdown:new(dropdownText, x, y, dropdownWidth, dropdownHeight, {"option1", "option2", "option3", "option4"}, 2)
 	table.insert(self.elements, dropdown)
 end
