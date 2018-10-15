@@ -260,11 +260,7 @@ function updateScaleData()
   updateScaleNoteNames()
   updateScaleNotesText()
   updateScaleChords()
-  
-  if (viewBuilder ~= nil) then
-    updateChordButtons()
-    highlightSelectedChordTypes()
-  end
+  showScaleStatus()
 end
 
 function showScaleStatus()
@@ -272,5 +268,5 @@ function showScaleStatus()
   local scaleTonicText =  notes[getScaleTonicNote()]
   local scaleTypeText = scales[getScaleType()].name
   local scaleNotesText = getScaleNotesText()
-  reaper.Help_Set(("%s %s: %s"):format(scaleTonicText, scaleTypeText, scaleNotesText))
+  reaper.Help_Set(("%s %s: %s"):format(scaleTonicText, scaleTypeText, scaleNotesText), false)
 end

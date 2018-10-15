@@ -13,11 +13,11 @@ function updateScaleDegreeHeaders()
   local i = 1
   for i = 1, 7 do
   
-    local symbol = ''
+    local symbol = ""
   
     if i > #scaleNotes then
       
-      setScaleDegreeHeaders(i, symbol)
+      setScaleDegreeHeader(i, symbol)
 
     else
      
@@ -45,7 +45,7 @@ function updateScaleDegreeHeaders()
         symbol = symbol .. seventhSymbol
       end
           
-      setScaleDegreeHeaders(i, symbol) 
+      setScaleDegreeHeader(i, symbol) 
     end
   end
 end

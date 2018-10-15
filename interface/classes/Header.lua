@@ -7,16 +7,16 @@ Header.__index = Header
 
 local radius = 5
 
-function Header:new(text, x, y, width, height)
+function Header:new(x, y, width, height, getTextCallback)
 
   local self = {}
   setmetatable(self, Header)
 
-  self.text = text
   self.x = x
   self.y = y
   self.width = width
   self.height = height
+  self.getTextCallback = getTextCallback
 
   return self
 end
@@ -57,17 +57,19 @@ function Header:drawRoundedRectangles()
   self:drawRoundedRectangle()
 end
 
-function Header:drawText()
+function Header:drawText(text)
 
     setDrawColorToHeaderText()
-    local stringWidth, stringHeight = gfx.measurestr(self.text)
+    local stringWidth, stringHeight = gfx.measurestr(text)
     gfx.x = self.x + ((self.width + 4 * 1 - stringWidth) / 2)
     gfx.y = self.y + ((self.height - 4 * 1 - stringHeight) / 2)
-    gfx.drawstr(self.text)
+    gfx.drawstr(text)
 end
 
 function Header:update()
 
     self:drawRoundedRectangles()
-    self:drawText()
+
+    local text = self.getTextCallback()
+    self:drawText(text)
 end

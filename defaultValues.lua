@@ -1,7 +1,10 @@
+local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
+require(workingDirectory .. "/chords")
+
 defaultScaleTonicNoteValue = 1
 defaultScaleTypeValue = 1
-defaultScaleNotesTextValue = ''
-defaultChordTextValue = ''
+defaultScaleNotesTextValue = ""
+defaultChordTextValue = ""
 defaultChordInversion = 0
 defaultChordInversionMin = -8
 defaultChordInversionMax = 8

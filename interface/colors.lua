@@ -51,6 +51,16 @@ end
 
 --
 
+function setDrawColorToOutOfScaleButton()
+	setColor("121212")
+end
+
+function setDrawColorToHighlightedOutOfScaleButton()
+	setColor("474747")
+end
+
+--
+
 function setDrawColorToButtonOutline()
 	setColor("1D1D1D")
 end
@@ -123,10 +133,19 @@ function setDrawColorToDropdownText()
 	setColor("D7D7D7")
 end
 
---[[ text ]]--
-function setDrawColorToSeparator()
-	setColor("181818")
+--[[ valuebox ]]--
+function setDrawColorToValueBoxOutline()
+	setColor("090909")
 end
+
+function setDrawColorToValueBoxBackground()
+	setColor("161616")
+end
+
+function setDrawColorToValueBoxText()
+	setColor("9F9F9F")
+end
+
 
 --[[ text ]]--
 function setDrawColorToText()

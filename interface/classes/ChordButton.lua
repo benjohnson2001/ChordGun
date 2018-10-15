@@ -6,7 +6,7 @@ require(workingDirectory .. "/interface/globalState")
 ChordButton = {}
 ChordButton.__index = ChordButton
 
-function ChordButton:new(text, x, y, width, height, scaleNoteIndex, chordTypeIndex)
+function ChordButton:new(text, x, y, width, height, scaleNoteIndex, chordTypeIndex, chordIsInScale)
 
   local self = {}
   setmetatable(self, ChordButton)
@@ -18,6 +18,7 @@ function ChordButton:new(text, x, y, width, height, scaleNoteIndex, chordTypeInd
   self.height = height
   self.scaleNoteIndex = scaleNoteIndex
   self.chordTypeIndex = chordTypeIndex
+  self.chordIsInScale = chordIsInScale
 
   return self
 end
@@ -69,7 +70,12 @@ function ChordButton:drawButtonRectangle()
 			if mouseIsHoveringOver(self) then
 				setDrawColorToHighlightedButton()
 			else
-				setDrawColorToNormalButton()
+
+				if self.chordIsInScale then
+					setDrawColorToNormalButton()
+				else
+					setDrawColorToOutOfScaleButton()
+				end			
 			end
 		end
 
@@ -90,35 +96,35 @@ end
 
 function ChordButton:drawText()
 
-		if self:isSelectedChordTypeAndSelectedScaleNote() then
+	if self:isSelectedChordTypeAndSelectedScaleNote() then
 
-			if mouseIsHoveringOver(self) then
-				setDrawColorToHighlightedSelectedChordTypeAndScaleNoteButtonText()
-			else
-				setDrawColorToSelectedChordTypeAndScaleNoteButtonText()
-			end
-
-		elseif self:isSelectedChordType() then
-
-			if mouseIsHoveringOver(self) then
-				setDrawColorToHighlightedSelectedChordTypeButtonText()
-			else
-				setDrawColorToSelectedChordTypeButtonText()
-			end
-
+		if mouseIsHoveringOver(self) then
+			setDrawColorToHighlightedSelectedChordTypeAndScaleNoteButtonText()
 		else
-
-			if mouseIsHoveringOver(self) then
-				setDrawColorToHighlightedButtonText()
-			else
-				setDrawColorToNormalButtonText()
-			end
+			setDrawColorToSelectedChordTypeAndScaleNoteButtonText()
 		end
 
-		local stringWidth, stringHeight = gfx.measurestr(self.text)
-		gfx.x = self.x + ((self.width - stringWidth) / 2)
-		gfx.y = self.y + ((self.height - stringHeight) / 2)
-		gfx.drawstr(self.text)
+	elseif self:isSelectedChordType() then
+
+		if mouseIsHoveringOver(self) then
+			setDrawColorToHighlightedSelectedChordTypeButtonText()
+		else
+			setDrawColorToSelectedChordTypeButtonText()
+		end
+
+	else
+
+		if mouseIsHoveringOver(self) then
+			setDrawColorToHighlightedButtonText()
+		else
+			setDrawColorToNormalButtonText()
+		end
+	end
+
+	local stringWidth, stringHeight = gfx.measurestr(self.text)
+	gfx.x = self.x + ((self.width - stringWidth) / 2)
+	gfx.y = self.y + ((self.height - stringHeight) / 2)
+	gfx.drawstr(self.text)
 end
 
 local function buttonHasBeenClicked(button)
@@ -131,13 +137,12 @@ end
 
 function ChordButton:onPress()
 
-	--setSelectedChordType(scaleNoteIndex_, chordIndex_)
-	--insertChord(scaleNoteIndex_)
-	--setChordInversion(getCurrentInversionValue())
+
 end
 
 function ChordButton:onShiftPress()
-
+	insertChord(scaleNoteIndex_)
+	setChordInversion(getCurrentInversionValue())
 end
 
 function ChordButton:update()

@@ -6,7 +6,7 @@ require(workingDirectory .. "/interface/globalState")
 Dropdown = {}
 Dropdown.__index = Dropdown
 
-function Dropdown:new(x, y, width, height, options, defaultOptionIndex)
+function Dropdown:new(x, y, width, height, options, defaultOptionIndex, onSelectionCallback)
 
   local self = {}
   setmetatable(self, Dropdown)
@@ -17,6 +17,7 @@ function Dropdown:new(x, y, width, height, options, defaultOptionIndex)
   self.height = height
   self.options = options
   self.selectedIndex = defaultOptionIndex
+  self.onSelectionCallback = onSelectionCallback
   self.dropdownList = {}
   self:updateDropdownList()
   return self
@@ -88,6 +89,7 @@ function Dropdown:openMenu()
 	end
 
 	self.selectedIndex = selectedIndex
+	self.onSelectionCallback(selectedIndex)
 	self:updateDropdownList()
 end
 

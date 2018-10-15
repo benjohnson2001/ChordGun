@@ -26,8 +26,6 @@ local selectedInversionStates7Key = "selectedInversionStates7"
 --
 
 local function setValue(key, value)
-  print(key)
-  print(value)
   reaper.SetProjExtState(activeProjectIndex, sectionName, key, value)
 end
 
@@ -75,7 +73,7 @@ end
 --[[ ]]--
 
 function getScaleTonicNote()
-  return getValue(scaleTonicNoteKey, defaultScaleTonicNoteValue)
+  return tonumber(getValue(scaleTonicNoteKey, defaultScaleTonicNoteValue))
 end
 
 function setScaleTonicNote(arg)
@@ -349,4 +347,32 @@ function setSelectedInversionStates7(index, arg)
   local temp = getSelectedInversionStates7()
   temp[index] = arg
   setTableValue(selectedInversionStates7Key, temp)
+end
+
+--
+
+function resetSelectedChordTypes()
+
+  local numberOfSelectedChordTypes = 7
+
+  for i = 1, numberOfSelectedChordTypes do
+    setSelectedChordType(i, 1)
+  end
+end
+
+function resetSelectedInversionStates()
+
+  local numberOfSelectedInversionStates = #defaultSelectedInversionStates
+
+  for i = 1, numberOfSelectedInversionStates do
+    setSelectedInversionStates1(0)
+    setSelectedInversionStates2(0)
+    setSelectedInversionStates3(0)
+    setSelectedInversionStates4(0)
+    setSelectedInversionStates5(0)
+    setSelectedInversionStates6(0)
+    setSelectedInversionStates7(0)
+  end
+  
+  setChordInversion(0)
 end

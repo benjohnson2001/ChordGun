@@ -4,7 +4,7 @@ require(workingDirectory .. "/interface/classes/Header")
 require(workingDirectory .. "/interface/classes/Label")
 require(workingDirectory .. "/interface/classes/Frame")
 require(workingDirectory .. "/interface/classes/Dropdown")
-require(workingDirectory .. "/interface/classes/Separator")
+require(workingDirectory .. "/interface/classes/ValueBox")
 
 
 Interface = {}
@@ -33,15 +33,15 @@ function Interface:addMainWindow()
 	gfx.init(self.name, self.width, self.height, dockState, self.x, self.y)
 end
 
-function Interface:addChordButton(buttonText, x, y, width, height, scaleNoteIndex, chordTypeIndex)
+function Interface:addChordButton(buttonText, x, y, width, height, scaleNoteIndex, chordTypeIndex, chordIsInScale)
 
-	local chordButton = ChordButton:new(buttonText, x, y, width, height, scaleNoteIndex, chordTypeIndex)
+	local chordButton = ChordButton:new(buttonText, x, y, width, height, scaleNoteIndex, chordTypeIndex, chordIsInScale)
 	table.insert(self.elements, chordButton)
 end
 
-function Interface:addHeader(headerText, x, y, width, height)
+function Interface:addHeader(headerText, x, y, width, height, getTextCallback)
 
-	local header = Header:new(headerText, x, y, width, height)
+	local header = Header:new(headerText, x, y, width, height, getTextCallback)
 	table.insert(self.elements, header)
 end
 
@@ -51,28 +51,22 @@ function Interface:addFrame(x, y, width, height)
 	table.insert(self.elements, frame)
 end
 
-function Interface:addLabel(text, x, y, width, height)
+function Interface:addLabel(x, y, width, height, getTextCallback)
 
-	local label = Label:new(text, x, y, width, height)
+	local label = Label:new(x, y, width, height, getTextCallback)
 	table.insert(self.elements, label)
 end
 
-function Interface:addDropdown(x, y, width, height, options, defaultOptionIndex)
+function Interface:addDropdown(x, y, width, height, options, defaultOptionIndex, onSelectionCallback)
 
-	local dropdown = Dropdown:new(x, y, width, height, options, defaultOptionIndex)
+	local dropdown = Dropdown:new(x, y, width, height, options, defaultOptionIndex, onSelectionCallback)
 	table.insert(self.elements, dropdown)
 end
 
-function Interface:addSeparator(x, y, width, height)
+function Interface:addValueBox(text, x, y, width, height, onPressOfLeftButtonCallback, onPressOfRightButtonCallback)
 
-	local separator = Separator:new(x, y, width, height)
-	table.insert(self.elements, separator)
-end
-
-function Interface:addChordButtonComponents()
-
-	self:addButton("Cm")
-	self:addHeader("iii")
+	local valueBox = ValueBox:new(text, x, y, width, height, onPressOfLeftButtonCallback, onPressOfRightButtonCallback)
+	table.insert(self.elements, valueBox)
 end
 
 function Interface:updateElements()
