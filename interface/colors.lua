@@ -29,13 +29,27 @@ function setDrawColorToHighlightedButton()
 	setColor("474747")
 end
 
-function setDrawColorToSelectedButton()
+--
+
+function setDrawColorToSelectedChordTypeButton()
+	setColor("474747")
+end
+
+function setDrawColorToHighlightedSelectedChordTypeButton()
+	setColor("717171")
+end
+
+--
+
+function setDrawColorToSelectedChordTypeAndScaleNoteButton()
 	setColor("DCDCDC")
 end
 
-function setDrawColorToHighlightedSelectedButton()
+function setDrawColorToHighlightedSelectedChordTypeAndScaleNoteButton()
 	setColor("FFFFFF")
 end
+
+--
 
 function setDrawColorToButtonOutline()
 	setColor("1D1D1D")
@@ -51,14 +65,25 @@ function setDrawColorToHighlightedButtonText()
 	setColor("EEEEEE")
 end
 
-function setDrawColorToSelectedButtonText()
+--
+
+function setDrawColorToSelectedChordTypeButtonText()
+	setColor("F1F1F1")
+end
+
+function setDrawColorToHighlightedSelectedChordTypeButtonText()
+	setColor("FDFDFD")
+end
+
+--
+
+function setDrawColorToSelectedChordTypeAndScaleNoteButtonText()
 	setColor("121212")
 end
 
-function setDrawColorToHighlightedSelectedButtonText()
+function setDrawColorToHighlightedSelectedChordTypeAndScaleNoteButtonText()
 	setColor("000000")
 end
-
 
 --[[ buttons ]]--
 

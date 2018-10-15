@@ -47,36 +47,5 @@ function updateScaleDegreeHeaders()
           
       setScaleDegreeHeaders(i, symbol) 
     end
-    
-    if (viewBuilder ~= nil) then
-      
-      if (i == 1) then
-        viewBuilder.views.scaleDegreeHeader1.text = symbol
-      end
-  
-      if (i == 2) then
-        viewBuilder.views.scaleDegreeHeader2.text = symbol
-      end
-      
-      if (i == 3) then
-        viewBuilder.views.scaleDegreeHeader3.text = symbol
-      end
-      
-      if (i == 4) then
-        viewBuilder.views.scaleDegreeHeader4.text = symbol
-      end
-      
-      if (i == 5) then
-        viewBuilder.views.scaleDegreeHeader5.text = symbol
-      end
-      
-      if (i == 6) then
-        viewBuilder.views.scaleDegreeHeader6.text = symbol
-      end                
-  
-      if (i == 7) then
-        viewBuilder.views.scaleDegreeHeader7.text = symbol
-      end    
-    end
   end
 end

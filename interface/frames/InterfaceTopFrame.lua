@@ -7,8 +7,8 @@ for key, scale in ipairs(scales) do
   table.insert(scaleNames, scale['name'])
 end
 
-local xMargin = 12
-local yMargin = 12
+local xMargin = 8
+local yMargin = 8
 local xPadding = 16
 local yPadding = 5
 

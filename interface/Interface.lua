@@ -1,5 +1,5 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
-require(workingDirectory .. "/interface/classes/Button")
+require(workingDirectory .. "/interface/classes/ChordButton")
 require(workingDirectory .. "/interface/classes/Header")
 require(workingDirectory .. "/interface/classes/Label")
 require(workingDirectory .. "/interface/classes/Frame")
@@ -32,18 +32,10 @@ function Interface:addMainWindow()
 	gfx.init(self.name, self.width, self.height, dockState, self.x, self.y)
 end
 
-function doThis()
-	print("ur mom")
-end
+function Interface:addChordButton(buttonText, x, y, width, height, scaleNoteIndex, chordTypeIndex, onPressCallback, onShiftPressCallback)
 
-function Interface:addButton(buttonText)
-
-	local x = 220
-	local y = 220
-	local buttonWidth = 73
-	local buttonHeight = 30
-	local button = Button:new(buttonText, x, y, buttonWidth, buttonHeight, doThis)
-	table.insert(self.elements, button)
+	local chordButton = ChordButton:new(buttonText, x, y, width, height, scaleNoteIndex, chordTypeIndex, onPressCallback, onShiftPressCallback)
+	table.insert(self.elements, chordButton)
 end
 
 function Interface:addHeader(headerText, x, y, width, height)
@@ -52,9 +44,9 @@ function Interface:addHeader(headerText, x, y, width, height)
 	table.insert(self.elements, header)
 end
 
-function Interface:addFrame(x, y, frameWidth, frameHeight)
+function Interface:addFrame(x, y, width, height)
 
-	local frame = Frame:new(x, y, frameWidth, frameHeight)
+	local frame = Frame:new(x, y, width, height)
 	table.insert(self.elements, frame)
 end
 

@@ -5,7 +5,7 @@ defaultChordTextValue = ''
 defaultChordInversion = 0
 defaultChordInversionMin = -8
 defaultChordInversionMax = 8
-defaultSelectedScaleDegree = 1
+defaultSelectedScaleNote = 1
 
 defaultSelectedChordTypes = {}
 for i = 1, 7 do

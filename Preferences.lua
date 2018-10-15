@@ -11,7 +11,7 @@ local chordTextKey = "chordText"
 local chordInversionKey = "chordInversion"
 local chordInversionMinKey = "chordInversionMin"
 local chordInversionMaxKey = "chordInversionMax"
-local selectedScaleDegreeKey = "selectedScaleDegree"
+local selectedScaleNoteKey = "selectedScaleNote"
 local selectedChordTypesKey = "selectedChordTypes"
 local scaleNoteNamesKey = "scaleNoteNames"
 local scaleDegreeHeadersKey = "scaleDegreeHeaders"
@@ -25,8 +25,9 @@ local selectedInversionStates7Key = "selectedInversionStates7"
 
 --
 
-
 local function setValue(key, value)
+  print(key)
+  print(value)
   reaper.SetProjExtState(activeProjectIndex, sectionName, key, value)
 end
 
@@ -84,7 +85,7 @@ end
 --
 
 function getScaleType()
-  return getValue(scaleTypeKey, defaultScaleTypeValue)
+  return tonumber(getValue(scaleTypeKey, defaultScaleTypeValue))
 end
 
 function setScaleType(arg)
@@ -143,12 +144,12 @@ end
 
 --
 
-function getSelectedScaleDegree()
-  return getValue(selectedScaleDegreeKey, defaultSelectedScaleDegree)
+function getSelectedScaleNote()
+  return getValue(selectedScaleNoteKey, defaultSelectedScaleNote)
 end
 
-function setSelectedScaleDegree(arg)
-  setValue(selectedScaleDegreeKey, arg)
+function setSelectedScaleNote(arg)
+  setValue(selectedScaleNoteKey, arg)
 end
 
 --
@@ -164,11 +165,21 @@ end
 --
 
 function getSelectedChordTypes()
+
   return getTableValue(selectedChordTypesKey, defaultSelectedChordTypes)
 end
 
-function setSelectedChordTypes(arg)
-  setTableValue(selectedChordTypesKey, arg)
+function getSelectedChordType(index)
+
+  local temp = getTableValue(selectedChordTypesKey, defaultSelectedChordTypes)
+  return temp[index]
+end
+
+function setSelectedChordType(index, arg)
+
+  local temp = getSelectedChordTypes()
+  temp[index] = arg
+  setTableValue(selectedChordTypesKey, temp)
 end
 
 --
@@ -177,18 +188,30 @@ function getScaleNoteNames()
   return getTableValue(scaleNoteNamesKey, defaultScaleNoteNames)
 end
 
-function setScaleNoteNames(arg)
-  setTableValue(scaleNoteNamesKey, arg)
+function getScaleNoteName(index)
+  local temp = getTableValue(scaleNoteNamesKey, defaultScaleNoteNames)
+  return temp[index]
+end
+
+function setScaleNoteName(index, arg)
+
+  local temp = getScaleNoteNames()
+  temp[index] = arg
+  setTableValue(scaleNoteNamesKey, temp)
 end
 
 --
 
-function getScaleDegreeHeaders(index)
+function getScaleDegreeHeaders()
+  return getTableValue(scaleDegreeHeadersKey, defaultScaleDegreeHeaders)
+end
+
+function getScaleDegreeHeader(index)
   local temp = getTableValue(scaleDegreeHeadersKey, defaultScaleDegreeHeaders)
   return temp[index]
 end
 
-function setScaleDegreeHeaders(index, arg)
+function setScaleDegreeHeader(index, arg)
 
   local temp = getScaleDegreeHeaders()
   temp[index] = arg
@@ -201,8 +224,17 @@ function getSelectedInversionStates1()
   return getTableValue(selectedInversionStates1Key, defaultSelectedInversionStates)
 end
 
-function setSelectedInversionStates1(arg)
-  setTableValue(selectedInversionStates1Key, arg)
+function getSelectedInversionState1(index)
+
+  local temp = getTableValue(selectedInversionStates1Key, defaultSelectedInversionStates)
+  return temp[index]
+end
+
+function setSelectedInversionStates1(index, arg)
+
+  local temp = getSelectedInversionStates1()
+  temp[index] = arg
+  setTableValue(selectedInversionStates1Key, temp)
 end
 
 --
@@ -211,8 +243,17 @@ function getSelectedInversionStates2()
   return getTableValue(selectedInversionStates2Key, defaultSelectedInversionStates)
 end
 
-function setSelectedInversionStates2(arg)
-  setTableValue(selectedInversionStates2Key, arg)
+function getSelectedInversionState2(index)
+
+  local temp = getTableValue(selectedInversionStates2Key, defaultSelectedInversionStates)
+  return temp[index]
+end
+
+function setSelectedInversionStates2(index, arg)
+
+  local temp = getSelectedInversionStates2()
+  temp[index] = arg
+  setTableValue(selectedInversionStates2Key, temp)
 end
 
 --
@@ -221,8 +262,17 @@ function getSelectedInversionStates3()
   return getTableValue(selectedInversionStates3Key, defaultSelectedInversionStates)
 end
 
-function setSelectedInversionStates3(arg)
-  setTableValue(selectedInversionStates3Key, arg)
+function getSelectedInversionState3(index)
+
+  local temp = getTableValue(selectedInversionStates3Key, defaultSelectedInversionStates)
+  return temp[index]
+end
+
+function setSelectedInversionStates3(index, arg)
+
+  local temp = getSelectedInversionStates3()
+  temp[index] = arg
+  setTableValue(selectedInversionStates3Key, temp)
 end
 
 --
@@ -231,8 +281,17 @@ function getSelectedInversionStates4()
   return getTableValue(selectedInversionStates4Key, defaultSelectedInversionStates)
 end
 
-function setSelectedInversionStates4(arg)
-  setTableValue(selectedInversionStates4Key, arg)
+function getSelectedInversionState4(index)
+
+  local temp = getTableValue(selectedInversionStates4Key, defaultSelectedInversionStates)
+  return temp[index]
+end
+
+function setSelectedInversionStates4(index, arg)
+
+  local temp = getSelectedInversionStates4()
+  temp[index] = arg
+  setTableValue(selectedInversionStates4Key, temp)
 end
 
 --
@@ -241,8 +300,17 @@ function getSelectedInversionStates5()
   return getTableValue(selectedInversionStates5Key, defaultSelectedInversionStates)
 end
 
-function setSelectedInversionStates5(arg)
-  setTableValue(selectedInversionStates5Key, arg)
+function getSelectedInversionState5(index)
+
+  local temp = getTableValue(selectedInversionStates5Key, defaultSelectedInversionStates)
+  return temp[index]
+end
+
+function setSelectedInversionStates5(index, arg)
+
+  local temp = getSelectedInversionStates5()
+  temp[index] = arg
+  setTableValue(selectedInversionStates5Key, temp)
 end
 
 --
@@ -251,8 +319,17 @@ function getSelectedInversionStates6()
   return getTableValue(selectedInversionStates6Key, defaultSelectedInversionStates)
 end
 
-function setSelectedInversionStates6(arg)
-  setTableValue(selectedInversionStates6Key, arg)
+function getSelectedInversionState6(index)
+
+  local temp = getTableValue(selectedInversionStates6Key, defaultSelectedInversionStates)
+  return temp[index]
+end
+
+function setSelectedInversionStates6(index, arg)
+
+  local temp = getSelectedInversionStates6()
+  temp[index] = arg
+  setTableValue(selectedInversionStates6Key, temp)
 end
 
 --
@@ -261,7 +338,15 @@ function getSelectedInversionStates7()
   return getTableValue(selectedInversionStates7Key, defaultSelectedInversionStates)
 end
 
-function setSelectedInversionStates7(arg)
-  setTableValue(selectedInversionStates7Key, arg)
+function getSelectedInversionState7(index)
+
+  local temp = getTableValue(selectedInversionStates7Key, defaultSelectedInversionStates)
+  return temp[index]
 end
 
+function setSelectedInversionStates7(index, arg)
+
+  local temp = getSelectedInversionStates7()
+  temp[index] = arg
+  setTableValue(selectedInversionStates7Key, temp)
+end
