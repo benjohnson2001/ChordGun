@@ -124,6 +124,11 @@ function setDrawColorToDropdownText()
 end
 
 --[[ text ]]--
+function setDrawColorToSeparator()
+	setColor("181818")
+end
+
+--[[ text ]]--
 function setDrawColorToText()
 	setColor("878787")
 end

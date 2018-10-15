@@ -6,7 +6,7 @@ require(workingDirectory .. "/interface/globalState")
 ChordButton = {}
 ChordButton.__index = ChordButton
 
-function ChordButton:new(text, x, y, width, height, scaleNoteIndex, chordTypeIndex, onPressCallback, onShiftPressCallback)
+function ChordButton:new(text, x, y, width, height, scaleNoteIndex, chordTypeIndex)
 
   local self = {}
   setmetatable(self, ChordButton)
@@ -18,8 +18,6 @@ function ChordButton:new(text, x, y, width, height, scaleNoteIndex, chordTypeInd
   self.height = height
   self.scaleNoteIndex = scaleNoteIndex
   self.chordTypeIndex = chordTypeIndex
-  self.onPressCallback = onPressCallback
-  self.onShiftPressCallback = onShiftPressCallback
 
   return self
 end
@@ -131,6 +129,17 @@ local function shiftModifierIsHeldDown()
 	return gfx.mouse_cap & 8 == 8
 end
 
+function ChordButton:onPress()
+
+	--setSelectedChordType(scaleNoteIndex_, chordIndex_)
+	--insertChord(scaleNoteIndex_)
+	--setChordInversion(getCurrentInversionValue())
+end
+
+function ChordButton:onShiftPress()
+
+end
+
 function ChordButton:update()
 
 		self:drawRectangles()
@@ -144,9 +153,9 @@ function ChordButton:update()
 			mouseButtonIsNotPressedDown = false
 
 			if shiftModifierIsHeldDown() then
-				self.onShiftPressCallback()
+				self:onShiftPress()
 			else
-				self.onPressCallback()
+				self:onPress()
 			end
 		end
 end

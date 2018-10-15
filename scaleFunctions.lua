@@ -61,6 +61,22 @@ function chordIsNotAlreadyIncluded(scaleChordsForRootNote, chordCode)
   return true
 end
 
+function getNumberOfScaleChordsForScaleNoteIndex(scaleNoteIndex)
+
+  local chordCount = 0
+  local scaleChordsForRootNote = {}
+  
+  for chordIndex, chord in ipairs(chords) do
+  
+    if chordIsInScale(scaleNotes[scaleNoteIndex], chordIndex) then
+      chordCount = chordCount + 1
+      scaleChordsForRootNote[chordCount] = chord   
+    end
+  end
+
+  return chordCount
+end
+
 function getScaleChordsForRootNote(rootNote)
   
   local chordCount = 0

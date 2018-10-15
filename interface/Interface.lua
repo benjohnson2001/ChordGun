@@ -4,6 +4,7 @@ require(workingDirectory .. "/interface/classes/Header")
 require(workingDirectory .. "/interface/classes/Label")
 require(workingDirectory .. "/interface/classes/Frame")
 require(workingDirectory .. "/interface/classes/Dropdown")
+require(workingDirectory .. "/interface/classes/Separator")
 
 
 Interface = {}
@@ -32,9 +33,9 @@ function Interface:addMainWindow()
 	gfx.init(self.name, self.width, self.height, dockState, self.x, self.y)
 end
 
-function Interface:addChordButton(buttonText, x, y, width, height, scaleNoteIndex, chordTypeIndex, onPressCallback, onShiftPressCallback)
+function Interface:addChordButton(buttonText, x, y, width, height, scaleNoteIndex, chordTypeIndex)
 
-	local chordButton = ChordButton:new(buttonText, x, y, width, height, scaleNoteIndex, chordTypeIndex, onPressCallback, onShiftPressCallback)
+	local chordButton = ChordButton:new(buttonText, x, y, width, height, scaleNoteIndex, chordTypeIndex)
 	table.insert(self.elements, chordButton)
 end
 
@@ -60,6 +61,12 @@ function Interface:addDropdown(x, y, width, height, options, defaultOptionIndex)
 
 	local dropdown = Dropdown:new(x, y, width, height, options, defaultOptionIndex)
 	table.insert(self.elements, dropdown)
+end
+
+function Interface:addSeparator(x, y, width, height)
+
+	local separator = Separator:new(x, y, width, height)
+	table.insert(self.elements, separator)
 end
 
 function Interface:addChordButtonComponents()

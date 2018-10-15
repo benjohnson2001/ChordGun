@@ -38,25 +38,25 @@ function Interface:addChordButtons()
 
       	local text = getScaleNoteName(scaleNoteIndex) .. chord['display']
 
-      	local width = 90
-      	local height = 30
+      	local buttonWidth = 90
+      	local buttonHeight = 30
 				local innerSpacing = 2
       	
-      	local xPos = xMargin + xPadding + width * (scaleNoteIndex-1) + innerSpacing * scaleNoteIndex
-      	local yPos = yMargin + yPadding + headerHeight + height * (chordTypeIndex-1) + innerSpacing * (chordTypeIndex-1) - 3
-      	
-				
-        local onPressCallback = function()
-        																print("this is the onPress callback")
-                                        --setSelectedChordType(scaleNoteIndex_, chordIndex_)
-                                        --insertChord(scaleNoteIndex_)
-                                        --setChordInversion(getCurrentInversionValue())
-                                      end
-        local onShiftPressCallback = function() 
-    																		print("this is the onShiftPress callback")
-                                       end
+      	local xPos = xMargin + xPadding + buttonWidth * (scaleNoteIndex-1) + innerSpacing * scaleNoteIndex
+      	local yPos = yMargin + yPadding + headerHeight + buttonHeight * (chordTypeIndex-1) + innerSpacing * (chordTypeIndex-1) - 3
+  
+  			local numberOfChordsInScale = getNumberOfScaleChordsForScaleNoteIndex(scaleNoteIndex)
+			  local separatorWidth = 80
+    		local separatorHeight = 5
+      	if chordTypeIndex == numberOfChordsInScale + 1 then
+      		self:addSeparator(xPos+5, yPos, separatorWidth, separatorHeight)
+      	end
 
-        self:addChordButton(text, xPos , yPos , width, height, scaleNoteIndex, chordTypeIndex, onPressCallback, onShiftPressCallback)
+       	if chordTypeIndex > numberOfChordsInScale then
+      		self:addChordButton(text, xPos, yPos+separatorHeight, buttonWidth, buttonHeight, scaleNoteIndex, chordTypeIndex)
+      	else
+      		self:addChordButton(text, xPos, yPos, buttonWidth, buttonHeight, scaleNoteIndex, chordTypeIndex)
+      	end     	
       end
       
       scaleNoteIndex = scaleNoteIndex + 1

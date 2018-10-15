@@ -19,7 +19,6 @@ interface:addTopFrame()
 interface:addBottomFrame()
 
 
-
 local function windowHasNotBeenClosed()
 	return gfx.getchar() ~= -1
 end
