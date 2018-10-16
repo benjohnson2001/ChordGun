@@ -5,6 +5,7 @@ require(workingDirectory .. "/interface/classes/Label")
 require(workingDirectory .. "/interface/classes/Frame")
 require(workingDirectory .. "/interface/classes/Dropdown")
 require(workingDirectory .. "/interface/classes/ValueBox")
+require(workingDirectory .. "/util")
 
 Interface = {}
 Interface.__index = Interface
@@ -90,7 +91,7 @@ function Interface:update()
 
 	self:updateElements()
 
-	if not mouseButtonIsNotPressedDown and gfx.mouse_cap & 1 ~= 1 then
+	if not mouseButtonIsNotPressedDown and leftMouseButtonIsNotHeldDown() then
 		mouseButtonIsNotPressedDown = true
 	end
 

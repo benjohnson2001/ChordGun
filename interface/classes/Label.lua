@@ -30,7 +30,7 @@ function Label:drawText(text)
 	local stringWidth, stringHeight = gfx.measurestr(text)
 	gfx.x = self.x + ((self.width - stringWidth) / 2)
 	gfx.y = self.y + ((self.height - stringHeight) / 2)
-	gfx.drawstr(text)
+  gfx.drawstr(text)
 end
 
 function Label:update()

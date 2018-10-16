@@ -8,6 +8,14 @@ function mouseIsHoveringOver(element)
 	return isInHorizontalRegion and isInVerticalRegion
 end
 
+function leftMouseButtonIsHeldDown()
+  return gfx.mouse_cap & 1 == 1
+end
+
+function leftMouseButtonIsNotHeldDown()
+  return gfx.mouse_cap & 1 ~= 1
+end
+
 function clearConsoleWindow()
   
   reaper.ShowConsoleMsg("")

@@ -3,7 +3,6 @@ require(workingDirectory .. "/inversionStates")
 require(workingDirectory .. "/scaleFunctions")
 require(workingDirectory .. "/scales")
 require(workingDirectory .. "/scaleDegreeHeaders")
-require(workingDirectory .. "/insertChord")
 require(workingDirectory .. "/chordNotesArray")
 require(workingDirectory .. "/util")
 

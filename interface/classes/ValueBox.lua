@@ -90,12 +90,12 @@ local hitAreaWidth = 18
 
 local function leftButtonHasBeenClicked(valueBox)
   local hitArea = HitArea:new(valueBox.x-1, valueBox.y-1, hitAreaWidth, valueBox.height+1)
-  return mouseIsHoveringOver(hitArea) and gfx.mouse_cap & 1 == 1
+  return mouseIsHoveringOver(hitArea) and leftMouseButtonIsHeldDown()
 end
 
 local function rightButtonHasBeenClicked(valueBox)
   local hitArea = HitArea:new(valueBox.x+valueBox.width-hitAreaWidth, valueBox.y-1, hitAreaWidth, valueBox.height+1)
-  return mouseIsHoveringOver(hitArea) and gfx.mouse_cap & 1 == 1
+  return mouseIsHoveringOver(hitArea) and leftMouseButtonIsHeldDown()
 end
 
 function ValueBox:update()

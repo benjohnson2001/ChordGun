@@ -63,7 +63,7 @@ function Dropdown:drawImage()
 end
 
 local function dropdownHasBeenClicked(dropdown)
-	return mouseIsHoveringOver(dropdown) and gfx.mouse_cap & 1 == 1
+	return mouseIsHoveringOver(dropdown) and leftMouseButtonIsHeldDown()
 end
 
 function Dropdown:updateDropdownList()

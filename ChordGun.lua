@@ -3,6 +3,7 @@ require(workingDirectory .. "/interface/Interface")
 require(workingDirectory .. "/interface/Colors")
 require(workingDirectory .. "/preferences")
 require(workingDirectory .. "/scaleData")
+require(workingDirectory .. "/test")
 
 clearConsoleWindow()
 updateScaleData()
@@ -19,14 +20,14 @@ local function windowHasNotBeenClosed()
 	return gfx.getchar() ~= -1
 end
 
-local function Main()
+local function main()
 
 	if windowHasNotBeenClosed() then
-		reaper.defer(Main)
+		reaper.defer(main)
 	end
 	
 	interface:update()
 end
 
-Main()
+main()
 

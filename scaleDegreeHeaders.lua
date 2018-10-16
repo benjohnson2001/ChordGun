@@ -42,3 +42,12 @@ function updateScaleDegreeHeaders()
     setScaleDegreeHeader(i, symbol) 
   end
 end
+
+--[[
+
+  setDrawColorToRed()
+  gfx.setfont(1, "Arial")       <-- default bitmap font does not support Unicode characters
+  local degreeSymbolCharacter = 0x00B0  <-- this is the degree symbol for augmented chords,  "°"
+  gfx.drawchar(degreeSymbolCharacter)
+
+]]--

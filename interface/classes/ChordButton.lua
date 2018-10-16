@@ -1,6 +1,8 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
 require(workingDirectory .. "/interface/colors")
 require(workingDirectory .. "/util")
+require(workingDirectory .. "/insertChord")
+require(workingDirectory .. "/test")
 require(workingDirectory .. "/interface/globalState")
 
 ChordButton = {}
@@ -128,7 +130,7 @@ function ChordButton:drawText()
 end
 
 local function buttonHasBeenClicked(button)
-	return mouseIsHoveringOver(button) and gfx.mouse_cap & 1 == 1
+	return mouseIsHoveringOver(button) and leftMouseButtonIsHeldDown()
 end
 
 local function shiftModifierIsHeldDown()
@@ -136,8 +138,7 @@ local function shiftModifierIsHeldDown()
 end
 
 function ChordButton:onPress()
-
-
+	doSomething()
 end
 
 function ChordButton:onShiftPress()
