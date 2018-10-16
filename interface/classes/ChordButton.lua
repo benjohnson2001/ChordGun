@@ -141,8 +141,8 @@ function ChordButton:onPress()
 end
 
 function ChordButton:onShiftPress()
-	insertChord(scaleNoteIndex_)
-	setChordInversion(getCurrentInversionValue())
+	--insertChord(scaleNoteIndex_)
+	--setChordInversion(getCurrentInversionValue())
 end
 
 function ChordButton:update()

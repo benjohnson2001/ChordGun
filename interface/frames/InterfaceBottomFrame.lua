@@ -59,7 +59,8 @@ function Interface:addInversionValueBox()
 end
 
 function Interface:addHeaders()
-  for i = 1, 7 do
+  
+  for i = 1, #scaleNotes do
 
     local headerWidth = 90
     local innerSpacing = 2

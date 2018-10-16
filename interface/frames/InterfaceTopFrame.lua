@@ -53,6 +53,7 @@ function Interface:addScaleTonicNoteDropdown()
 		resetSelectedInversionStates()
 		updateScaleData()
 		updateScaleDegreeHeaders()
+		self:restartGui()
 	end
 
 	local scaleTonicNote = getScaleTonicNote()
@@ -73,6 +74,7 @@ function Interface:addScaleTypeDropdown()
 		resetSelectedInversionStates()
 		updateScaleData()
 		updateScaleDegreeHeaders()
+		self:restartGui()
 	end
 	
 	local scaleName = getScaleType()

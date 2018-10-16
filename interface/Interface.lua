@@ -6,7 +6,6 @@ require(workingDirectory .. "/interface/classes/Frame")
 require(workingDirectory .. "/interface/classes/Dropdown")
 require(workingDirectory .. "/interface/classes/ValueBox")
 
-
 Interface = {}
 Interface.__index = Interface
 
@@ -24,6 +23,17 @@ function Interface:init(name, x, y, width, height)
   self.elements = {}
 
   return self
+end
+
+function Interface:restartGui()
+	self.elements = {}
+	self:startGui()
+end
+
+function Interface:startGui()
+	self:addMainWindow()
+	self:addTopFrame()
+	self:addBottomFrame()	
 end
 
 function Interface:addMainWindow()

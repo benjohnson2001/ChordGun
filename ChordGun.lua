@@ -7,17 +7,13 @@ require(workingDirectory .. "/scaleData")
 clearConsoleWindow()
 updateScaleData()
 
-
 local x = 300
 local y = 200
 local width = 675
 local height = 520
 
 local interface = Interface:init("ChordGun", x, y, width, height)
-interface:addMainWindow()
-interface:addTopFrame()
-interface:addBottomFrame()
-
+interface:startGui()
 
 local function windowHasNotBeenClosed()
 	return gfx.getchar() ~= -1

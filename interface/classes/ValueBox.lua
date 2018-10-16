@@ -72,8 +72,45 @@ function ValueBox:drawText()
 	gfx.drawstr(self.text)
 end
 
+HitArea = {}
+HitArea.__index = HitArea
+function HitArea:new(x, y, width, height)
+  local self = {}
+  setmetatable(self, HitArea)
+
+  self.x = x
+  self.y = y
+  self.width = width
+  self.height = height
+
+  return self
+end
+
+local hitAreaWidth = 18
+
+local function leftButtonHasBeenClicked(valueBox)
+  local hitArea = HitArea:new(valueBox.x-1, valueBox.y-1, hitAreaWidth, valueBox.height+1)
+  return mouseIsHoveringOver(hitArea) and gfx.mouse_cap & 1 == 1
+end
+
+local function rightButtonHasBeenClicked(valueBox)
+  local hitArea = HitArea:new(valueBox.x+valueBox.width-hitAreaWidth, valueBox.y-1, hitAreaWidth, valueBox.height+1)
+  return mouseIsHoveringOver(hitArea) and gfx.mouse_cap & 1 == 1
+end
+
 function ValueBox:update()
+
   self:drawRectangles()
   self:drawImages()
   self:drawText()
+
+  if mouseButtonIsNotPressedDown and leftButtonHasBeenClicked(self) then
+    mouseButtonIsNotPressedDown = false
+    self.onLeftButtonPressCallback()
+  end
+
+  if mouseButtonIsNotPressedDown and rightButtonHasBeenClicked(self) then
+    mouseButtonIsNotPressedDown = false
+    self.onRightButtonPressCallback()
+  end
 end
