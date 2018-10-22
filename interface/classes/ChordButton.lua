@@ -145,7 +145,7 @@ function ChordButton:onPress()
 --	insertMidiNote(64)
 --	insertMidiNote(67)
 
-	previewChord(self.scaleNoteIndex, self.chordTypeIndex)
+	previewChord()
 end
 
 function ChordButton:onShiftPress()

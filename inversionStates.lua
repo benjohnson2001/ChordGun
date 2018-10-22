@@ -31,34 +31,37 @@ function updateInversionStates()
   end
 end
 
-function setInversionState(scaleDegree, chordTypeIndex, inversionValue)
+function setInversionState(inversionValue)
+
+  local selectedScaleDegree = getSelectedScaleNote()
+  local selectedChordTypeIndex = getSelectedChordType(selectedScaleDegree)
   
-  if scaleDegree == 1 then
-    setSelectedInversionState1(chordTypeIndex, inversionValue)
+  if selectedScaleDegree == 1 then
+    setSelectedInversionState1(selectedChordTypeIndex, inversionValue)
   end
   
-  if scaleDegree == 2 then
-    setSelectedInversionState2(chordTypeIndex, inversionValue)
+  if selectedScaleDegree == 2 then
+    setSelectedInversionState2(selectedChordTypeIndex, inversionValue)
   end
   
-  if scaleDegree == 3 then
-    setSelectedInversionState3(chordTypeIndex, inversionValue)
+  if selectedScaleDegree == 3 then
+    setSelectedInversionState3(selectedChordTypeIndex, inversionValue)
   end
   
-  if scaleDegree == 4 then
-    setSelectedInversionState4(chordTypeIndex, inversionValue)
+  if selectedScaleDegree == 4 then
+    setSelectedInversionState4(selectedChordTypeIndex, inversionValue)
   end
   
-  if scaleDegree == 5 then
-    setSelectedInversionState5(chordTypeIndex, inversionValue)
+  if selectedScaleDegree == 5 then
+    setSelectedInversionState5(selectedChordTypeIndex, inversionValue)
   end
   
-  if scaleDegree == 6 then
-    setSelectedInversionState6(chordTypeIndex, inversionValue)
+  if selectedScaleDegree == 6 then
+    setSelectedInversionState6(selectedChordTypeIndex, inversionValue)
   end
   
-  if scaleDegree == 7 then
-    setSelectedInversionState7(chordTypeIndex, inversionValue)
+  if selectedScaleDegree == 7 then
+    setSelectedInversionState7(selectedChordTypeIndex, inversionValue)
   end
 end
 
@@ -68,30 +71,30 @@ function getCurrentInversionValue()
   local selectedChordTypeIndex = getSelectedChordType(selectedScaleDegree)
   
   if selectedScaleDegree == 1 then
-    return getSelectedInversionStates1(selectedChordTypeIndex)
+    return getSelectedInversionState1(selectedChordTypeIndex)
   end
   
   if selectedScaleDegree == 2 then
-    return getSelectedInversionStates2(selectedChordTypeIndex)
+    return getSelectedInversionState2(selectedChordTypeIndex)
   end
   
   if selectedScaleDegree == 3 then
-    return getSelectedInversionStates3(selectedChordTypeIndex)
+    return getSelectedInversionState3(selectedChordTypeIndex)
   end
   
   if selectedScaleDegree == 4 then
-    return getSelectedInversionStates4(selectedChordTypeIndex)
+    return getSelectedInversionState4(selectedChordTypeIndex)
   end
   
   if selectedScaleDegree == 5 then
-    return getSelectedInversionStates5(selectedChordTypeIndex)
+    return getSelectedInversionState5(selectedChordTypeIndex)
   end
   
   if selectedScaleDegree == 6 then
-    return getSelectedInversionStates6(selectedChordTypeIndex)
+    return getSelectedInversionState6(selectedChordTypeIndex)
   end
   
   if selectedScaleDegree == 7 then
-    return getSelectedInversionStates7(selectedChordTypeIndex)
+    return getSelectedInversionState7(selectedChordTypeIndex)
   end
 end

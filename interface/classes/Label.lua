@@ -34,7 +34,7 @@ function Label:drawText(text)
 end
 
 function Label:update()
---  self:drawRedOutline()
+  --self:drawRedOutline()
 
   local text = self.getTextCallback()
   self:drawText(text)

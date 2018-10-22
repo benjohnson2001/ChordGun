@@ -15,44 +15,19 @@ chordButtons = {}
 
 function getNotesString(chordNotesArray)
 
-  local notesString = '                '
+  local notesString = ''
   for i, note in ipairs(chordNotesArray) do
         
     local noteName = getNoteName(note+1)
     
     if i ~= #chordNotesArray then
-      notesString = notesString .. noteName .. ', '
+      notesString = notesString .. noteName .. ','
     else
       notesString = notesString .. noteName .. ''
     end
   end
   
   return notesString
-end
-
-function insertNote(note, noteColumnIndex)
-
-  if noteColumnIndex > renoise.song().selected_track.max_note_columns then
-    return
-  end
-  
-  -- Not enough space? Compensate!
-  if noteColumnIndex > renoise.song().selected_track.visible_note_columns then
-    renoise.song().selected_track.visible_note_columns = noteColumnIndex
-  end
-    
-  local noteColumn = renoise.song().selected_line.note_columns[noteColumnIndex]
-  
-  if (note > -1 and note < 122) then
-    noteColumn.note_value = note
-  end
-  
-  if renoise.song().transport.keyboard_velocity_enabled then
-    noteColumn.volume_value = renoise.song().transport.keyboard_velocity
-  else
-    noteColumn.volume_value = 255
-  end
-  noteColumn.instrument_value = renoise.song().selected_instrument_index - 1
 end
 
 --------------------------------------------------------------------------------
@@ -215,11 +190,11 @@ function updateChordText(root, chord, chordNotesArray)
 
   local chordTextValue = ''
   if string.match(chordInversionOctaveIndicator, "-") then
-    chordTextValue = ("%20s%20s%s%20s"):format(chordInversionOctaveIndicator, chordString, chordInversionText, notesString)
+    chordTextValue = ("%s%12s%s%12s"):format(chordInversionOctaveIndicator, chordString, chordInversionText, notesString)
   elseif string.match(chordInversionOctaveIndicator, "+") then
-    chordTextValue = ("%20s%20s%s%20s%20s"):format('', chordString, chordInversionText, notesString, chordInversionOctaveIndicator)
+    chordTextValue = ("%s%12s%s%12s%12s"):format('', chordString, chordInversionText, notesString, chordInversionOctaveIndicator)
   else
-    chordTextValue = ("%20s%20s%s%20s"):format('', chordString, chordInversionText, notesString)
+    chordTextValue = ("%s%12s%s%12s"):format('', chordString, chordInversionText, notesString)
   end
 
   setChordText(chordTextValue)

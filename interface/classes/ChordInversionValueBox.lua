@@ -1,45 +1,45 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
 require(workingDirectory .. "/interface/colors")
 require(workingDirectory .. "/util")
+require(workingDirectory .. "/preferences")
+require(workingDirectory .. "/midiMessages")
+require(workingDirectory .. "/inversionStates")
 
-ValueBox = {}
-ValueBox.__index = ValueBox
+ChordInversionValueBox = {}
+ChordInversionValueBox.__index = ChordInversionValueBox
 
-function ValueBox:new(value, minValue, maxValue, x, y, width, height, onLeftButtonPressCallback, onRightButtonPressCallback)
+function ChordInversionValueBox:new(x, y, width, height)
 
   local self = {}
-  setmetatable(self, ValueBox)
+  setmetatable(self, ChordInversionValueBox)
 
-  self.value = value
   self.x = x
   self.y = y
   self.width = width
   self.height = height
-  self.onLeftButtonPressCallback = onLeftButtonPressCallback
-  self.onRightButtonPressCallback = onRightButtonPressCallback
 
   return self
 end
 
-function ValueBox:drawRectangle()
+function ChordInversionValueBox:drawRectangle()
 
     setDrawColorToValueBoxBackground()
     gfx.rect(self.x, self.y, self.width, self.height)
 end
 
-function ValueBox:drawRectangleOutline()
+function ChordInversionValueBox:drawRectangleOutline()
 
     setDrawColorToValueBoxOutline()
     gfx.rect(self.x-1, self.y-1, self.width+1, self.height+1, false)
 end
 
-function ValueBox:drawRectangles()
+function ChordInversionValueBox:drawRectangles()
 
   self:drawRectangle()
   self:drawRectangleOutline() 
 end
 
-function ValueBox:drawLeftArrow()
+function ChordInversionValueBox:drawLeftArrow()
 
   local imagePath = workingDirectory .. "/interface/leftArrow.png"
   gfx.x = self.x + 2
@@ -48,7 +48,7 @@ function ValueBox:drawLeftArrow()
   gfx.blit(imageIndex, 1.0, 0.0)
 end
 
-function ValueBox:drawRightArrow()
+function ChordInversionValueBox:drawRightArrow()
 
   local imagePath = workingDirectory .. "/interface/rightArrow.png"
   local imageWidth = 9
@@ -58,18 +58,24 @@ function ValueBox:drawRightArrow()
   gfx.blit(imageIndex, 1.0, 0.0)
 end
 
-function ValueBox:drawImages()
+function ChordInversionValueBox:drawImages()
   self:drawLeftArrow()
   self:drawRightArrow()
 end
 
-function ValueBox:drawText()
+function ChordInversionValueBox:drawText()
+
+  local chordInversionText = getCurrentInversionValue()
+
+  if chordInversionText > -1 then
+    chordInversionText = "0" .. chordInversionText
+  end
 
 	setDrawColorToValueBoxText()
-	local stringWidth, stringHeight = gfx.measurestr(self.text)
+	local stringWidth, stringHeight = gfx.measurestr(chordInversionText)
 	gfx.x = self.x + ((self.width - stringWidth) / 2)
 	gfx.y = self.y + ((self.height - stringHeight) / 2)
-	gfx.drawstr(self.text)
+	gfx.drawstr(chordInversionText)
 end
 
 HitArea = {}
@@ -98,19 +104,46 @@ local function rightButtonHasBeenClicked(valueBox)
   return mouseIsHoveringOver(hitArea) and leftMouseButtonIsHeldDown()
 end
 
-function ValueBox:update()
+local function decrementChordInversion()
+
+  local chordInversionMin = getChordInversionMin()
+  local chordInversion = getCurrentInversionValue()
+
+  if chordInversion <= chordInversionMin then
+    return
+  end
+
+  setInversionState(chordInversion-1)
+end
+
+local function incrementChordInversion()
+
+  local chordInversionMax = getChordInversionMax()
+  local chordInversion = getCurrentInversionValue()
+
+  if chordInversion >= chordInversionMax then
+    return
+  end
+
+  setInversionState(chordInversion+1)
+end
+
+function ChordInversionValueBox:update()
 
   self:drawRectangles()
   self:drawImages()
-  self:drawText()
 
   if mouseButtonIsNotPressedDown and leftButtonHasBeenClicked(self) then
     mouseButtonIsNotPressedDown = false
-    self.onLeftButtonPressCallback()
+    decrementChordInversion()
+    previewChord()
   end
 
   if mouseButtonIsNotPressedDown and rightButtonHasBeenClicked(self) then
     mouseButtonIsNotPressedDown = false
-    self.onRightButtonPressCallback()
+    incrementChordInversion()
+    previewChord()
   end
+
+  self:drawText()
 end

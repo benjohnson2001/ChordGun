@@ -1,9 +1,13 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
 require(workingDirectory .. "/chordNotesArray")
 require(workingDirectory .. "/midiMessages")
+require(workingDirectory .. "/preferences")
 
-function previewChord(scaleNoteIndex, chordTypeIndex)
+function previewChord()
   
+  local scaleNoteIndex = getSelectedScaleNote()
+  local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
+
   stopAllNotesFromPlaying()
   
   local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
@@ -17,4 +21,6 @@ function previewChord(scaleNoteIndex, chordTypeIndex)
   for note = 1, #chordNotesArray do
     playMidiNote(chordNotesArray[note])
   end
+
+  updateChordText(root, chord, chordNotesArray)
 end

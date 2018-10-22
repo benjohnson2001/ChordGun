@@ -4,7 +4,7 @@ require(workingDirectory .. "/interface/classes/Header")
 require(workingDirectory .. "/interface/classes/Label")
 require(workingDirectory .. "/interface/classes/Frame")
 require(workingDirectory .. "/interface/classes/Dropdown")
-require(workingDirectory .. "/interface/classes/ValueBox")
+require(workingDirectory .. "/interface/classes/ChordInversionValueBox")
 require(workingDirectory .. "/util")
 require(workingDirectory .. "/midiMessages")
 
@@ -75,9 +75,9 @@ function Interface:addDropdown(x, y, width, height, options, defaultOptionIndex,
 	table.insert(self.elements, dropdown)
 end
 
-function Interface:addValueBox(text, x, y, width, height, onPressOfLeftButtonCallback, onPressOfRightButtonCallback)
+function Interface:addChordInversionValueBox(x, y, width, height, onPressOfLeftButtonCallback, onPressOfRightButtonCallback)
 
-	local valueBox = ValueBox:new(text, x, y, width, height, onPressOfLeftButtonCallback, onPressOfRightButtonCallback)
+	local valueBox = ChordInversionValueBox:new(x, y, width, height, onPressOfLeftButtonCallback, onPressOfRightButtonCallback)
 	table.insert(self.elements, valueBox)
 end
 
