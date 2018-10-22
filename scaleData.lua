@@ -30,31 +30,6 @@ function getNotesString(chordNotesArray)
   return notesString
 end
 
-function applyInversion(chord)
-  
-  local chordLength = #chord
-  local chordInversionValue = getCurrentInversionValue()
-  local chord_ = chord
-  local oct = 0  
-  
-  if chordInversionValue < 0 then
-    oct = math.floor(chordInversionValue / chordLength)
-    chordInversionValue = chordInversionValue + (math.abs(oct) * chordLength)
-  end
-  
-  for i = 1, chordInversionValue do
-    local r = table.remove(chord_, 1)
-    r = r + 12
-    table.insert(chord_, #chord_ + 1, r )
-  end
-    
-  for i = 1, #chord_ do
-    chord_[i] = chord_[i] + (oct * 12)
-  end
-
-  return chord_
-end
-
 function insertNote(note, noteColumnIndex)
 
   if noteColumnIndex > renoise.song().selected_track.max_note_columns then

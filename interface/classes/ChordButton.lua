@@ -2,8 +2,10 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
 require(workingDirectory .. "/interface/colors")
 require(workingDirectory .. "/util")
 require(workingDirectory .. "/insertChord")
+require(workingDirectory .. "/previewChord")
 require(workingDirectory .. "/test")
 require(workingDirectory .. "/interface/globalState")
+--require(workingDirectory .. "/insertMidiNote")
 
 ChordButton = {}
 ChordButton.__index = ChordButton
@@ -138,12 +140,19 @@ local function shiftModifierIsHeldDown()
 end
 
 function ChordButton:onPress()
-	doSomething()
+
+--	insertMidiNote(60)
+--	insertMidiNote(64)
+--	insertMidiNote(67)
+
+	previewChord(self.scaleNoteIndex, self.chordTypeIndex)
 end
 
 function ChordButton:onShiftPress()
 	--insertChord(scaleNoteIndex_)
 	--setChordInversion(getCurrentInversionValue())
+
+	insertChord(self.scaleNoteIndex, self.chordTypeIndex)
 end
 
 function ChordButton:update()

@@ -64,7 +64,7 @@ end
 
 function getCurrentInversionValue()
 
-  local selectedScaleDegree = getSelectedScaleDegree()
+  local selectedScaleDegree = getSelectedScaleNote()
   local selectedChordTypeIndex = getSelectedChordType(selectedScaleDegree)
   
   if selectedScaleDegree == 1 then

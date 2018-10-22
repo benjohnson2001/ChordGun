@@ -113,7 +113,7 @@ end
 --
 
 function getChordInversion()
-  return getValue(chordInversionKey, defaultChordInversion)
+  return tonumber(getValue(chordInversionKey, defaultChordInversion))
 end
 
 function setChordInversion(arg)
@@ -152,12 +152,12 @@ end
 
 --
 
-function getSelectedScaleDegree()
-  return getValue(selectedScaleDegreeKey, defaultSelectedScaleDegree)
+function getSelectedScaleNote()
+  return getValue(selectedScaleNoteKey, defaultSelectedScaleNote)
 end
 
-function setSelectedScaleDegree(arg)
-  setValue(selectedScaleDegreeKey, arg)
+function setSelectedScaleNote(arg)
+  setValue(selectedScaleNoteKey, arg)
 end
 
 --

@@ -6,6 +6,7 @@ require(workingDirectory .. "/interface/classes/Frame")
 require(workingDirectory .. "/interface/classes/Dropdown")
 require(workingDirectory .. "/interface/classes/ValueBox")
 require(workingDirectory .. "/util")
+require(workingDirectory .. "/midiMessages")
 
 Interface = {}
 Interface.__index = Interface
@@ -93,6 +94,7 @@ function Interface:update()
 
 	if not mouseButtonIsNotPressedDown and leftMouseButtonIsNotHeldDown() then
 		mouseButtonIsNotPressedDown = true
+		--stopAllNotesFromPlaying()
 	end
 
 	gfx.update()

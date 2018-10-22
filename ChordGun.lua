@@ -23,7 +23,7 @@ end
 local function main()
 
 	if windowHasNotBeenClosed() then
-		reaper.defer(main)
+		reaper.runloop(main)
 	end
 	
 	interface:update()

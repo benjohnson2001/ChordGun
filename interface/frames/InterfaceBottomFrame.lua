@@ -47,14 +47,15 @@ end
 
 function Interface:addInversionValueBox()
 
-  local onPressOfLeftButton = function() print("pressed the left") end
+  local onPressOfLeftButton = function()
+    print("pressed the left")
+  end
   local onPressOfRightButton = function() print("pressed the right") end
 
   local inversionValueBoxXPos = xMargin + xPadding + chordTextWidth + inversionLabelWidth + 2
   local inversionValueBoxYPos = yMargin + 9
   local inversionValueBoxHeight = 15
-
-  self:addValueBox("00", inversionValueBoxXPos, inversionValueBoxYPos, inversionValueBoxWidth, inversionValueBoxHeight, onPressOfLeftButton, onPressOfRightButton)
+  self:addValueBox(inversionValueBoxXPos, inversionValueBoxYPos, inversionValueBoxWidth, inversionValueBoxHeight, onPressOfLeftButton, onPressOfRightButton)
 
 end
 

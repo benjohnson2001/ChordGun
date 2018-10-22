@@ -5,12 +5,12 @@ require(workingDirectory .. "/util")
 ValueBox = {}
 ValueBox.__index = ValueBox
 
-function ValueBox:new(text, x, y, width, height, onLeftButtonPressCallback, onRightButtonPressCallback)
+function ValueBox:new(value, minValue, maxValue, x, y, width, height, onLeftButtonPressCallback, onRightButtonPressCallback)
 
   local self = {}
   setmetatable(self, ValueBox)
 
-  self.text = text
+  self.value = value
   self.x = x
   self.y = y
   self.width = width
