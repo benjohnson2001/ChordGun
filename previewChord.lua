@@ -2,6 +2,8 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
 require(workingDirectory .. "/chordNotesArray")
 require(workingDirectory .. "/midiMessages")
 require(workingDirectory .. "/preferences")
+require(workingDirectory .. "/timer")
+
 
 function previewChord()
   
@@ -13,10 +15,11 @@ function previewChord()
   local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
   local root = scaleNotes[scaleNoteIndex]
 
-  -- TODO, need an octave selector
-  local octave = 3
+  local octave = getOctave()
   
   local chordNotesArray = getChordNotesArray(root, chord, octave)   
+
+  resetTimer()
   
   for note = 1, #chordNotesArray do
     playMidiNote(chordNotesArray[note])

@@ -45,10 +45,6 @@ function getFlatNoteName(note)
   return flatNotes[notesIndex]
 end
 
-function getOctave(noteValue)
-  return math.floor(noteValue / 12)
-end
-
 function chordIsNotAlreadyIncluded(scaleChordsForRootNote, chordCode)
 
   for chordIndex, chord in ipairs(scaleChordsForRootNote) do

@@ -10,8 +10,8 @@ updateScaleData()
 
 local x = 300
 local y = 200
-local width = 675
-local height = 520
+local width = 775
+local height = 620
 
 local interface = Interface:init("ChordGun", x, y, width, height)
 interface:startGui()

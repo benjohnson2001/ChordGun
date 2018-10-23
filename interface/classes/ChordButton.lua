@@ -4,7 +4,7 @@ require(workingDirectory .. "/util")
 require(workingDirectory .. "/insertChord")
 require(workingDirectory .. "/previewChord")
 require(workingDirectory .. "/test")
-require(workingDirectory .. "/interface/globalState")
+require(workingDirectory .. "/globalState")
 --require(workingDirectory .. "/insertMidiNote")
 
 ChordButton = {}

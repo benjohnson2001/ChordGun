@@ -1,7 +1,7 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
 require(workingDirectory .. "/interface/colors")
 require(workingDirectory .. "/util")
-require(workingDirectory .. "/interface/globalState")
+require(workingDirectory .. "/globalState")
 
 Dropdown = {}
 Dropdown.__index = Dropdown

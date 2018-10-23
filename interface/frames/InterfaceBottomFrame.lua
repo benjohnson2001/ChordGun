@@ -57,7 +57,7 @@ function Interface:addHeaders()
   
   for i = 1, #scaleNotes do
 
-    local headerWidth = 90
+    local headerWidth = 104
     local innerSpacing = 2
 
     local headerXpos = xMargin+xPadding-1 + headerWidth * (i-1) + innerSpacing * i
@@ -77,8 +77,8 @@ function Interface:addChordButtons()
 
       	local text = getScaleNoteName(scaleNoteIndex) .. chord['display']
 
-      	local buttonWidth = 90
-      	local buttonHeight = 30
+      	local buttonWidth = 104
+      	local buttonHeight = 38
 				local innerSpacing = 2
       	
       	local xPos = xMargin + xPadding + buttonWidth * (scaleNoteIndex-1) + innerSpacing * scaleNoteIndex

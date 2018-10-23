@@ -2,6 +2,8 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
 require(workingDirectory .. "/scales")
 require(workingDirectory .. "/scaleFunctions")
 
+local windowWidth = 775
+
 scaleNames = {}
 for key, scale in ipairs(scales) do
   table.insert(scaleNames, scale['name'])
@@ -12,11 +14,14 @@ local yMargin = 8
 local xPadding = 16
 local yPadding = 5
 
-local labelWidth = nil
+local scaleLabelWidth = nil
 local horizontalMargin = 8
 
 local scaleTonicNoteWidth = 50
 local scaleTypeWidth = 150
+
+local octaveLabelWidth = nil
+local octaveValueBoxWidth = 55
 
 keySelectionFrameHeight = 25
 function Interface:addTopFrame()
@@ -26,23 +31,23 @@ function Interface:addTopFrame()
 	self:addScaleTonicNoteDropdown()
 	self:addScaleTypeDropdown()
 	self:addScaleNotesTextLabel()
+	self:addOctaveLabel()
+	self:addOctaveSelectorValueBox()
 end
 
 function Interface:addScaleLabel()
 
 	local labelText = "Scale:"
-	labelWidth = gfx.measurestr(labelText)
+	scaleLabelWidth = gfx.measurestr(labelText)
 	local labelXpos = xMargin+xPadding
 	local labelYpos = yMargin+yPadding
-	local labelWidth = 50
 	local labelHeight = 16
-	self:addLabel(labelXpos, labelYpos, labelWidth, labelHeight, function() return labelText end)
+	self:addLabel(labelXpos, labelYpos, scaleLabelWidth, labelHeight, function() return labelText end)
 end
-
 
 function Interface:addScaleTonicNoteDropdown()
 
-	local scaleTonicNoteXpos = xMargin+xPadding+labelWidth+horizontalMargin
+	local scaleTonicNoteXpos = xMargin+xPadding+scaleLabelWidth+horizontalMargin
 	local scaleTonicNoteYpos = yMargin+yPadding+1
 	local scaleTonicNoteHeight = 15
 
@@ -63,7 +68,7 @@ end
 
 function Interface:addScaleTypeDropdown()
 
-	local scaleTypeXpos = xMargin+xPadding+labelWidth+scaleTonicNoteWidth+horizontalMargin*1.5
+	local scaleTypeXpos = xMargin+xPadding+scaleLabelWidth+scaleTonicNoteWidth+horizontalMargin*1.5
 	local scaleTypeYpos = yMargin+yPadding+1
 	local scaleTypeHeight = 15
 
@@ -84,9 +89,28 @@ end
 function Interface:addScaleNotesTextLabel()
 
 	local getScaleNotesTextCallback = function() return getScaleNotesText() end
-	local scaleNotesXpos = xMargin+xPadding+labelWidth+scaleTonicNoteWidth+scaleTypeWidth+horizontalMargin*2+4
+	local scaleNotesXpos = xMargin+xPadding+scaleLabelWidth+scaleTonicNoteWidth+scaleTypeWidth+horizontalMargin*2+4
 	local scaleNotesYpos = yMargin+yPadding+1
 	local scaleNotesWidth = 360
 	local scaleNotesHeight = 15
 	self:addLabel(scaleNotesXpos, scaleNotesYpos, scaleNotesWidth, scaleNotesHeight, getScaleNotesTextCallback)
+end
+
+function Interface:addOctaveLabel()
+
+	local labelText = "Octave:"
+	octaveLabelWidth = gfx.measurestr(labelText)	
+	local labelYpos = yMargin+yPadding+1
+	local labelHeight = 15
+	local labelXpos = windowWidth - 80 - octaveValueBoxWidth
+	self:addLabel(labelXpos, labelYpos, octaveLabelWidth, labelHeight, function() return labelText end)
+end
+
+function Interface:addOctaveSelectorValueBox()
+
+	local windowWidth = 775
+	local valueBoxXPos = windowWidth - octaveValueBoxWidth - xMargin - xPadding + 3
+	local valueBoxYPos = yMargin + 6
+	local valueBoxHeight = 15
+	self:addOctaveValueBox(valueBoxXPos, valueBoxYPos, octaveValueBoxWidth, valueBoxHeight)
 end

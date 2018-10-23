@@ -5,6 +5,7 @@ require(workingDirectory .. "/interface/classes/Label")
 require(workingDirectory .. "/interface/classes/Frame")
 require(workingDirectory .. "/interface/classes/Dropdown")
 require(workingDirectory .. "/interface/classes/ChordInversionValueBox")
+require(workingDirectory .. "/interface/classes/OctaveValueBox")
 require(workingDirectory .. "/util")
 require(workingDirectory .. "/midiMessages")
 
@@ -75,9 +76,15 @@ function Interface:addDropdown(x, y, width, height, options, defaultOptionIndex,
 	table.insert(self.elements, dropdown)
 end
 
-function Interface:addChordInversionValueBox(x, y, width, height, onPressOfLeftButtonCallback, onPressOfRightButtonCallback)
+function Interface:addChordInversionValueBox(x, y, width, height)
 
-	local valueBox = ChordInversionValueBox:new(x, y, width, height, onPressOfLeftButtonCallback, onPressOfRightButtonCallback)
+	local valueBox = ChordInversionValueBox:new(x, y, width, height)
+	table.insert(self.elements, valueBox)
+end
+
+function Interface:addOctaveValueBox(x, y, width, height)
+
+	local valueBox = OctaveValueBox:new(x, y, width, height)
 	table.insert(self.elements, valueBox)
 end
 
@@ -94,7 +101,10 @@ function Interface:update()
 
 	if not mouseButtonIsNotPressedDown and leftMouseButtonIsNotHeldDown() then
 		mouseButtonIsNotPressedDown = true
-		--stopAllNotesFromPlaying()
+	end
+
+	if fiveSecondsHavePassed() then
+		stopAllNotesFromPlaying()
 	end
 
 	gfx.update()

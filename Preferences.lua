@@ -11,6 +11,7 @@ local chordTextKey = "chordText"
 local chordInversionMinKey = "chordInversionMin"
 local chordInversionMaxKey = "chordInversionMax"
 local selectedScaleNoteKey = "selectedScaleNote"
+local octaveKey = "octave"
 local selectedChordTypesKey = "selectedChordTypes"
 local scaleNoteNamesKey = "scaleNoteNames"
 local scaleDegreeHeadersKey = "scaleDegreeHeaders"
@@ -147,6 +148,16 @@ end
 
 function setSelectedScaleNote(arg)
   setValue(selectedScaleNoteKey, arg)
+end
+
+--
+
+function getOctave()
+  return tonumber(getValue(octaveKey, defaultOctave))
+end
+
+function setOctave(arg)
+  setValue(octaveKey, arg)
 end
 
 --
@@ -362,6 +373,4 @@ function resetSelectedInversionStates()
     setSelectedInversionState6(0)
     setSelectedInversionState7(0)
   end
-  
-  setChordInversion(0)
 end
