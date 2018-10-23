@@ -1,7 +1,8 @@
-local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
-require(workingDirectory .. "/chordNotesArray")
-require(workingDirectory .. "/preferences")
-require(workingDirectory .. "/insertMidiNote")
+local slash = package.config:sub(1,1)
+local workingDirectory = reaper.GetResourcePath() .. slash .. "Scripts" .. slash .. "ChordGun"
+require(workingDirectory .. slash .. "chordNotesArray")
+require(workingDirectory .. slash .. "preferences")
+require(workingDirectory .. slash .. "insertMidiNote")
 
 local function moveCursor()
   

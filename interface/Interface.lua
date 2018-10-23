@@ -1,13 +1,14 @@
-local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
-require(workingDirectory .. "/interface/classes/ChordButton")
-require(workingDirectory .. "/interface/classes/Header")
-require(workingDirectory .. "/interface/classes/Label")
-require(workingDirectory .. "/interface/classes/Frame")
-require(workingDirectory .. "/interface/classes/Dropdown")
-require(workingDirectory .. "/interface/classes/ChordInversionValueBox")
-require(workingDirectory .. "/interface/classes/OctaveValueBox")
-require(workingDirectory .. "/util")
-require(workingDirectory .. "/midiMessages")
+local slash = package.config:sub(1,1)
+local workingDirectory = reaper.GetResourcePath() .. slash .. "Scripts" .. slash .. "ChordGun"
+require(workingDirectory .. slash .. "interface" .. slash .. "classes" .. slash .. "ChordButton")
+require(workingDirectory .. slash .. "interface" .. slash .. "classes" .. slash .. "Header")
+require(workingDirectory .. slash .. "interface" .. slash .. "classes" .. slash .. "Label")
+require(workingDirectory .. slash .. "interface" .. slash .. "classes" .. slash .. "Frame")
+require(workingDirectory .. slash .. "interface" .. slash .. "classes" .. slash .. "Dropdown")
+require(workingDirectory .. slash .. "interface" .. slash .. "classes" .. slash .. "ChordInversionValueBox")
+require(workingDirectory .. slash .. "interface" .. slash .. "classes" .. slash .. "OctaveValueBox")
+require(workingDirectory .. slash .. "util")
+require(workingDirectory .. slash .. "midiMessages")
 
 Interface = {}
 Interface.__index = Interface

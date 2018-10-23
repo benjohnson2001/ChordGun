@@ -1,10 +1,11 @@
-local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
-require(workingDirectory .. "/inversionStates")
-require(workingDirectory .. "/scaleFunctions")
-require(workingDirectory .. "/scales")
-require(workingDirectory .. "/scaleDegreeHeaders")
-require(workingDirectory .. "/chordNotesArray")
-require(workingDirectory .. "/util")
+local slash = package.config:sub(1,1)
+local workingDirectory = reaper.GetResourcePath() .. slash .. "Scripts" .. slash .. "ChordGun"
+require(workingDirectory .. slash .. "inversionStates")
+require(workingDirectory .. slash .. "scaleFunctions")
+require(workingDirectory .. slash .. "scales")
+require(workingDirectory .. slash .. "scaleDegreeHeaders")
+require(workingDirectory .. slash .. "chordNotesArray")
+require(workingDirectory .. slash .. "util")
 
 scaleNotes = {}
 scaleChords = {}

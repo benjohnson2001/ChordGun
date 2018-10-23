@@ -1,5 +1,6 @@
-local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
-require(workingDirectory .. "/scaleFunctions")
+local slash = package.config:sub(1,1)
+local workingDirectory = reaper.GetResourcePath() .. slash .. "Scripts" .. slash .. "ChordGun"
+require(workingDirectory .. slash .. "scaleFunctions")
 
 local xMargin = 8
 local yMargin = 8 + keySelectionFrameHeight + 6

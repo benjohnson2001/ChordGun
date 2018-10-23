@@ -1,11 +1,11 @@
-local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
-require(workingDirectory .. "/interface/colors")
-require(workingDirectory .. "/util")
-require(workingDirectory .. "/insertChord")
-require(workingDirectory .. "/previewChord")
-require(workingDirectory .. "/test")
-require(workingDirectory .. "/globalState")
---require(workingDirectory .. "/insertMidiNote")
+local slash = package.config:sub(1,1)
+local workingDirectory = reaper.GetResourcePath() .. slash .. "Scripts" .. slash .. "ChordGun"
+require(workingDirectory .. slash .. "interface" .. slash .. "colors")
+require(workingDirectory .. slash .."util")
+require(workingDirectory .. slash .. "insertChord")
+require(workingDirectory .. slash .. "previewChord")
+require(workingDirectory .. slash .. "test")
+require(workingDirectory .. slash .. "globalState")
 
 ChordButton = {}
 ChordButton.__index = ChordButton

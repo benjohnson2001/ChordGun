@@ -1,7 +1,8 @@
-local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
-require(workingDirectory .. "/interface/colors")
-require(workingDirectory .. "/util")
-require(workingDirectory .. "/preferences")
+local slash = package.config:sub(1,1)
+local workingDirectory = reaper.GetResourcePath() .. slash .. "Scripts" .. slash .. "ChordGun"
+require(workingDirectory .. slash .. "interface" .. slash .. "colors")
+require(workingDirectory .. slash .. "util")
+require(workingDirectory .. slash .. "preferences")
 
 OctaveValueBox = {}
 OctaveValueBox.__index = OctaveValueBox
@@ -102,7 +103,7 @@ local function decrementOctave()
 
   local octave = getOctave()
 
-  if octave <= 0 then
+  if octave <= -1 then
     return
   end
 

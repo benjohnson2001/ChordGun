@@ -1,5 +1,6 @@
-local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
-require(workingDirectory .. "/defaultValues")
+local slash = package.config:sub(1,1)
+local workingDirectory = reaper.GetResourcePath() .. slash .. "Scripts" .. slash .. "ChordGun"
+require(workingDirectory .. slash .. "defaultValues")
 
 local activeProjectIndex = 0
 local sectionName = "com.pandabot.ChordGun"
