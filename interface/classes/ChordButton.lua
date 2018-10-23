@@ -140,19 +140,12 @@ local function shiftModifierIsHeldDown()
 end
 
 function ChordButton:onPress()
-
---	insertMidiNote(60)
---	insertMidiNote(64)
---	insertMidiNote(67)
-
 	previewChord()
 end
 
 function ChordButton:onShiftPress()
-	--insertChord(scaleNoteIndex_)
-	--setChordInversion(getCurrentInversionValue())
-
-	insertChord(self.scaleNoteIndex, self.chordTypeIndex)
+	previewChord()
+	insertChord()
 end
 
 function ChordButton:update()

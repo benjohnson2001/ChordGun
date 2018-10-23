@@ -1,4 +1,11 @@
-local function getCursorPositionPPQ(activeTake)
+local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
+require(workingDirectory .. "/midiEditor")
+
+function getCursorPositionPPQ()
+
+	local activeMidiEditor = reaper.MIDIEditor_GetActive()
+	local activeTake = reaper.MIDIEditor_GetTake(activeMidiEditor)
+
 	local cursorPosition = reaper.GetCursorPosition()
 	local cursorPositionPPQ = reaper.MIDI_GetPPQPosFromProjTime(activeTake, cursorPosition)
 	return cursorPositionPPQ
@@ -11,16 +18,27 @@ local function getCursorPositionQN(activeTake)
 	return cursorPositionQN
 end
 
-local function getEndPosition(activeTake)
+function getNoteLength()
 
+	local activeMidiEditor = reaper.MIDIEditor_GetActive()
+	local activeTake = reaper.MIDIEditor_GetTake(activeMidiEditor)
 	local gridLen, _, noteLen = reaper.MIDI_GetGrid(activeTake)
-
+	
 	local noteLength = gridLen
 
 	if noteLen ~= 0 then
 		noteLength = noteLen
 	end
 
+	return noteLength
+end
+
+local function getEndPosition()
+
+	local activeMidiEditor = reaper.MIDIEditor_GetActive()
+	local activeTake = reaper.MIDIEditor_GetTake(activeMidiEditor)
+
+	local noteLength = getNoteLength()
 	local startPosition = getCursorPositionQN(activeTake)
 	local endPosition = reaper.MIDI_GetPPQPosFromProjQN(activeTake, startPosition + noteLength)
 
@@ -33,11 +51,11 @@ function insertMidiNote(note)
 	local activeTake = reaper.MIDIEditor_GetTake(activeMidiEditor)
 	local noteIsSelected = false
 	local noteIsMuted = false
-	local startPosition = getCursorPositionPPQ(activeTake)
-	local endPosition = getEndPosition(activeTake)
+	local startPosition = getCursorPositionPPQ()
+	local endPosition = getEndPosition()
 
-	local channel = 0
-	local velocity = 127
+	local channel = getCurrentNoteChannel()
+	local velocity = getCurrentVelocity()
 	local noSort = false
 
 	reaper.MIDI_InsertNote(activeTake, noteIsSelected, noteIsMuted, startPosition, endPosition, channel, note, velocity, noSort)
