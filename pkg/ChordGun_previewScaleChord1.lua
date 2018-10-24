@@ -87,6 +87,10 @@ function Timer:timeHasElapsed()
 		return false
 	end
 end
+
+function Timer:timeHasNotElapsed()
+	return not self:timeHasElapsed()
+end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 mouseButtonIsNotPressedDown = true
@@ -1316,7 +1320,13 @@ function updateChordText(root, chord, chordNotesArray)
 
   setChordText(chordTextValue)
   
-  reaper.Help_Set(chordTextValue, false)
+  showChordText()
+end
+
+function showChordText()
+
+  local chordText = getChordText()
+  reaper.Help_Set(chordText, false)
 end
 
 function updateScaleData()
@@ -1338,6 +1348,23 @@ function showScaleStatus()
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
+local numberOfSeconds = 5
+local timer = Timer:new(numberOfSeconds)
+timer:start()
+
+local function main()
+
+	if timer:timeHasNotElapsed() then
+		reaper.runloop(main)
+	else
+		timer:stop()
+		stopAllNotesFromPlaying()
+	end
+	
+	showChordText()
+end
+
 updateScaleData()
 setSelectedScaleNote(1)
 previewChord()
+main()

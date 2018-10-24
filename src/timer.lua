@@ -38,3 +38,7 @@ function Timer:timeHasElapsed()
 		return false
 	end
 end
+
+function Timer:timeHasNotElapsed()
+	return not self:timeHasElapsed()
+end

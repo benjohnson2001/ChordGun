@@ -199,7 +199,13 @@ function updateChordText(root, chord, chordNotesArray)
 
   setChordText(chordTextValue)
   
-  reaper.Help_Set(chordTextValue, false)
+  showChordText()
+end
+
+function showChordText()
+
+  local chordText = getChordText()
+  reaper.Help_Set(chordText, false)
 end
 
 function updateScaleData()
