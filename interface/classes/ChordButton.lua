@@ -3,7 +3,6 @@ require(workingDirectory .. "/interface/colors")
 require(workingDirectory .. "/util")
 require(workingDirectory .. "/insertChord")
 require(workingDirectory .. "/previewChord")
-require(workingDirectory .. "/test")
 require(workingDirectory .. "/globalState")
 --require(workingDirectory .. "/insertMidiNote")
 

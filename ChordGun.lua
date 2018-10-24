@@ -1,11 +1,9 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
 require(workingDirectory .. "/interface/Interface")
-require(workingDirectory .. "/interface/Colors")
 require(workingDirectory .. "/preferences")
 require(workingDirectory .. "/scaleData")
-require(workingDirectory .. "/test")
 
-clearConsoleWindow()
+--clearConsoleWindow()
 updateScaleData()
 
 local x = 300
