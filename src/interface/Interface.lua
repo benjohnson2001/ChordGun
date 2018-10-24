@@ -7,6 +7,7 @@ require(workingDirectory .. "/interface/classes/Dropdown")
 require(workingDirectory .. "/interface/classes/ChordInversionValueBox")
 require(workingDirectory .. "/interface/classes/OctaveValueBox")
 require(workingDirectory .. "/util")
+require(workingDirectory .. "/globalState")
 require(workingDirectory .. "/midiMessages")
 
 Interface = {}
@@ -103,8 +104,9 @@ function Interface:update()
 		mouseButtonIsNotPressedDown = true
 	end
 
-	if fiveSecondsHavePassed() then
+	if chordPreviewTimer:timeHasElapsed() then
 		stopAllNotesFromPlaying()
+		chordPreviewTimer:stop()
 	end
 
 	gfx.update()

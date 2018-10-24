@@ -1,20 +1,38 @@
+Timer = {}
+Timer.__index = Timer
 
-local startingTime = nil
+function Timer:new(numberOfSeconds)
 
-function resetTimer()
+  local self = {}
+  setmetatable(self, Timer)
 
-	startingTime = reaper.time_precise()
+  self.startingTime = reaper.time_precise()
+  self.numberOfSeconds = numberOfSeconds
+  self.timerIsStopped = true
+
+  return self
 end
 
-function fiveSecondsHavePassed()
+function Timer:start()
+
+	self.timerIsStopped = false
+	self.startingTime = reaper.time_precise()
+end
+
+function Timer:stop()
+
+	self.timerIsStopped = true
+end
+
+function Timer:timeHasElapsed()
 
 	local currentTime = reaper.time_precise()
 
-	if startingTime == nil then
+	if self.timerIsStopped then
 		return false
 	end
 
-	if currentTime - startingTime > 5 then
+	if currentTime - self.startingTime > self.numberOfSeconds then
 		return true
 	else
 		return false

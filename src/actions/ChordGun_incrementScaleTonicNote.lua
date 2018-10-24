@@ -3,14 +3,14 @@ require(workingDirectory .. "/scaleData")
 
 local function incrementScaleTonicNote()
 
-	local scaleNoteTonic = getScaleTonicNote()
+	local scaleTonicNote = getScaleTonicNote()
 
-	if scaleTonic >= #notes then
+	if scaleTonicNote >= #notes then
 		return
 	end
 
-	setScaleTonicNote(scaleNoteTonic+1)
+	setScaleTonicNote(scaleTonicNote+1)
 end
 
-updateScaleData()
 incrementScaleTonicNote()
+updateScaleData()

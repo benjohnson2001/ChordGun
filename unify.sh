@@ -22,8 +22,8 @@ function unifyMainProgram() {
 	removeFile $1
 
 	insertIntoFile src/util.lua $1
+	insertIntoFile src/Timer.lua $1
 	insertIntoFile src/globalState.lua $1
-	insertIntoFile src/timer.lua $1
 	insertIntoFile src/scales.lua $1
 	insertIntoFile src/chords.lua $1
 	insertIntoFile src/defaultValues.lua $1
@@ -60,8 +60,8 @@ function unifyKeyboardShortcut() {
 	removeFile $1
 
 	insertIntoFile src/util.lua $1
+	insertIntoFile src/Timer.lua $1
 	insertIntoFile src/globalState.lua $1
-	insertIntoFile src/timer.lua $1
 	insertIntoFile src/scales.lua $1
 	insertIntoFile src/chords.lua $1
 	insertIntoFile src/defaultValues.lua $1
@@ -110,7 +110,3 @@ unifyKeyboardShortcut actions/ChordGun_previewScaleChord4.lua
 unifyKeyboardShortcut actions/ChordGun_previewScaleChord5.lua
 unifyKeyboardShortcut actions/ChordGun_previewScaleChord6.lua
 unifyKeyboardShortcut actions/ChordGun_previewScaleChord7.lua
-
-
-
-# need to do this for all actions and ChordGun

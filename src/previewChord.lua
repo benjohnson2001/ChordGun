@@ -19,7 +19,7 @@ function previewChord()
   
   local chordNotesArray = getChordNotesArray(root, chord, octave)   
 
-  resetTimer()
+  chordPreviewTimer:start()
   
   for note = 1, #chordNotesArray do
     playMidiNote(chordNotesArray[note])

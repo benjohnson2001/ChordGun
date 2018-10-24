@@ -3,13 +3,13 @@ require(workingDirectory .. "/scaleData")
 
 local function decrementScaleTonicNote()
 
-	local scaleNoteTonic = getScaleTonicNote()
+	local scaleTonicNote = getScaleTonicNote()
 
-	if scaleTonic <= 1 then
+	if scaleTonicNote <= 1 then
 		return
 	end
 
-	setScaleTonicNote(scaleNoteTonic-1)
+	setScaleTonicNote(scaleTonicNote-1)
 end
 
 updateScaleData()
