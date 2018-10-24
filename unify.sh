@@ -47,6 +47,7 @@ function unifyMainProgram() {
 	insertIntoFile src/interface/classes/Dropdown.lua $1
 	insertIntoFile src/interface/classes/ChordInversionValueBox.lua $1
 	insertIntoFile src/interface/classes/ChordButton.lua $1
+	insertIntoFile src/interface/handleInput.lua $1
 
 	insertIntoFile src/interface/Interface.lua $1
 	insertIntoFile src/interface/frames/InterfaceTopFrame.lua $1

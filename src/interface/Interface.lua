@@ -13,16 +13,32 @@ require(workingDirectory .. "/midiMessages")
 Interface = {}
 Interface.__index = Interface
 
-function Interface:init(name, x, y, width, height)
+
+local interfaceWidth = 775
+local interfaceHeight = 620
+
+local function getInterfaceXPos()
+
+	local _, _, width, _ = reaper.my_getViewport(0, 0, 0, 0, 0, 0, 0, 0, true)
+	return width/2 - interfaceWidth/2
+end
+
+local function getInterfaceYPos()
+
+	local _, _, _, height = reaper.my_getViewport(0, 0, 0, 0, 0, 0, 0, 0, true)
+	return height/2 - interfaceHeight/2
+end
+
+function Interface:init(name)
 
   local self = {}
   setmetatable(self, Interface)
 
   self.name = name
-  self.x = x
-  self.y = y
-  self.width = width
-  self.height = height
+  self.x = getInterfaceXPos()
+  self.y = getInterfaceYPos()
+  self.width = interfaceWidth
+  self.height = interfaceHeight
 
   self.elements = {}
 

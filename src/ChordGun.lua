@@ -2,24 +2,23 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/interface/Interface")
 require(workingDirectory .. "/preferences")
 require(workingDirectory .. "/scaleData")
+require(workingDirectory .. "/interface/handleInput")
 
 
 --clearConsoleWindow()
 updateScaleData()
 
-local x = 300
-local y = 200
-local width = 775
-local height = 620
-
-local interface = Interface:init("ChordGun", x, y, width, height)
+local interface = Interface:init("ChordGun")
 interface:startGui()
 
 local function windowHasNotBeenClosed()
-	return gfx.getchar() ~= -1
+	return inputCharacter ~= -1
 end
 
 local function main()
+
+	reaper.DockWindowActivate("ChordGun")
+	handleInput()
 
 	if windowHasNotBeenClosed() then
 		reaper.runloop(main)
@@ -28,5 +27,11 @@ local function main()
 	interface:update()
 end
 
-main()
+local function dockWindow()
+	gfx.dock(0x0201)
+end
 
+dockWindow()
+
+main()
+reaper.atexit(stopAllNotesFromPlaying)
