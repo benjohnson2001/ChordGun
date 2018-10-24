@@ -2,17 +2,28 @@
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+postfix="_packageTest.lua"
+
+function removeFile() {
+
+	outputFile=${1//.lua}
+	outputFile=${outputFile##*/}$postfix
+
+	rm "./pkg/$outputFile"
+}
+
 function insertIntoFile() {
 
 	dependencyFile=$1
 	outputFile=${2//.lua}
-	postfix="_packageTest.lua"
-	outputFile=$outputFile$postfix
+	outputFile=${outputFile##*/}$postfix
 
 	grep -v "^require" "${DIR}"/$dependencyFile >> ./pkg/$outputFile
 }
 
 function unifyMainProgram() {
+
+	removeFile $1
 
 	insertIntoFile util.lua $1
 	insertIntoFile globalState.lua $1
@@ -50,6 +61,8 @@ function unifyMainProgram() {
 
 function unifyKeyboardShortcut() {
 
+	removeFile $1
+
 	insertIntoFile util.lua $1
 	insertIntoFile globalState.lua $1
 	insertIntoFile timer.lua $1
@@ -67,12 +80,12 @@ function unifyKeyboardShortcut() {
 	insertIntoFile insertChord.lua $1
 	insertIntoFile previewChord.lua $1
 	insertIntoFile scaleData.lua $1
-
+	
 	insertIntoFile $1 $1
 }
 
 unifyMainProgram ChordGun.lua
-
+unifyKeyboardShortcut actions/ChordGun_insertScaleChord1.lua
 
 
 

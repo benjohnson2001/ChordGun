@@ -35,7 +35,6 @@ function ChordButton:isSelectedChordType()
 	local scaleNoteIsNotSelected = (tonumber(self.scaleNoteIndex) ~= tonumber(selectedScaleNote))
 
 	return chordTypeIsSelected and scaleNoteIsNotSelected
-
 end
 
 function ChordButton:isSelectedChordTypeAndSelectedScaleNote()

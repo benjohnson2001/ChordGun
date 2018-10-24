@@ -1,17 +1,8 @@
-<<<<<<< HEAD
-local slash = package.config:sub(1,1)
-local workingDirectory = reaper.GetResourcePath() .. slash .. "Scripts" .. slash .. "ChordGun"
-require(workingDirectory .. slash .. "interface" .. slash .. "Interface")
-require(workingDirectory .. slash .. "interface" .. slash .. "Colors")
-require(workingDirectory .. slash .. "preferences")
-require(workingDirectory .. slash .. "scaleData")
-require(workingDirectory .. slash .. "test")
-=======
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
 require(workingDirectory .. "/interface/Interface")
 require(workingDirectory .. "/preferences")
 require(workingDirectory .. "/scaleData")
->>>>>>> tmp
+
 
 --clearConsoleWindow()
 updateScaleData()

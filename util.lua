@@ -17,12 +17,33 @@ function leftMouseButtonIsNotHeldDown()
 end
 
 function clearConsoleWindow()
-  
   reaper.ShowConsoleMsg("")
 end
 
 function print(arg)
-  
   reaper.ShowConsoleMsg(tostring(arg) .. "\n")
+end
+
+function notesAreSelected()
+
+	local activeMidiEditor = reaper.MIDIEditor_GetActive()
+	local activeTake = reaper.MIDIEditor_GetTake(activeMidiEditor)
+
+	local noteIndex = 0
+	local noteExists = true
+	local noteIsSelected = false
+
+	while noteExists do
+
+		noteExists, noteIsSelected = reaper.MIDI_GetNote(activeTake, noteIndex)
+
+		if noteIsSelected then
+			return true
+		end
+	
+		noteIndex = noteIndex + 1
+	end
+
+	return false
 end
 
