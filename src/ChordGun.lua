@@ -17,7 +17,6 @@ end
 
 local function main()
 
-	reaper.DockWindowActivate("ChordGun")
 	handleInput()
 
 	if windowHasNotBeenClosed() then
@@ -31,7 +30,7 @@ local function dockWindow()
 	gfx.dock(0x0201)
 end
 
-dockWindow()
+--dockWindow()
 
 main()
 reaper.atexit(stopAllNotesFromPlaying)

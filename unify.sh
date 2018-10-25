@@ -39,6 +39,10 @@ function unifyMainProgram() {
 	insertIntoFile src/previewChord.lua $1
 	insertIntoFile src/scaleData.lua $1
 
+	insertIntoFile src/interface/images/drawDropdownIcon.lua $1
+	insertIntoFile src/interface/images/drawLeftArrow.lua $1
+	insertIntoFile src/interface/images/drawRightArrow.lua $1
+
 	insertIntoFile src/interface/colors.lua $1
 	insertIntoFile src/interface/classes/OctaveValueBox.lua $1
 	insertIntoFile src/interface/classes/Label.lua $1

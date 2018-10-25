@@ -2,6 +2,7 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/interface/colors")
 require(workingDirectory .. "/util")
 require(workingDirectory .. "/globalState")
+require(workingDirectory .. "/interface/images/drawDropdownIcon")
 
 Dropdown = {}
 Dropdown.__index = Dropdown
@@ -54,12 +55,10 @@ end
 
 function Dropdown:drawImage()
 
-	local imagePath = workingDirectory .. "/interface/dropdownIcon.png"
 	local imageWidth = 14
 	gfx.x = self.x + self.width - imageWidth - 1
 	gfx.y = self.y
-	local imageIndex = gfx.loadimg(0, imagePath)
-	gfx.blit(imageIndex, 1.0, 0.0)
+	drawDropdownIcon()
 end
 
 local function dropdownHasBeenClicked(dropdown)
