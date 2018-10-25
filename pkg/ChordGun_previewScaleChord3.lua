@@ -476,6 +476,12 @@ function mouseIsHoveringOver(element)
 	return isInHorizontalRegion and isInVerticalRegion
 end
 
+function setPositionAtMouseCursor()
+
+  gfx.x = gfx.mouse_x
+  gfx.y = gfx.mouse_y
+end
+
 function leftMouseButtonIsHeldDown()
   return gfx.mouse_cap & 1 == 1
 end
@@ -484,12 +490,24 @@ function leftMouseButtonIsNotHeldDown()
   return gfx.mouse_cap & 1 ~= 1
 end
 
+function rightMouseButtonIsHeldDown()
+  return gfx.mouse_cap & 2 == 2
+end
+
 function clearConsoleWindow()
   reaper.ShowConsoleMsg("")
 end
 
 function print(arg)
   reaper.ShowConsoleMsg(tostring(arg) .. "\n")
+end
+
+function windowIsDocked()
+	return gfx.dock(-1) > 0
+end
+
+function windowIsNotDocked()
+	return not windowIsDocked()
 end
 
 function notesAreSelected()
@@ -562,6 +580,8 @@ end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 mouseButtonIsNotPressedDown = true
+
+windowIsDockedState = false
 
 scaleTonicNote = getScaleTonicNote()
 scaleType = getScaleType()

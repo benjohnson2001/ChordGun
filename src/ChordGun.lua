@@ -26,11 +26,5 @@ local function main()
 	interface:update()
 end
 
-local function dockWindow()
-	gfx.dock(0x0201)
-end
-
---dockWindow()
-
 main()
 reaper.atexit(stopAllNotesFromPlaying)

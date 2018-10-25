@@ -6,13 +6,13 @@ require(workingDirectory .. "/interface/classes/Frame")
 require(workingDirectory .. "/interface/classes/Dropdown")
 require(workingDirectory .. "/interface/classes/ChordInversionValueBox")
 require(workingDirectory .. "/interface/classes/OctaveValueBox")
+require(workingDirectory .. "/interface/classes/Docker")
 require(workingDirectory .. "/util")
 require(workingDirectory .. "/globalState")
 require(workingDirectory .. "/midiMessages")
 
 Interface = {}
 Interface.__index = Interface
-
 
 local interfaceWidth = 775
 local interfaceHeight = 620
@@ -28,6 +28,8 @@ local function getInterfaceYPos()
 	local _, _, _, height = reaper.my_getViewport(0, 0, 0, 0, 0, 0, 0, 0, true)
 	return height/2 - interfaceHeight/2
 end
+
+local dockerXPadding = 0
 
 function Interface:init(name)
 
@@ -51,7 +53,13 @@ function Interface:restartGui()
 end
 
 function Interface:startGui()
+
+	if windowIsDocked() then
+		dockerXPadding = getInterfaceXPos()
+	end
+
 	self:addMainWindow()
+	self:addDocker()
 	self:addTopFrame()
 	self:addBottomFrame()	
 end
@@ -59,8 +67,14 @@ end
 function Interface:addMainWindow()
 
 	gfx.clear = reaper.ColorToNative(36, 36, 36)
-	local dockState = 0
+	local dockState = gfx.dock(-1)
 	gfx.init(self.name, self.width, self.height, dockState, self.x, self.y)
+end
+
+function Interface:addDocker()
+
+	local docker = Docker:new()
+	table.insert(self.elements, docker)
 end
 
 function Interface:addChordButton(buttonText, x, y, width, height, scaleNoteIndex, chordTypeIndex, chordIsInScale)
@@ -134,6 +148,11 @@ function Interface:update()
 	if scaleType ~= getScaleType() then
 		scaleType = getScaleType()
 		updateScaleData()
+		self:restartGui()
+	end
+
+	if windowIsDockedState ~= windowIsDocked() then
+		windowIsDockedState = windowIsDocked()
 		self:restartGui()
 	end
 

@@ -26,7 +26,7 @@ local octaveValueBoxWidth = 55
 keySelectionFrameHeight = 25
 function Interface:addTopFrame()
 
-	self:addFrame(xMargin, yMargin, self.width - 2 * xMargin, keySelectionFrameHeight)
+	self:addFrame(xMargin+dockerXPadding, yMargin, self.width - 2 * xMargin, keySelectionFrameHeight)
 	self:addScaleLabel()
 	self:addScaleTonicNoteDropdown()
 	self:addScaleTypeDropdown()
@@ -42,7 +42,7 @@ function Interface:addScaleLabel()
 	local labelXpos = xMargin+xPadding
 	local labelYpos = yMargin+yPadding
 	local labelHeight = 16
-	self:addLabel(labelXpos, labelYpos, scaleLabelWidth, labelHeight, function() return labelText end)
+	self:addLabel(labelXpos+dockerXPadding, labelYpos, scaleLabelWidth, labelHeight, function() return labelText end)
 end
 
 function Interface:addScaleTonicNoteDropdown()
@@ -61,7 +61,7 @@ function Interface:addScaleTonicNoteDropdown()
 	end
 
 	local scaleTonicNote = getScaleTonicNote()
-	self:addDropdown(scaleTonicNoteXpos, scaleTonicNoteYpos, scaleTonicNoteWidth, scaleTonicNoteHeight, notes, scaleTonicNote, onScaleTonicNoteSelection)
+	self:addDropdown(scaleTonicNoteXpos+dockerXPadding, scaleTonicNoteYpos, scaleTonicNoteWidth, scaleTonicNoteHeight, notes, scaleTonicNote, onScaleTonicNoteSelection)
 
 end
 
@@ -81,7 +81,7 @@ function Interface:addScaleTypeDropdown()
 	end
 	
 	local scaleName = getScaleType()
-	self:addDropdown(scaleTypeXpos, scaleTypeYpos, scaleTypeWidth, scaleTypeHeight, scaleNames, scaleName, onScaleTypeSelection)
+	self:addDropdown(scaleTypeXpos+dockerXPadding, scaleTypeYpos, scaleTypeWidth, scaleTypeHeight, scaleNames, scaleName, onScaleTypeSelection)
 end
 
 function Interface:addScaleNotesTextLabel()
@@ -91,7 +91,7 @@ function Interface:addScaleNotesTextLabel()
 	local scaleNotesYpos = yMargin+yPadding+1
 	local scaleNotesWidth = 360
 	local scaleNotesHeight = 15
-	self:addLabel(scaleNotesXpos, scaleNotesYpos, scaleNotesWidth, scaleNotesHeight, getScaleNotesTextCallback)
+	self:addLabel(scaleNotesXpos+dockerXPadding, scaleNotesYpos, scaleNotesWidth, scaleNotesHeight, getScaleNotesTextCallback)
 end
 
 function Interface:addOctaveLabel()
@@ -101,7 +101,7 @@ function Interface:addOctaveLabel()
 	local labelYpos = yMargin+yPadding+1
 	local labelHeight = 15
 	local labelXpos = windowWidth - 80 - octaveValueBoxWidth
-	self:addLabel(labelXpos, labelYpos, octaveLabelWidth, labelHeight, function() return labelText end)
+	self:addLabel(labelXpos+dockerXPadding, labelYpos, octaveLabelWidth, labelHeight, function() return labelText end)
 end
 
 function Interface:addOctaveSelectorValueBox()
@@ -110,5 +110,5 @@ function Interface:addOctaveSelectorValueBox()
 	local valueBoxXPos = windowWidth - octaveValueBoxWidth - xMargin - xPadding + 3
 	local valueBoxYPos = yMargin + 6
 	local valueBoxHeight = 15
-	self:addOctaveValueBox(valueBoxXPos, valueBoxYPos, octaveValueBoxWidth, valueBoxHeight)
+	self:addOctaveValueBox(valueBoxXPos+dockerXPadding, valueBoxYPos, octaveValueBoxWidth, valueBoxHeight)
 end

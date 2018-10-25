@@ -44,6 +44,8 @@ function unifyMainProgram() {
 	insertIntoFile src/interface/images/drawRightArrow.lua $1
 
 	insertIntoFile src/interface/colors.lua $1
+	insertIntoFile src/interface/classes/Docker.lua $1
+	insertIntoFile src/interface/classes/HitArea.lua $1
 	insertIntoFile src/interface/classes/OctaveValueBox.lua $1
 	insertIntoFile src/interface/classes/Label.lua $1
 	insertIntoFile src/interface/classes/Header.lua $1

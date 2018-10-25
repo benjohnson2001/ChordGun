@@ -4,6 +4,8 @@ require(workingDirectory .. "/preferences")
 
 mouseButtonIsNotPressedDown = true
 
+windowIsDockedState = false
+
 scaleTonicNote = getScaleTonicNote()
 scaleType = getScaleType()
 

@@ -4,6 +4,7 @@ require(workingDirectory .. "/util")
 require(workingDirectory .. "/preferences")
 require(workingDirectory .. "/midiMessages")
 require(workingDirectory .. "/inversionStates")
+require(workingDirectory .. "/interface/classes/HitArea")
 require(workingDirectory .. "/interface/images/drawLeftArrow")
 require(workingDirectory .. "/interface/images/drawRightArrow")
 
@@ -74,20 +75,6 @@ function ChordInversionValueBox:drawText()
 	gfx.x = self.x + ((self.width - stringWidth) / 2)
 	gfx.y = self.y + ((self.height - stringHeight) / 2)
 	gfx.drawstr(chordInversionText)
-end
-
-HitArea = {}
-HitArea.__index = HitArea
-function HitArea:new(x, y, width, height)
-  local self = {}
-  setmetatable(self, HitArea)
-
-  self.x = x
-  self.y = y
-  self.width = width
-  self.height = height
-
-  return self
 end
 
 local hitAreaWidth = 18

@@ -2,6 +2,7 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/interface/colors")
 require(workingDirectory .. "/util")
 require(workingDirectory .. "/preferences")
+require(workingDirectory .. "/interface/classes/HitArea")
 require(workingDirectory .. "/interface/images/drawLeftArrow")
 require(workingDirectory .. "/interface/images/drawRightArrow")
 
@@ -68,20 +69,6 @@ function OctaveValueBox:drawText()
 	gfx.x = self.x + ((self.width - stringWidth) / 2)
 	gfx.y = self.y + ((self.height - stringHeight) / 2)
 	gfx.drawstr(octaveText)
-end
-
-HitArea = {}
-HitArea.__index = HitArea
-function HitArea:new(x, y, width, height)
-  local self = {}
-  setmetatable(self, HitArea)
-
-  self.x = x
-  self.y = y
-  self.width = width
-  self.height = height
-
-  return self
 end
 
 local hitAreaWidth = 18

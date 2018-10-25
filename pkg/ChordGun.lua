@@ -476,6 +476,12 @@ function mouseIsHoveringOver(element)
 	return isInHorizontalRegion and isInVerticalRegion
 end
 
+function setPositionAtMouseCursor()
+
+  gfx.x = gfx.mouse_x
+  gfx.y = gfx.mouse_y
+end
+
 function leftMouseButtonIsHeldDown()
   return gfx.mouse_cap & 1 == 1
 end
@@ -484,12 +490,24 @@ function leftMouseButtonIsNotHeldDown()
   return gfx.mouse_cap & 1 ~= 1
 end
 
+function rightMouseButtonIsHeldDown()
+  return gfx.mouse_cap & 2 == 2
+end
+
 function clearConsoleWindow()
   reaper.ShowConsoleMsg("")
 end
 
 function print(arg)
   reaper.ShowConsoleMsg(tostring(arg) .. "\n")
+end
+
+function windowIsDocked()
+	return gfx.dock(-1) > 0
+end
+
+function windowIsNotDocked()
+	return not windowIsDocked()
 end
 
 function notesAreSelected()
@@ -562,6 +580,8 @@ end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 mouseButtonIsNotPressedDown = true
+
+windowIsDockedState = false
 
 scaleTonicNote = getScaleTonicNote()
 scaleType = getScaleType()
@@ -2632,6 +2652,77 @@ end
 ]]--
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
+Docker = {}
+Docker.__index = Docker
+
+function Docker:new()
+
+  local self = {}
+  setmetatable(self, Docker)
+
+  return self
+end
+
+local function dockWindow()
+
+  local windowAtBottom = 0x0201
+  gfx.dock(windowAtBottom)
+end
+
+function Docker:drawDockWindowContextMenu()
+
+  setPositionAtMouseCursor()
+  local selectedIndex = gfx.showmenu("dock window")
+
+  if selectedIndex <= 0 then
+    return
+  end
+
+  dockWindow()
+end
+
+local function undockWindow()
+  gfx.dock(0)
+end
+
+function Docker:drawUndockWindowContextMenu()
+
+  setPositionAtMouseCursor()
+  local selectedIndex = gfx.showmenu("undock window")
+
+  if selectedIndex <= 0 then
+    return
+  end
+
+  undockWindow()
+end
+
+function Docker:update()
+
+  if rightMouseButtonIsHeldDown() and windowIsDocked() then
+    self:drawUndockWindowContextMenu()
+  end
+
+  if rightMouseButtonIsHeldDown() and windowIsNotDocked() then
+    self:drawDockWindowContextMenu()
+  end
+end
+HitArea = {}
+HitArea.__index = HitArea
+
+function HitArea:new(x, y, width, height)
+  local self = {}
+  setmetatable(self, HitArea)
+
+  self.x = x
+  self.y = y
+  self.width = width
+  self.height = height
+
+  return self
+end
+local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
+
 OctaveValueBox = {}
 OctaveValueBox.__index = OctaveValueBox
 
@@ -2695,20 +2786,6 @@ function OctaveValueBox:drawText()
 	gfx.x = self.x + ((self.width - stringWidth) / 2)
 	gfx.y = self.y + ((self.height - stringHeight) / 2)
 	gfx.drawstr(octaveText)
-end
-
-HitArea = {}
-HitArea.__index = HitArea
-function HitArea:new(x, y, width, height)
-  local self = {}
-  setmetatable(self, HitArea)
-
-  self.x = x
-  self.y = y
-  self.width = width
-  self.height = height
-
-  return self
 end
 
 local hitAreaWidth = 18
@@ -3015,6 +3092,7 @@ end
 
 function Dropdown:openMenu()
 
+	setPositionAtMouseCursor()
 	local selectedIndex = gfx.showmenu(table.concat(self.dropdownList,"|"))
 
 	if selectedIndex <= 0 then
@@ -3106,20 +3184,6 @@ function ChordInversionValueBox:drawText()
 	gfx.x = self.x + ((self.width - stringWidth) / 2)
 	gfx.y = self.y + ((self.height - stringHeight) / 2)
 	gfx.drawstr(chordInversionText)
-end
-
-HitArea = {}
-HitArea.__index = HitArea
-function HitArea:new(x, y, width, height)
-  local self = {}
-  setmetatable(self, HitArea)
-
-  self.x = x
-  self.y = y
-  self.width = width
-  self.height = height
-
-  return self
 end
 
 local hitAreaWidth = 18
@@ -3373,7 +3437,6 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 Interface = {}
 Interface.__index = Interface
 
-
 local interfaceWidth = 775
 local interfaceHeight = 620
 
@@ -3388,6 +3451,8 @@ local function getInterfaceYPos()
 	local _, _, _, height = reaper.my_getViewport(0, 0, 0, 0, 0, 0, 0, 0, true)
 	return height/2 - interfaceHeight/2
 end
+
+local dockerXPadding = 0
 
 function Interface:init(name)
 
@@ -3411,7 +3476,13 @@ function Interface:restartGui()
 end
 
 function Interface:startGui()
+
+	if windowIsDocked() then
+		dockerXPadding = getInterfaceXPos()
+	end
+
 	self:addMainWindow()
+	self:addDocker()
 	self:addTopFrame()
 	self:addBottomFrame()	
 end
@@ -3419,8 +3490,14 @@ end
 function Interface:addMainWindow()
 
 	gfx.clear = reaper.ColorToNative(36, 36, 36)
-	local dockState = 0
+	local dockState = gfx.dock(-1)
 	gfx.init(self.name, self.width, self.height, dockState, self.x, self.y)
+end
+
+function Interface:addDocker()
+
+	local docker = Docker:new()
+	table.insert(self.elements, docker)
 end
 
 function Interface:addChordButton(buttonText, x, y, width, height, scaleNoteIndex, chordTypeIndex, chordIsInScale)
@@ -3497,6 +3574,11 @@ function Interface:update()
 		self:restartGui()
 	end
 
+	if windowIsDockedState ~= windowIsDocked() then
+		windowIsDockedState = windowIsDocked()
+		self:restartGui()
+	end
+
 	gfx.update()
 end
 
@@ -3526,7 +3608,7 @@ local octaveValueBoxWidth = 55
 keySelectionFrameHeight = 25
 function Interface:addTopFrame()
 
-	self:addFrame(xMargin, yMargin, self.width - 2 * xMargin, keySelectionFrameHeight)
+	self:addFrame(xMargin+dockerXPadding, yMargin, self.width - 2 * xMargin, keySelectionFrameHeight)
 	self:addScaleLabel()
 	self:addScaleTonicNoteDropdown()
 	self:addScaleTypeDropdown()
@@ -3542,7 +3624,7 @@ function Interface:addScaleLabel()
 	local labelXpos = xMargin+xPadding
 	local labelYpos = yMargin+yPadding
 	local labelHeight = 16
-	self:addLabel(labelXpos, labelYpos, scaleLabelWidth, labelHeight, function() return labelText end)
+	self:addLabel(labelXpos+dockerXPadding, labelYpos, scaleLabelWidth, labelHeight, function() return labelText end)
 end
 
 function Interface:addScaleTonicNoteDropdown()
@@ -3561,7 +3643,7 @@ function Interface:addScaleTonicNoteDropdown()
 	end
 
 	local scaleTonicNote = getScaleTonicNote()
-	self:addDropdown(scaleTonicNoteXpos, scaleTonicNoteYpos, scaleTonicNoteWidth, scaleTonicNoteHeight, notes, scaleTonicNote, onScaleTonicNoteSelection)
+	self:addDropdown(scaleTonicNoteXpos+dockerXPadding, scaleTonicNoteYpos, scaleTonicNoteWidth, scaleTonicNoteHeight, notes, scaleTonicNote, onScaleTonicNoteSelection)
 
 end
 
@@ -3581,7 +3663,7 @@ function Interface:addScaleTypeDropdown()
 	end
 	
 	local scaleName = getScaleType()
-	self:addDropdown(scaleTypeXpos, scaleTypeYpos, scaleTypeWidth, scaleTypeHeight, scaleNames, scaleName, onScaleTypeSelection)
+	self:addDropdown(scaleTypeXpos+dockerXPadding, scaleTypeYpos, scaleTypeWidth, scaleTypeHeight, scaleNames, scaleName, onScaleTypeSelection)
 end
 
 function Interface:addScaleNotesTextLabel()
@@ -3591,7 +3673,7 @@ function Interface:addScaleNotesTextLabel()
 	local scaleNotesYpos = yMargin+yPadding+1
 	local scaleNotesWidth = 360
 	local scaleNotesHeight = 15
-	self:addLabel(scaleNotesXpos, scaleNotesYpos, scaleNotesWidth, scaleNotesHeight, getScaleNotesTextCallback)
+	self:addLabel(scaleNotesXpos+dockerXPadding, scaleNotesYpos, scaleNotesWidth, scaleNotesHeight, getScaleNotesTextCallback)
 end
 
 function Interface:addOctaveLabel()
@@ -3601,7 +3683,7 @@ function Interface:addOctaveLabel()
 	local labelYpos = yMargin+yPadding+1
 	local labelHeight = 15
 	local labelXpos = windowWidth - 80 - octaveValueBoxWidth
-	self:addLabel(labelXpos, labelYpos, octaveLabelWidth, labelHeight, function() return labelText end)
+	self:addLabel(labelXpos+dockerXPadding, labelYpos, octaveLabelWidth, labelHeight, function() return labelText end)
 end
 
 function Interface:addOctaveSelectorValueBox()
@@ -3610,7 +3692,7 @@ function Interface:addOctaveSelectorValueBox()
 	local valueBoxXPos = windowWidth - octaveValueBoxWidth - xMargin - xPadding + 3
 	local valueBoxYPos = yMargin + 6
 	local valueBoxHeight = 15
-	self:addOctaveValueBox(valueBoxXPos, valueBoxYPos, octaveValueBoxWidth, valueBoxHeight)
+	self:addOctaveValueBox(valueBoxXPos+dockerXPadding, valueBoxYPos, octaveValueBoxWidth, valueBoxHeight)
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
@@ -3627,7 +3709,7 @@ local chordTextWidth = nil
 function Interface:addBottomFrame()
 
 	local chordButtonsFrameHeight = self.height - yMargin - 6
-	self:addFrame(xMargin, yMargin, self.width - 2 * xMargin, chordButtonsFrameHeight)
+	self:addFrame(xMargin+dockerXPadding, yMargin, self.width - 2 * xMargin, chordButtonsFrameHeight)
   
   self:addChordTextLabel()
   self:addInversionLabel()
@@ -3644,7 +3726,7 @@ function Interface:addChordTextLabel()
   local chordTextYpos = yMargin + 4
   chordTextWidth = self.width - 4 * xMargin - inversionLabelWidth - inversionValueBoxWidth - 6
   local chordTextHeight = 24
-  self:addLabel(chordTextXpos, chordTextYpos, chordTextWidth, chordTextHeight, getChordTextCallback)
+  self:addLabel(chordTextXpos+dockerXPadding, chordTextYpos, chordTextWidth, chordTextHeight, getChordTextCallback)
 end
 
 function Interface:addInversionLabel()
@@ -3655,7 +3737,7 @@ function Interface:addInversionLabel()
   local stringWidth, _ = gfx.measurestr(labelText)
   local inversionLabelTextHeight = 24
 
-  self:addLabel(inversionLabelXPos, inversionLabelYPos, inversionLabelWidth, inversionLabelTextHeight, function() return inversionLabelText end)
+  self:addLabel(inversionLabelXPos+dockerXPadding, inversionLabelYPos, inversionLabelWidth, inversionLabelTextHeight, function() return inversionLabelText end)
 end
 
 function Interface:addInversionValueBox()
@@ -3663,7 +3745,7 @@ function Interface:addInversionValueBox()
   local inversionValueBoxXPos = xMargin + xPadding + chordTextWidth + inversionLabelWidth + 2
   local inversionValueBoxYPos = yMargin + 9
   local inversionValueBoxHeight = 15
-  self:addChordInversionValueBox(inversionValueBoxXPos, inversionValueBoxYPos, inversionValueBoxWidth, inversionValueBoxHeight)
+  self:addChordInversionValueBox(inversionValueBoxXPos+dockerXPadding, inversionValueBoxYPos, inversionValueBoxWidth, inversionValueBoxHeight)
 end
 
 function Interface:addHeaders()
@@ -3675,7 +3757,7 @@ function Interface:addHeaders()
 
     local headerXpos = xMargin+xPadding-1 + headerWidth * (i-1) + innerSpacing * i
     local headerYpos = yMargin+yPadding
-    self:addHeader(headerXpos, headerYpos, headerWidth, headerHeight, function() return getScaleDegreeHeader(i) end)
+    self:addHeader(headerXpos+dockerXPadding, headerYpos, headerWidth, headerHeight, function() return getScaleDegreeHeader(i) end)
   end
 end
 
@@ -3694,7 +3776,7 @@ function Interface:addChordButtons()
       	local buttonHeight = 38
 				local innerSpacing = 2
       	
-      	local xPos = xMargin + xPadding + buttonWidth * (scaleNoteIndex-1) + innerSpacing * scaleNoteIndex
+      	local xPos = xMargin + xPadding + buttonWidth * (scaleNoteIndex-1) + innerSpacing * scaleNoteIndex + dockerXPadding
       	local yPos = yMargin + yPadding + headerHeight + buttonHeight * (chordTypeIndex-1) + innerSpacing * (chordTypeIndex-1) - 3
   
   			local numberOfChordsInScale = getNumberOfScaleChordsForScaleNoteIndex(scaleNoteIndex)
@@ -3735,12 +3817,6 @@ local function main()
 	
 	interface:update()
 end
-
-local function dockWindow()
-	gfx.dock(0x0201)
-end
-
---dockWindow()
 
 main()
 reaper.atexit(stopAllNotesFromPlaying)

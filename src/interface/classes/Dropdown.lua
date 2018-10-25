@@ -81,6 +81,7 @@ end
 
 function Dropdown:openMenu()
 
+	setPositionAtMouseCursor()
 	local selectedIndex = gfx.showmenu(table.concat(self.dropdownList,"|"))
 
 	if selectedIndex <= 0 then
