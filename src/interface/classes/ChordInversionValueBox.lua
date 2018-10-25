@@ -4,6 +4,8 @@ require(workingDirectory .. "/util")
 require(workingDirectory .. "/preferences")
 require(workingDirectory .. "/midiMessages")
 require(workingDirectory .. "/inversionStates")
+require(workingDirectory .. "/interface/images/drawLeftArrow")
+require(workingDirectory .. "/interface/images/drawRightArrow")
 
 ChordInversionValueBox = {}
 ChordInversionValueBox.__index = ChordInversionValueBox
@@ -41,21 +43,17 @@ end
 
 function ChordInversionValueBox:drawLeftArrow()
 
-  local imagePath = workingDirectory .. "/interface/leftArrow.png"
   gfx.x = self.x + 2
   gfx.y = self.y + 2
-  local imageIndex = gfx.loadimg(0, imagePath)
-  gfx.blit(imageIndex, 1.0, 0.0)
+  drawLeftArrow()
 end
 
 function ChordInversionValueBox:drawRightArrow()
 
-  local imagePath = workingDirectory .. "/interface/rightArrow.png"
   local imageWidth = 9
   gfx.x = self.x + self.width - imageWidth - 3
   gfx.y = self.y + 2
-  local imageIndex = gfx.loadimg(0, imagePath)
-  gfx.blit(imageIndex, 1.0, 0.0)
+  drawRightArrow()
 end
 
 function ChordInversionValueBox:drawImages()
