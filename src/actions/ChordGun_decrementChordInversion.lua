@@ -15,3 +15,4 @@ end
 
 updateScaleData()
 decrementChordInversion()
+previewChord()

@@ -21,13 +21,13 @@ function unifyMainProgram() {
 
 	removeFile $1
 
+	insertIntoFile src/chords.lua $1
+	insertIntoFile src/defaultValues.lua $1
+	insertIntoFile src/preferences.lua $1
 	insertIntoFile src/util.lua $1
 	insertIntoFile src/Timer.lua $1
 	insertIntoFile src/globalState.lua $1
 	insertIntoFile src/scales.lua $1
-	insertIntoFile src/chords.lua $1
-	insertIntoFile src/defaultValues.lua $1
-	insertIntoFile src/preferences.lua $1
 	insertIntoFile src/scaleFunctions.lua $1
 	insertIntoFile src/scaleDegreeHeaders.lua $1
 	insertIntoFile src/midiEditor.lua $1
@@ -64,13 +64,13 @@ function unifyKeyboardShortcut() {
 
 	removeFile $1
 
+	insertIntoFile src/chords.lua $1
+	insertIntoFile src/defaultValues.lua $1
+	insertIntoFile src/preferences.lua $1
 	insertIntoFile src/util.lua $1
 	insertIntoFile src/Timer.lua $1
 	insertIntoFile src/globalState.lua $1
 	insertIntoFile src/scales.lua $1
-	insertIntoFile src/chords.lua $1
-	insertIntoFile src/defaultValues.lua $1
-	insertIntoFile src/preferences.lua $1
 	insertIntoFile src/scaleFunctions.lua $1
 	insertIntoFile src/scaleDegreeHeaders.lua $1
 	insertIntoFile src/midiEditor.lua $1

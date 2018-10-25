@@ -125,6 +125,18 @@ function Interface:update()
 		chordPreviewTimer:stop()
 	end
 
+	if scaleTonicNote ~= getScaleTonicNote() then
+		scaleTonicNote = getScaleTonicNote()
+		updateScaleData()
+		self:restartGui()
+	end
+
+	if scaleType ~= getScaleType() then
+		scaleType = getScaleType()
+		updateScaleData()
+		self:restartGui()
+	end
+
 	gfx.update()
 end
 

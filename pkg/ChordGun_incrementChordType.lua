@@ -1,116 +1,3 @@
-function mouseIsHoveringOver(element)
-
-	local x = gfx.mouse_x
-	local y = gfx.mouse_y
-
-	local isInHorizontalRegion = (x >= element.x and x < element.x+element.width)
-	local isInVerticalRegion = (y >= element.y and y < element.y+element.height)
-	return isInHorizontalRegion and isInVerticalRegion
-end
-
-function leftMouseButtonIsHeldDown()
-  return gfx.mouse_cap & 1 == 1
-end
-
-function leftMouseButtonIsNotHeldDown()
-  return gfx.mouse_cap & 1 ~= 1
-end
-
-function clearConsoleWindow()
-  reaper.ShowConsoleMsg("")
-end
-
-function print(arg)
-  reaper.ShowConsoleMsg(tostring(arg) .. "\n")
-end
-
-function notesAreSelected()
-
-	local activeMidiEditor = reaper.MIDIEditor_GetActive()
-	local activeTake = reaper.MIDIEditor_GetTake(activeMidiEditor)
-
-	local noteIndex = 0
-	local noteExists = true
-	local noteIsSelected = false
-
-	while noteExists do
-
-		noteExists, noteIsSelected = reaper.MIDI_GetNote(activeTake, noteIndex)
-
-		if noteIsSelected then
-			return true
-		end
-	
-		noteIndex = noteIndex + 1
-	end
-
-	return false
-end
-
-Timer = {}
-Timer.__index = Timer
-
-function Timer:new(numberOfSeconds)
-
-  local self = {}
-  setmetatable(self, Timer)
-
-  self.startingTime = reaper.time_precise()
-  self.numberOfSeconds = numberOfSeconds
-  self.timerIsStopped = true
-
-  return self
-end
-
-function Timer:start()
-
-	self.timerIsStopped = false
-	self.startingTime = reaper.time_precise()
-end
-
-function Timer:stop()
-
-	self.timerIsStopped = true
-end
-
-function Timer:timeHasElapsed()
-
-	local currentTime = reaper.time_precise()
-
-	if self.timerIsStopped then
-		return false
-	end
-
-	if currentTime - self.startingTime > self.numberOfSeconds then
-		return true
-	else
-		return false
-	end
-end
-
-function Timer:timeHasNotElapsed()
-	return not self:timeHasElapsed()
-end
-local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
-
-mouseButtonIsNotPressedDown = true
-
-local numberOfSecondsForChordPreview = 5
-chordPreviewTimer = Timer:new(numberOfSecondsForChordPreview)
-scales = {
-  { name = "Major", pattern = "101011010101" },
-  { name = "Natural Minor", pattern = "101101011010" },
-  { name = "Harmonic Minor", pattern = "101101011001" },
-  { name = "Melodic Minor", pattern = "101101010101" },
-  { name = "Pentatonic", pattern = "101010010100" },
-  { name = "Ionian", pattern = "101011010101" },
-  { name = "Aeolian", pattern = "101101011010" },
-  { name = "Dorian", pattern = "101101010110" },
-  { name = "Mixolydian", pattern = "101011010110" },
-  { name = "Phrygian", pattern = "110101011010" },
-  { name = "Lydian", pattern = "101010110101" },
-  { name = "Locrian", pattern = "110101101010" }
-}
 chords = {
   {
     name = 'major',
@@ -579,6 +466,122 @@ function resetSelectedInversionStates()
     setSelectedInversionState7(0)
   end
 end
+function mouseIsHoveringOver(element)
+
+	local x = gfx.mouse_x
+	local y = gfx.mouse_y
+
+	local isInHorizontalRegion = (x >= element.x and x < element.x+element.width)
+	local isInVerticalRegion = (y >= element.y and y < element.y+element.height)
+	return isInHorizontalRegion and isInVerticalRegion
+end
+
+function leftMouseButtonIsHeldDown()
+  return gfx.mouse_cap & 1 == 1
+end
+
+function leftMouseButtonIsNotHeldDown()
+  return gfx.mouse_cap & 1 ~= 1
+end
+
+function clearConsoleWindow()
+  reaper.ShowConsoleMsg("")
+end
+
+function print(arg)
+  reaper.ShowConsoleMsg(tostring(arg) .. "\n")
+end
+
+function notesAreSelected()
+
+	local activeMidiEditor = reaper.MIDIEditor_GetActive()
+	local activeTake = reaper.MIDIEditor_GetTake(activeMidiEditor)
+
+	local noteIndex = 0
+	local noteExists = true
+	local noteIsSelected = false
+
+	while noteExists do
+
+		noteExists, noteIsSelected = reaper.MIDI_GetNote(activeTake, noteIndex)
+
+		if noteIsSelected then
+			return true
+		end
+	
+		noteIndex = noteIndex + 1
+	end
+
+	return false
+end
+
+Timer = {}
+Timer.__index = Timer
+
+function Timer:new(numberOfSeconds)
+
+  local self = {}
+  setmetatable(self, Timer)
+
+  self.startingTime = reaper.time_precise()
+  self.numberOfSeconds = numberOfSeconds
+  self.timerIsStopped = true
+
+  return self
+end
+
+function Timer:start()
+
+	self.timerIsStopped = false
+	self.startingTime = reaper.time_precise()
+end
+
+function Timer:stop()
+
+	self.timerIsStopped = true
+end
+
+function Timer:timeHasElapsed()
+
+	local currentTime = reaper.time_precise()
+
+	if self.timerIsStopped then
+		return false
+	end
+
+	if currentTime - self.startingTime > self.numberOfSeconds then
+		return true
+	else
+		return false
+	end
+end
+
+function Timer:timeHasNotElapsed()
+	return not self:timeHasElapsed()
+end
+local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
+
+mouseButtonIsNotPressedDown = true
+
+scaleTonicNote = getScaleTonicNote()
+scaleType = getScaleType()
+
+local numberOfSecondsForChordPreview = 5
+chordPreviewTimer = Timer:new(numberOfSecondsForChordPreview)
+scales = {
+  { name = "Major", pattern = "101011010101" },
+  { name = "Natural Minor", pattern = "101101011010" },
+  { name = "Harmonic Minor", pattern = "101101011001" },
+  { name = "Melodic Minor", pattern = "101101010101" },
+  { name = "Pentatonic", pattern = "101010010100" },
+  { name = "Ionian", pattern = "101011010101" },
+  { name = "Aeolian", pattern = "101101011010" },
+  { name = "Dorian", pattern = "101101010110" },
+  { name = "Mixolydian", pattern = "101011010110" },
+  { name = "Phrygian", pattern = "110101011010" },
+  { name = "Lydian", pattern = "101010110101" },
+  { name = "Locrian", pattern = "110101101010" }
+}
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 notes = { 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B' };
@@ -1336,6 +1339,7 @@ function updateScaleData()
   updateScaleNoteNames()
   updateScaleNotesText()
   updateScaleChords()
+  updateScaleDegreeHeaders()
   showScaleStatus()
 end
 
@@ -1362,3 +1366,4 @@ end
 
 updateScaleData()
 incrementChordType()
+previewChord()
