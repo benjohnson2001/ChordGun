@@ -1365,4 +1365,4 @@ end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 
-insertScaleChord4Action()
+playScaleChord1Action()

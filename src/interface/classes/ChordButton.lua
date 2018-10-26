@@ -2,7 +2,7 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/interface/colors")
 require(workingDirectory .. "/util")
 require(workingDirectory .. "/insertChord")
-require(workingDirectory .. "/previewChord")
+require(workingDirectory .. "/playChord")
 require(workingDirectory .. "/globalState")
 --require(workingDirectory .. "/insertMidiNote")
 
@@ -138,11 +138,11 @@ local function shiftModifierIsHeldDown()
 end
 
 function ChordButton:onPress()
-	previewChord()
+	playChord()
 end
 
 function ChordButton:onShiftPress()
-	previewChord()
+	playChord()
 	insertChord()
 end
 

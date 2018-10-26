@@ -36,8 +36,12 @@ function unifyMainProgram() {
 	insertIntoFile src/chordNotesArray.lua $1
 	insertIntoFile src/insertMidiNote.lua $1
 	insertIntoFile src/insertChord.lua $1
-	insertIntoFile src/previewChord.lua $1
+	insertIntoFile src/playChord.lua $1
 	insertIntoFile src/scaleData.lua $1
+	insertIntoFile src/insertScaleNote.lua $1
+	insertIntoFile src/playScaleNote.lua $1
+
+	insertIntoFile src/actions/actionFunctions.lua $1
 
 	insertIntoFile src/interface/images/drawDropdownIcon.lua $1
 	insertIntoFile src/interface/images/drawLeftArrow.lua $1
@@ -53,6 +57,7 @@ function unifyMainProgram() {
 	insertIntoFile src/interface/classes/Dropdown.lua $1
 	insertIntoFile src/interface/classes/ChordInversionValueBox.lua $1
 	insertIntoFile src/interface/classes/ChordButton.lua $1
+	insertIntoFile src/interface/inputCharacters.lua $1
 	insertIntoFile src/interface/handleInput.lua $1
 
 	insertIntoFile src/interface/Interface.lua $1
@@ -81,7 +86,7 @@ function unifyKeyboardShortcut() {
 	insertIntoFile src/chordNotesArray.lua $1
 	insertIntoFile src/insertMidiNote.lua $1
 	insertIntoFile src/insertChord.lua $1
-	insertIntoFile src/previewChord.lua $1
+	insertIntoFile src/playChord.lua $1
 	insertIntoFile src/scaleData.lua $1
 	
 	insertIntoFile src/$1 $1
@@ -109,11 +114,11 @@ unifyKeyboardShortcut actions/ChordGun_insertScaleChord5.lua
 unifyKeyboardShortcut actions/ChordGun_insertScaleChord6.lua
 unifyKeyboardShortcut actions/ChordGun_insertScaleChord7.lua
 
-unifyKeyboardShortcut actions/ChordGun_previewScaleChord1.lua
-unifyKeyboardShortcut actions/ChordGun_previewScaleChord1.lua
-unifyKeyboardShortcut actions/ChordGun_previewScaleChord2.lua
-unifyKeyboardShortcut actions/ChordGun_previewScaleChord3.lua
-unifyKeyboardShortcut actions/ChordGun_previewScaleChord4.lua
-unifyKeyboardShortcut actions/ChordGun_previewScaleChord5.lua
-unifyKeyboardShortcut actions/ChordGun_previewScaleChord6.lua
-unifyKeyboardShortcut actions/ChordGun_previewScaleChord7.lua
+unifyKeyboardShortcut actions/ChordGun_playScaleChord1.lua
+unifyKeyboardShortcut actions/ChordGun_playScaleChord1.lua
+unifyKeyboardShortcut actions/ChordGun_playScaleChord2.lua
+unifyKeyboardShortcut actions/ChordGun_playScaleChord3.lua
+unifyKeyboardShortcut actions/ChordGun_playScaleChord4.lua
+unifyKeyboardShortcut actions/ChordGun_playScaleChord5.lua
+unifyKeyboardShortcut actions/ChordGun_playScaleChord6.lua
+unifyKeyboardShortcut actions/ChordGun_playScaleChord7.lua

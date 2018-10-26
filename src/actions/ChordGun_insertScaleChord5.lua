@@ -1,7 +1,5 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
-require(workingDirectory .. "/scaleData")
+require(workingDirectory .. "/actionFunctions")
 
-updateScaleData()
-setSelectedScaleNote(5)
-previewChord()
-insertChord()
+
+insertScaleChord5Action()

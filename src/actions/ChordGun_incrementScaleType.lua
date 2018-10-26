@@ -1,16 +1,6 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
-require(workingDirectory .. "/scaleData")
+require(workingDirectory .. "/actionFunctions")
 
-local function incrementScaleType()
 
-	local scaleType = getScaleType()
+incrementScaleTypeAction()
 
-	if scaleType >= #scales then
-		return
-	end
-
-	setScaleType(scaleType+1)
-end
-
-updateScaleData()
-incrementScaleType()

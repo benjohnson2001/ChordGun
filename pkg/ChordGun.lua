@@ -596,8 +596,8 @@ currentWidth = 0
 scaleTonicNote = getScaleTonicNote()
 scaleType = getScaleType()
 
-local numberOfSecondsForChordPreview = 5
-chordPreviewTimer = Timer:new(numberOfSecondsForChordPreview)
+local numberOfSecondsForChordPlay = 5
+notesPlayingTimer = Timer:new(numberOfSecondsForChordPlay)
 scales = {
   { name = "Major", pattern = "101011010101" },
   { name = "Natural Minor", pattern = "101101011010" },
@@ -869,6 +869,16 @@ function stopAllNotesFromPlaying()
     reaper.StuffMIDIMessage(virtualKeyboardMode, noteOffCommand, midiNote, velocity)
   end
 end
+
+function stopNoteFromPlaying(midiNote)
+
+  local virtualKeyboardMode = 0
+  local channel = getCurrentNoteChannel()
+  local noteOffCommand = 0x80 + channel
+  local velocity = 0
+
+  reaper.StuffMIDIMessage(virtualKeyboardMode, noteOffCommand, midiNote, velocity)
+end
 inversionStates = {}
 
 function updateInversionStates()
@@ -1014,31 +1024,6 @@ function getChordNotesArray(root, chord, octave)
   
   return chordNotesArray
 end
-
-function insertNotesFromChordArray(chordNotesArray)
-
-  local noteColumnIndex = renoise.song().selected_note_column_index
-  for note = 1, #chordNotesArray do
-    insertNote(chordNotesArray[note], noteColumnIndex)
-    noteColumnIndex = noteColumnIndex + 1
-  end
-  
-  local visibleNoteColumns = renoise.song().selected_track.visible_note_columns
-      
-  if visibleNoteColumns >= noteColumnIndex then
-    for i = noteColumnIndex, visibleNoteColumns do
-      local noteColumn = renoise.song().selected_line:note_column(i)
-      
-      if preferences.insertNoteOffInRemainingNoteColumns.value then
-        noteColumn.note_value = 120
-      else
-        noteColumn.note_value = 121
-      end
-  
-      noteColumn.instrument_value = 255
-    end
-  end
-end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 function getCursorPositionPPQ()
@@ -1120,8 +1105,8 @@ function insertChord()
   local scaleNoteIndex = getSelectedScaleNote()
   local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
   
-  local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
   local root = scaleNotes[scaleNoteIndex]
+  local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
   local octave = getOctave()
   
   local chordNotesArray = getChordNotesArray(root, chord, octave)   
@@ -1136,21 +1121,19 @@ end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 
-function previewChord()
+function playChord()
   
   local scaleNoteIndex = getSelectedScaleNote()
   local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
 
-  stopAllNotesFromPlaying()
-  
-  local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
   local root = scaleNotes[scaleNoteIndex]
-
+  local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
   local octave = getOctave()
   
   local chordNotesArray = getChordNotesArray(root, chord, octave)   
 
-  chordPreviewTimer:start()
+  stopAllNotesFromPlaying()
+  notesPlayingTimer:start()
   
   for note = 1, #chordNotesArray do
     playMidiNote(chordNotesArray[note])
@@ -1370,7 +1353,6 @@ function updateScaleData()
   updateScaleNotesText()
   updateScaleChords()
   updateScaleDegreeHeaders()
-  showScaleStatus()
 end
 
 function showScaleStatus()
@@ -1380,6 +1362,386 @@ function showScaleStatus()
   local scaleNotesText = getScaleNotesText()
   reaper.Help_Set(("%s %s: %s"):format(scaleTonicText, scaleTypeText, scaleNotesText), false)
 end
+local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
+
+
+local function playScaleNoteImpl(octaveAdjustment)
+
+  local scaleNoteIndex = getSelectedScaleNote()
+
+  local root = scaleNotes[scaleNoteIndex]
+  local octave = getOctave()
+  local noteValue = root + ((octave+1+octaveAdjustment) * 12) - 1
+
+
+  stopAllNotesFromPlaying()
+  notesPlayingTimer:start()
+  playMidiNote(noteValue)
+
+  	-- TODO
+    -- highlight the scale degree header for a few seconds
+    -- TODO
+
+  return noteValue
+end
+
+function playLowerScaleNote()
+	return playScaleNoteImpl(-1)
+end
+
+function playScaleNote()
+  return playScaleNoteImpl(0)
+end
+
+function playLowerScaleNote()
+	return playScaleNoteImpl(1)
+end
+local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
+
+
+local function decrementChordInversion()
+
+  local chordInversionMin = getChordInversionMin()
+  local chordInversion = getCurrentInversionValue()
+
+  if chordInversion <= chordInversionMin then
+    return
+  end
+
+  setInversionState(chordInversion-1)
+end
+
+function decrementChordInversionAction()
+
+	updateScaleData()
+	decrementChordInversion()
+	playChord()
+end
+
+--
+
+local function decrementChordType()
+
+	local selectedScaleNote = getSelectedScaleNote()
+	local selectedChordType = getSelectedChordType(selectedScaleNote)
+
+  if selectedChordType <= 1 then
+    return
+  end
+
+  setSelectedChordType(selectedScaleNote, selectedChordType-1)
+end
+
+function decrementChordTypeAction()
+
+	updateScaleData()
+	decrementChordType()
+	playChord()
+end
+
+--
+
+local function decrementOctave()
+
+  local octave = getOctave()
+
+  if octave <= -1 then
+    return
+  end
+
+  setOctave(octave-1)
+end
+
+function decrementOctaveAction()
+
+	updateScaleData()
+	decrementOctave()
+end
+
+--
+
+local function decrementScaleTonicNote()
+
+	local scaleTonicNote = getScaleTonicNote()
+
+	if scaleTonicNote <= 1 then
+		return
+	end
+
+	setScaleTonicNote(scaleTonicNote-1)
+end
+
+function decrementScaleTonicNoteAction()
+
+	updateScaleData()
+	decrementScaleTonicNote()
+end
+
+--
+
+local function decrementScaleType()
+
+	local scaleType = getScaleType()
+
+	if scaleType <= 1 then
+		return
+	end
+
+	setScaleType(scaleType-1)
+	showScaleStatus()
+end
+
+function decrementScaleTypeAction()
+
+	updateScaleData()
+	decrementScaleType()
+end
+
+--
+
+local function incrementChordInversion()
+
+  local chordInversionMax = getChordInversionMax()
+  local chordInversion = getCurrentInversionValue()
+
+  if chordInversion >= chordInversionMax then
+    return
+  end
+
+  setInversionState(chordInversion+1)
+end
+
+function incrementChordInversionAction()
+
+	updateScaleData()
+	incrementChordInversion()
+	playChord()
+end
+
+--
+
+local function incrementChordType()
+
+	local selectedScaleNote = getSelectedScaleNote()
+	local selectedChordType = getSelectedChordType(selectedScaleNote)
+
+  if selectedChordType >= #chords then
+    return
+  end
+
+  setSelectedChordType(selectedScaleNote, selectedChordType+1)
+end
+
+function incrementChordTypeAction()
+
+	updateScaleData()
+	incrementChordType()
+	playChord()
+end
+
+--
+
+local function incrementOctave()
+
+  local octave = getOctave()
+
+  if octave >= 8 then
+    return
+  end
+
+  setOctave(octave+1)
+end
+
+function incrementOctaveAction()
+
+	updateScaleData()
+	incrementOctave()
+end
+
+--
+
+local function incrementScaleTonicNote()
+
+	local scaleTonicNote = getScaleTonicNote()
+
+	if scaleTonicNote >= #notes then
+		return
+	end
+
+	setScaleTonicNote(scaleTonicNote+1)
+end
+
+function incrementScaleTonicNoteAction()
+
+	updateScaleData()
+	incrementScaleTonicNote()
+end
+
+--
+
+local function incrementScaleType()
+
+	local scaleType = getScaleType()
+
+	if scaleType >= #scales then
+		return
+	end
+
+	setScaleType(scaleType+1)
+	showScaleStatus()
+end
+
+function incrementScaleTypeAction()
+
+	updateScaleData()
+	incrementScaleType()
+end
+
+--
+
+function insertScaleChord1Action()
+
+	updateScaleData()
+	setSelectedScaleNote(1)
+	playChord()
+	insertChord()
+end
+
+--
+
+function insertScaleChord2Action()
+
+	updateScaleData()
+	setSelectedScaleNote(2)
+	playChord()
+	insertChord()
+end
+
+--
+
+function insertScaleChord3Action()
+
+	updateScaleData()
+	setSelectedScaleNote(3)
+	playChord()
+	insertChord()
+end
+
+--
+
+function insertScaleChord4Action()
+
+	updateScaleData()
+	setSelectedScaleNote(4)
+	playChord()
+	insertChord()
+end
+
+--
+
+function insertScaleChord5Action()
+
+	updateScaleData()
+	setSelectedScaleNote(5)
+	playChord()
+	insertChord()
+end
+
+--
+
+function playScaleChord6Action()
+
+	updateScaleData()
+	setSelectedScaleNote(6)
+	playChord()
+end
+
+--
+
+function insertScaleChord7Action()
+
+	updateScaleData()
+	setSelectedScaleNote(7)
+	playChord()
+	insertChord()
+end
+
+--
+
+function playScaleChord1Action()
+
+	updateScaleData()
+	setSelectedScaleNote(1)
+	playChord()
+end
+
+--
+
+function playScaleChord2Action()
+
+	updateScaleData()
+	setSelectedScaleNote(2)
+	playChord()
+end
+
+--
+
+function playScaleChord3Action()
+
+	updateScaleData()
+	setSelectedScaleNote(3)
+	playChord()
+end
+
+--
+
+function playScaleChord4Action()
+
+	updateScaleData()
+	setSelectedScaleNote(4)
+	playChord()
+end
+
+--
+
+function playScaleChord5Action()
+
+	updateScaleData()
+	setSelectedScaleNote(5)
+	playChord()
+end
+
+--
+
+function insertScaleChord6Action()
+
+	updateScaleData()
+	setSelectedScaleNote(6)
+	playChord()
+	insertChord()
+end
+
+--
+
+function playScaleChord7Action()
+
+	updateScaleData()
+	setSelectedScaleNote(7)
+	playChord()
+end
+
+--
+
+function playScaleNote1Action()
+
+	updateScaleData()
+	setSelectedScaleNote(1)
+	return playScaleNote()
+end
+
+--
+
+--
 function drawDropdownIcon()
 
     local xOffset = gfx.x
@@ -3240,13 +3602,13 @@ function ChordInversionValueBox:update()
   if mouseButtonIsNotPressedDown and leftButtonHasBeenClicked(self) then
     mouseButtonIsNotPressedDown = false
     decrementChordInversion()
-    previewChord()
+    playChord()
   end
 
   if mouseButtonIsNotPressedDown and rightButtonHasBeenClicked(self) then
     mouseButtonIsNotPressedDown = false
     incrementChordInversion()
-    previewChord()
+    playChord()
   end
 
   self:drawText()
@@ -3386,11 +3748,11 @@ local function shiftModifierIsHeldDown()
 end
 
 function ChordButton:onPress()
-	previewChord()
+	playChord()
 end
 
 function ChordButton:onShiftPress()
-	previewChord()
+	playChord()
 	insertChord()
 end
 
@@ -3413,34 +3775,157 @@ function ChordButton:update()
 			end
 		end
 end
+inputCharacters = {}
+
+inputCharacters["1"] = 49
+inputCharacters["2"] = 50
+inputCharacters["3"] = 51
+inputCharacters["4"] = 52
+inputCharacters["5"] = 53
+inputCharacters["6"] = 54
+inputCharacters["7"] = 55
+
+inputCharacters["a"] = 97
+inputCharacters["b"] = 98
+inputCharacters["c"] = 99
+inputCharacters["d"] = 100
+inputCharacters["e"] = 101
+inputCharacters["f"] = 102
+inputCharacters["g"] = 103
+inputCharacters["h"] = 104
+inputCharacters["i"] = 105
+inputCharacters["j"] = 106
+inputCharacters["k"] = 107
+inputCharacters["l"] = 108
+inputCharacters["m"] = 109
+inputCharacters["n"] = 110
+inputCharacters["o"] = 111
+inputCharacters["p"] = 112
+inputCharacters["q"] = 113
+inputCharacters["r"] = 114
+inputCharacters["s"] = 115
+inputCharacters["t"] = 116
+inputCharacters["u"] = 117
+inputCharacters["v"] = 118
+inputCharacters["w"] = 119
+inputCharacters["x"] = 120
+inputCharacters["y"] = 121
+inputCharacters["z"] = 122
+
+
+inputCharacters["!"] = 33
+inputCharacters["@"] = 64
+inputCharacters["#"] = 35
+inputCharacters["$"] = 36
+inputCharacters["%"] = 37
+inputCharacters["^"] = 94
+inputCharacters["&"] = 38
+
+inputCharacters["A"] = 65
+inputCharacters["B"] = 66
+inputCharacters["C"] = 67
+inputCharacters["D"] = 68
+inputCharacters["E"] = 69
+inputCharacters["F"] = 70
+inputCharacters["G"] = 71
+inputCharacters["H"] = 72
+inputCharacters["I"] = 73
+inputCharacters["J"] = 74
+inputCharacters["K"] = 75
+inputCharacters["L"] = 76
+inputCharacters["M"] = 77
+inputCharacters["N"] = 78
+inputCharacters["O"] = 79
+inputCharacters["P"] = 80
+inputCharacters["Q"] = 81
+inputCharacters["R"] = 82
+inputCharacters["S"] = 83
+inputCharacters["T"] = 84
+inputCharacters["U"] = 85
+inputCharacters["V"] = 86
+inputCharacters["W"] = 87
+inputCharacters["X"] = 88
+inputCharacters["Y"] = 89
+inputCharacters["Z"] = 90
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
-local g = 103
+local numberOfZeros = 0
+local maximumNumberOfZeros = 16
+local lastRecognizedCharacter = -1
+local lastMidiNote = -1
+
+-- 113 ("q")
+-- 0
+-- 0
+-- 113 ("q")
+
 
 function handleInput()
 
 
 --	reaper.Main_OnCommand(41624, 0)
 --	reaper.Main_OnCommand(41625, 0)
-  local commandId = reaper.NamedCommandLookup("_RSf5a1fbe71eaa92f79bc6a4c8726309dfbc8dc7a1")
+--  local commandId = reaper.NamedCommandLookup("_RSf5a1fbe71eaa92f79bc6a4c8726309dfbc8dc7a1")
 --is_new,name,sec,cmd,rel,res,val = reaper.get_action_context()
 --print("sec: ".. sec)
 --print("cmd: " .. cmd)
-  reaper.SetToggleCommandState(0, commandId, 1)
+  --reaper.SetToggleCommandState(0, commandId, 1)
 
 	inputCharacter = gfx.getchar()
 
+	--print('inputCharacter: ' .. inputCharacter)
+	--print('lastRecognizedCharacter: ' .. lastRecognizedCharacter)
+	--print('numberOfZeros: ' .. numberOfZeros)
+
+
+if numberOfZeros > maximumNumberOfZeros and lastMidiNote ~= -1 then
+
+	stopNoteFromPlaying(lastMidiNote)
+	lastMidiNote = -1
+end
+
+if inputCharacter == 0 then
+	numberOfZeros = numberOfZeros + 1
+	return
+end
+
+if inputCharacter == inputCharacters["q"] then
+
+	if lastRecognizedCharacter == inputCharacters["q"] then
+
+		if numberOfZeros > maximumNumberOfZeros then
+			lastMidiNote = playScaleNote1Action()
+		end
+	else
+			lastMidiNote = playScaleNote1Action()
+	end
+
+	numberOfZeros = 0
+	lastRecognizedCharacter = inputCharacters["q"]
+end
+
+
+
+--
+
+
+	--print(inputCharacter)
+
+--	if inputCharacter == 0 then
+--		print(inputCharacter)
+--	end
+
 --[[
-	if inputCharacter ~= 0 then
+	if inputCharacter ~= -1 then
 		print(inputCharacter)
 	end
-
 ]]--
 
-	if inputCharacter == g then
-		setSelectedScaleNote(3)
-		previewChord()
-	end
+
+	-- if inputCharacter == g then
+	-- 	setSelectedScaleNote(3)
+	-- 	playChord()
+	-- end
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
@@ -3576,9 +4061,9 @@ function Interface:update()
 		mouseButtonIsNotPressedDown = true
 	end
 
-	if chordPreviewTimer:timeHasElapsed() then
+	if notesPlayingTimer:timeHasElapsed() then
 		stopAllNotesFromPlaying()
-		chordPreviewTimer:stop()
+		notesPlayingTimer:stop()
 	end
 
 	if scaleTonicNote ~= getScaleTonicNote() then

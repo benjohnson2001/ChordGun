@@ -596,8 +596,8 @@ currentWidth = 0
 scaleTonicNote = getScaleTonicNote()
 scaleType = getScaleType()
 
-local numberOfSecondsForChordPreview = 5
-chordPreviewTimer = Timer:new(numberOfSecondsForChordPreview)
+local numberOfSecondsForChordPlay = 5
+notesPlayingTimer = Timer:new(numberOfSecondsForChordPlay)
 scales = {
   { name = "Major", pattern = "101011010101" },
   { name = "Natural Minor", pattern = "101101011010" },
@@ -1136,7 +1136,7 @@ end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 
-function previewChord()
+function playChord()
   
   local scaleNoteIndex = getSelectedScaleNote()
   local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
@@ -1150,7 +1150,7 @@ function previewChord()
   
   local chordNotesArray = getChordNotesArray(root, chord, octave)   
 
-  chordPreviewTimer:start()
+  notesPlayingTimer:start()
   
   for note = 1, #chordNotesArray do
     playMidiNote(chordNotesArray[note])
@@ -1382,6 +1382,12 @@ function showScaleStatus()
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
-updateScaleData()
-setSelectedScaleNote(2)
-previewChord()
+
+function playScaleChord2Action()
+
+	updateScaleData()
+	setSelectedScaleNote(2)
+	playChord()
+end
+
+playScaleChord2Action()

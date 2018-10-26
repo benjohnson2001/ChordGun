@@ -5,21 +5,19 @@ require(workingDirectory .. "/preferences")
 require(workingDirectory .. "/timer")
 
 
-function previewChord()
+function playChord()
   
   local scaleNoteIndex = getSelectedScaleNote()
   local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
 
-  stopAllNotesFromPlaying()
-  
-  local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
   local root = scaleNotes[scaleNoteIndex]
-
+  local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
   local octave = getOctave()
   
   local chordNotesArray = getChordNotesArray(root, chord, octave)   
 
-  chordPreviewTimer:start()
+  stopAllNotesFromPlaying()
+  notesPlayingTimer:start()
   
   for note = 1, #chordNotesArray do
     playMidiNote(chordNotesArray[note])

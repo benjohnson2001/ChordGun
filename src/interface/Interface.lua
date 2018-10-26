@@ -143,9 +143,9 @@ function Interface:update()
 		mouseButtonIsNotPressedDown = true
 	end
 
-	if chordPreviewTimer:timeHasElapsed() then
+	if notesPlayingTimer:timeHasElapsed() then
 		stopAllNotesFromPlaying()
-		chordPreviewTimer:stop()
+		notesPlayingTimer:stop()
 	end
 
 	if scaleTonicNote ~= getScaleTonicNote() then

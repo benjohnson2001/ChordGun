@@ -9,5 +9,5 @@ currentWidth = 0
 scaleTonicNote = getScaleTonicNote()
 scaleType = getScaleType()
 
-local numberOfSecondsForChordPreview = 5
-chordPreviewTimer = Timer:new(numberOfSecondsForChordPreview)
+local numberOfSecondsForChordPlay = 5
+notesPlayingTimer = Timer:new(numberOfSecondsForChordPlay)

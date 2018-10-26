@@ -21,8 +21,8 @@ function insertChord()
   local scaleNoteIndex = getSelectedScaleNote()
   local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
   
-  local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
   local root = scaleNotes[scaleNoteIndex]
+  local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
   local octave = getOctave()
   
   local chordNotesArray = getChordNotesArray(root, chord, octave)   

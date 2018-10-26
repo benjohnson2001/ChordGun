@@ -216,7 +216,6 @@ function updateScaleData()
   updateScaleNotesText()
   updateScaleChords()
   updateScaleDegreeHeaders()
-  showScaleStatus()
 end
 
 function showScaleStatus()

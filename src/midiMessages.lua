@@ -23,3 +23,13 @@ function stopAllNotesFromPlaying()
     reaper.StuffMIDIMessage(virtualKeyboardMode, noteOffCommand, midiNote, velocity)
   end
 end
+
+function stopNoteFromPlaying(midiNote)
+
+  local virtualKeyboardMode = 0
+  local channel = getCurrentNoteChannel()
+  local noteOffCommand = 0x80 + channel
+  local velocity = 0
+
+  reaper.StuffMIDIMessage(virtualKeyboardMode, noteOffCommand, midiNote, velocity)
+end

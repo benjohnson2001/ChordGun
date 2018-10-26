@@ -596,8 +596,8 @@ currentWidth = 0
 scaleTonicNote = getScaleTonicNote()
 scaleType = getScaleType()
 
-local numberOfSecondsForChordPreview = 5
-chordPreviewTimer = Timer:new(numberOfSecondsForChordPreview)
+local numberOfSecondsForChordPlay = 5
+notesPlayingTimer = Timer:new(numberOfSecondsForChordPlay)
 scales = {
   { name = "Major", pattern = "101011010101" },
   { name = "Natural Minor", pattern = "101101011010" },
@@ -869,6 +869,16 @@ function stopAllNotesFromPlaying()
     reaper.StuffMIDIMessage(virtualKeyboardMode, noteOffCommand, midiNote, velocity)
   end
 end
+
+function stopNoteFromPlaying(midiNote)
+
+  local virtualKeyboardMode = 0
+  local channel = getCurrentNoteChannel()
+  local noteOffCommand = 0x80 + channel
+  local velocity = 0
+
+  reaper.StuffMIDIMessage(virtualKeyboardMode, noteOffCommand, midiNote, velocity)
+end
 inversionStates = {}
 
 function updateInversionStates()
@@ -1014,31 +1024,6 @@ function getChordNotesArray(root, chord, octave)
   
   return chordNotesArray
 end
-
-function insertNotesFromChordArray(chordNotesArray)
-
-  local noteColumnIndex = renoise.song().selected_note_column_index
-  for note = 1, #chordNotesArray do
-    insertNote(chordNotesArray[note], noteColumnIndex)
-    noteColumnIndex = noteColumnIndex + 1
-  end
-  
-  local visibleNoteColumns = renoise.song().selected_track.visible_note_columns
-      
-  if visibleNoteColumns >= noteColumnIndex then
-    for i = noteColumnIndex, visibleNoteColumns do
-      local noteColumn = renoise.song().selected_line:note_column(i)
-      
-      if preferences.insertNoteOffInRemainingNoteColumns.value then
-        noteColumn.note_value = 120
-      else
-        noteColumn.note_value = 121
-      end
-  
-      noteColumn.instrument_value = 255
-    end
-  end
-end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 function getCursorPositionPPQ()
@@ -1120,8 +1105,8 @@ function insertChord()
   local scaleNoteIndex = getSelectedScaleNote()
   local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
   
-  local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
   local root = scaleNotes[scaleNoteIndex]
+  local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
   local octave = getOctave()
   
   local chordNotesArray = getChordNotesArray(root, chord, octave)   
@@ -1136,21 +1121,19 @@ end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 
-function previewChord()
+function playChord()
   
   local scaleNoteIndex = getSelectedScaleNote()
   local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
 
-  stopAllNotesFromPlaying()
-  
-  local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
   local root = scaleNotes[scaleNoteIndex]
-
+  local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
   local octave = getOctave()
   
   local chordNotesArray = getChordNotesArray(root, chord, octave)   
 
-  chordPreviewTimer:start()
+  stopAllNotesFromPlaying()
+  notesPlayingTimer:start()
   
   for note = 1, #chordNotesArray do
     playMidiNote(chordNotesArray[note])
@@ -1370,7 +1353,6 @@ function updateScaleData()
   updateScaleNotesText()
   updateScaleChords()
   updateScaleDegreeHeaders()
-  showScaleStatus()
 end
 
 function showScaleStatus()
@@ -1382,7 +1364,5 @@ function showScaleStatus()
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
-updateScaleData()
-setSelectedScaleNote(2)
-previewChord()
-insertChord()
+
+insertScaleChord2Action()
