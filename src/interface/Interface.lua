@@ -19,17 +19,18 @@ local interfaceHeight = 620
 
 local function getInterfaceXPos()
 
-	local _, _, width, _ = reaper.my_getViewport(0, 0, 0, 0, 0, 0, 0, 0, true)
-	return width/2 - interfaceWidth/2
+	local screenWidth = getScreenWidth()
+	return screenWidth/2 - interfaceWidth/2
 end
 
 local function getInterfaceYPos()
 
-	local _, _, _, height = reaper.my_getViewport(0, 0, 0, 0, 0, 0, 0, 0, true)
-	return height/2 - interfaceHeight/2
+	local screenHeight = getScreenHeight()
+	return screenHeight/2 - interfaceHeight/2
 end
 
 local dockerXPadding = 0
+local dockerYPadding = 0
 
 function Interface:init(name)
 
@@ -52,11 +53,19 @@ function Interface:restartGui()
 	self:startGui()
 end
 
+local function getDockerXPadding()
+
+	if gfx.w <= interfaceWidth then
+		return 0
+	end
+
+	return (gfx.w - interfaceWidth) / 2
+end
+
 function Interface:startGui()
 
-	if windowIsDocked() then
-		dockerXPadding = getInterfaceXPos()
-	end
+	currentWidth = gfx.w
+	dockerXPadding = getDockerXPadding()
 
 	self:addMainWindow()
 	self:addDocker()
@@ -151,8 +160,7 @@ function Interface:update()
 		self:restartGui()
 	end
 
-	if windowIsDockedState ~= windowIsDocked() then
-		windowIsDockedState = windowIsDocked()
+	if currentWidth ~= gfx.w then
 		self:restartGui()
 	end
 

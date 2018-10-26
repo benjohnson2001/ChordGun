@@ -34,6 +34,16 @@ function print(arg)
   reaper.ShowConsoleMsg(tostring(arg) .. "\n")
 end
 
+function getScreenWidth()
+	local _, _, screenWidth, _ = reaper.my_getViewport(0, 0, 0, 0, 0, 0, 0, 0, true)
+	return screenWidth
+end
+
+function getScreenHeight()
+	local _, _, _, screenHeight = reaper.my_getViewport(0, 0, 0, 0, 0, 0, 0, 0, true)
+	return screenHeight
+end
+
 function windowIsDocked()
 	return gfx.dock(-1) > 0
 end
