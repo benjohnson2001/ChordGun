@@ -1065,6 +1065,10 @@ function moveCursor()
   reaper.MoveEditCursor(noteLength, timeSelection)
 end
 
+
+-- MIDI_GetPPQPos_StartOfMeasure 
+-- MIDI_GetPPQPos_EndOfMeasure 
+
 function getCursorPositionPPQ()
 
 	local activeMidiEditor = reaper.MIDIEditor_GetActive()
@@ -1406,6 +1410,11 @@ local function insertScaleNoteImpl(octaveAdjustment)
 end
 
 function insertLowerScaleNote()
+
+	if getOctave() < 0 then
+		return
+	end
+
 	return insertScaleNoteImpl(-1)
 end
 
@@ -1414,6 +1423,11 @@ function insertScaleNote()
 end
 
 function insertHigherScaleNote()
+
+	if getOctave() > 7 then
+		return
+	end
+
 	insertScaleNoteImpl(1)
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
@@ -1436,6 +1450,11 @@ local function playScaleNoteImpl(octaveAdjustment)
 end
 
 function playLowerScaleNote()
+
+  if getOctave() < 0 then
+    return
+  end
+
 	return playScaleNoteImpl(-1)
 end
 
@@ -1444,6 +1463,11 @@ function playScaleNote()
 end
 
 function playHigherScaleNote()
+
+  if getOctave() > 7 then
+    return
+  end
+
 	return playScaleNoteImpl(1)
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
@@ -2152,10 +2176,6 @@ end
 --
 
 function insertHigherScaleNote7Action()
-
-	if getOctave() > 7 then
-		return
-	end
 
 	updateScaleData()
 	setSelectedScaleNote(7)

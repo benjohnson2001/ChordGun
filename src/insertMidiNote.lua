@@ -14,6 +14,10 @@ function moveCursor()
   reaper.MoveEditCursor(noteLength, timeSelection)
 end
 
+
+-- MIDI_GetPPQPos_StartOfMeasure 
+-- MIDI_GetPPQPos_EndOfMeasure 
+
 function getCursorPositionPPQ()
 
 	local activeMidiEditor = reaper.MIDIEditor_GetActive()

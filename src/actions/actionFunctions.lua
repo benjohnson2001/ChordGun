@@ -707,10 +707,6 @@ end
 
 function insertHigherScaleNote7Action()
 
-	if getOctave() > 7 then
-		return
-	end
-
 	updateScaleData()
 	setSelectedScaleNote(7)
 	return insertHigherScaleNote()

@@ -18,6 +18,11 @@ local function insertScaleNoteImpl(octaveAdjustment)
 end
 
 function insertLowerScaleNote()
+
+	if getOctave() < 0 then
+		return
+	end
+
 	return insertScaleNoteImpl(-1)
 end
 
@@ -26,5 +31,10 @@ function insertScaleNote()
 end
 
 function insertHigherScaleNote()
+
+	if getOctave() > 7 then
+		return
+	end
+
 	insertScaleNoteImpl(1)
 end

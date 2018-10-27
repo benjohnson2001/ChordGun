@@ -22,6 +22,11 @@ local function playScaleNoteImpl(octaveAdjustment)
 end
 
 function playLowerScaleNote()
+
+  if getOctave() < 0 then
+    return
+  end
+
 	return playScaleNoteImpl(-1)
 end
 
@@ -30,5 +35,10 @@ function playScaleNote()
 end
 
 function playHigherScaleNote()
+
+  if getOctave() > 7 then
+    return
+  end
+
 	return playScaleNoteImpl(1)
 end
