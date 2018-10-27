@@ -207,8 +207,8 @@ function insertScaleChord1Action()
 
 	updateScaleData()
 	setSelectedScaleNote(1)
-	playChord()
 	insertChord()
+	playChord()
 end
 
 --
@@ -217,8 +217,8 @@ function insertScaleChord2Action()
 
 	updateScaleData()
 	setSelectedScaleNote(2)
-	playChord()
 	insertChord()
+	playChord()
 end
 
 --
@@ -227,8 +227,8 @@ function insertScaleChord3Action()
 
 	updateScaleData()
 	setSelectedScaleNote(3)
-	playChord()
 	insertChord()
+	playChord()
 end
 
 --
@@ -237,8 +237,8 @@ function insertScaleChord4Action()
 
 	updateScaleData()
 	setSelectedScaleNote(4)
-	playChord()
 	insertChord()
+	playChord()
 end
 
 --
@@ -247,16 +247,17 @@ function insertScaleChord5Action()
 
 	updateScaleData()
 	setSelectedScaleNote(5)
-	playChord()
 	insertChord()
+	playChord()
 end
 
 --
 
-function playScaleChord6Action()
+function insertScaleChord6Action()
 
 	updateScaleData()
 	setSelectedScaleNote(6)
+	insertChord()
 	playChord()
 end
 
@@ -317,12 +318,11 @@ end
 
 --
 
-function insertScaleChord6Action()
+function playScaleChord6Action()
 
 	updateScaleData()
 	setSelectedScaleNote(6)
 	playChord()
-	insertChord()
 end
 
 --
@@ -529,7 +529,8 @@ function insertScaleNote1Action()
 
 	updateScaleData()
 	setSelectedScaleNote(1)
-	return insertScaleNote()
+	insertScaleNote()
+	playScaleNote()
 end
 
 --
@@ -538,7 +539,8 @@ function insertScaleNote2Action()
 
 	updateScaleData()
 	setSelectedScaleNote(2)
-	return insertScaleNote()
+	insertScaleNote()
+	playScaleNote()
 end
 
 --
@@ -547,7 +549,8 @@ function insertScaleNote3Action()
 
 	updateScaleData()
 	setSelectedScaleNote(3)
-	return insertScaleNote()
+	insertScaleNote()
+	playScaleNote()
 end
 
 --
@@ -556,7 +559,8 @@ function insertScaleNote4Action()
 
 	updateScaleData()
 	setSelectedScaleNote(4)
-	return insertScaleNote()
+	insertScaleNote()
+	playScaleNote()
 end
 
 --
@@ -565,7 +569,8 @@ function insertScaleNote5Action()
 
 	updateScaleData()
 	setSelectedScaleNote(5)
-	return insertScaleNote()
+	insertScaleNote()
+	playScaleNote()
 end
 
 --
@@ -574,7 +579,8 @@ function insertScaleNote6Action()
 
 	updateScaleData()
 	setSelectedScaleNote(6)
-	return insertScaleNote()
+	insertScaleNote()
+	playScaleNote()
 end
 
 --
@@ -583,7 +589,8 @@ function insertScaleNote7Action()
 
 	updateScaleData()
 	setSelectedScaleNote(7)
-	return insertScaleNote()
+	insertScaleNote()
+	playScaleNote()
 end
 
 --
@@ -592,7 +599,8 @@ function insertLowerScaleNote1Action()
 
 	updateScaleData()
 	setSelectedScaleNote(1)
-	return insertLowerScaleNote()
+	insertLowerScaleNote()
+	playScaleNote()
 end
 
 --
@@ -601,7 +609,8 @@ function insertLowerScaleNote2Action()
 
 	updateScaleData()
 	setSelectedScaleNote(2)
-	return insertLowerScaleNote()
+	insertLowerScaleNote()
+	playScaleNote()
 end
 
 --
@@ -610,7 +619,8 @@ function insertLowerScaleNote3Action()
 
 	updateScaleData()
 	setSelectedScaleNote(3)
-	return insertLowerScaleNote()
+	insertLowerScaleNote()
+	playScaleNote()
 end
 
 --
@@ -619,7 +629,8 @@ function insertLowerScaleNote4Action()
 
 	updateScaleData()
 	setSelectedScaleNote(4)
-	return insertLowerScaleNote()
+	insertLowerScaleNote()
+	playScaleNote()
 end
 
 --
@@ -628,7 +639,8 @@ function insertLowerScaleNote5Action()
 
 	updateScaleData()
 	setSelectedScaleNote(5)
-	return insertLowerScaleNote()
+	insertLowerScaleNote()
+	playScaleNote()
 end
 
 --
@@ -637,7 +649,8 @@ function insertLowerScaleNote6Action()
 
 	updateScaleData()
 	setSelectedScaleNote(6)
-	return insertLowerScaleNote()
+	insertLowerScaleNote()
+	playScaleNote()
 end
 
 --
@@ -646,7 +659,8 @@ function insertLowerScaleNote7Action()
 
 	updateScaleData()
 	setSelectedScaleNote(7)
-	return insertLowerScaleNote()
+	insertLowerScaleNote()
+	playScaleNote()
 end
 
 --
@@ -655,7 +669,8 @@ function insertHigherScaleNote1Action()
 
 	updateScaleData()
 	setSelectedScaleNote(1)
-	return insertHigherScaleNote()
+	insertHigherScaleNote()
+	playScaleNote()
 end
 
 --
@@ -664,7 +679,8 @@ function insertHigherScaleNote2Action()
 
 	updateScaleData()
 	setSelectedScaleNote(2)
-	return insertHigherScaleNote()
+	insertHigherScaleNote()
+	playScaleNote()
 end
 
 --
@@ -673,7 +689,8 @@ function insertHigherScaleNote3Action()
 
 	updateScaleData()
 	setSelectedScaleNote(3)
-	return insertHigherScaleNote()
+	insertHigherScaleNote()
+	playScaleNote()
 end
 
 --
@@ -682,7 +699,8 @@ function insertHigherScaleNote4Action()
 
 	updateScaleData()
 	setSelectedScaleNote(4)
-	return insertHigherScaleNote()
+	insertHigherScaleNote()
+	playScaleNote()
 end
 
 --
@@ -691,7 +709,8 @@ function insertHigherScaleNote5Action()
 
 	updateScaleData()
 	setSelectedScaleNote(5)
-	return insertHigherScaleNote()
+	insertHigherScaleNote()
+	playScaleNote()
 end
 
 --
@@ -700,7 +719,8 @@ function insertHigherScaleNote6Action()
 
 	updateScaleData()
 	setSelectedScaleNote(6)
-	return insertHigherScaleNote()
+	insertHigherScaleNote()
+	playScaleNote()
 end
 
 --
@@ -709,7 +729,8 @@ function insertHigherScaleNote7Action()
 
 	updateScaleData()
 	setSelectedScaleNote(7)
-	return insertHigherScaleNote()
+	insertHigherScaleNote()
+	playScaleNote()
 end
 
 --

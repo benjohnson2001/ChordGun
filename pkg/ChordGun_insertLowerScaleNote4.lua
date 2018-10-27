@@ -1052,27 +1052,137 @@ function getChordNotesArray(root, chord, octave)
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
-function moveCursor()
-  
-  local activeMidiEditor = reaper.MIDIEditor_GetActive()
-  local activeTake = reaper.MIDIEditor_GetTake(activeMidiEditor)
+local function getActiveTake()
 
-  local noteLengthQN = getNoteLength()
-  local noteLengthPPQ = reaper.MIDI_GetPPQPosFromProjQN(activeTake, noteLengthQN)
-  local noteLength = reaper.MIDI_GetProjTimeFromPPQPos(activeTake, noteLengthPPQ)
+	local activeMidiEditor = reaper.MIDIEditor_GetActive()
+  return reaper.MIDIEditor_GetTake(activeMidiEditor)
+end
 
-  local timeSelection = false
-  reaper.MoveEditCursor(noteLength, timeSelection)
+local function getMediaItem()
+
+	local activeTake = getActiveTake()
+	return reaper.GetMediaItemTake_Item(activeTake)
 end
 
 
--- MIDI_GetPPQPos_StartOfMeasure 
--- MIDI_GetPPQPos_EndOfMeasure 
+local function getMediaItemStartPosition()
+
+	local mediaItem = getMediaItem()
+
+	return reaper.GetMediaItemInfo_Value(mediaItem, "D_POSITION")
+end
+
+local function getMediaItemEndPosition()
+
+	local mediaItem = getMediaItem()
+
+	local position = reaper.GetMediaItemInfo_Value(mediaItem, "D_POSITION")
+	local length = reaper.GetMediaItemInfo_Value(mediaItem, "D_LENGTH")
+
+	return position + length
+end
+
+local function getNoteLengthInSeconds()
+
+	local activeTake = getActiveTake()
+  local noteLengthQN = getNoteLength()
+  local noteLengthPPQ = reaper.MIDI_GetPPQPosFromProjQN(activeTake, noteLengthQN)
+  return reaper.MIDI_GetProjTimeFromPPQPos(activeTake, noteLengthPPQ)
+end
+
+local function setEditCursorPosition(arg)
+
+	local activeProjectIndex = 0
+	local moveView = false
+	local seekPlay = false
+	reaper.SetEditCurPos2(activeProjectIndex, arg, moveView, seekPlay)
+end
+
+local function moveEditCursorPosition(arg)
+
+	local moveTimeSelection = false
+  reaper.MoveEditCursor(arg, moveTimeSelection)
+end
+
+local function loopIsActive()
+
+	local repeatIsNotOn = (reaper.GetSetRepeat(-1) == 0)
+
+	if repeatIsNotOn then
+		return false
+	end
+
+	local loopStartPosition, loopEndPosition = reaper.GetSet_LoopTimeRange2(0, false, false, 0, 0, false)
+
+	if loopStartPosition == loopEndPosition then
+		return false
+	else
+		return true
+	end
+end
+
+function moveCursor()
+  
+  local cursorPosition = reaper.GetCursorPosition()
+  local noteLength = getNoteLengthInSeconds()
+
+  local mediaItemStartPosition = getMediaItemStartPosition()
+  local mediaItemEndPosition = getMediaItemEndPosition()
+  
+  local loopStartPosition, loopEndPosition = reaper.GetSet_LoopTimeRange2(0, false, false, 0, 0, false)
+
+--[[
+  print("cursorPosition: " .. cursorPosition)
+  print("noteLength: " .. noteLength)
+  print("mediaItemStartPosition: " .. mediaItemStartPosition)
+  print("mediaItemEndPosition: " .. mediaItemEndPosition)
+  print("loopStartPosition: " .. loopStartPosition)
+  print("loopEndPosition: " .. loopEndPosition)
+  print("loopIsActive: " .. tostring(loopIsActive))
+]]--
+
+	local tolerance = 0.000001
+  if loopIsActive() and loopEndPosition < mediaItemEndPosition then
+
+  	if cursorPosition + noteLength >= loopEndPosition - tolerance then
+
+  		if loopStartPosition > mediaItemStartPosition then
+  			setEditCursorPosition(loopStartPosition)
+  		else
+  			setEditCursorPosition(mediaItemStartPosition)
+  		end
+
+  	else
+  		moveEditCursorPosition(noteLength)
+  	end
+
+  elseif loopIsActive() and mediaItemEndPosition <= loopEndPosition then 
+
+  	if cursorPosition + noteLength >= mediaItemEndPosition - tolerance then
+
+  		if loopStartPosition > mediaItemStartPosition then
+  			setEditCursorPosition(loopStartPosition)
+  		else
+  			setEditCursorPosition(mediaItemStartPosition)
+  		end
+
+  	else
+  		moveEditCursorPosition(noteLength)
+  	end
+
+  elseif cursorPosition + noteLength >= mediaItemEndPosition then
+			setEditCursorPosition(mediaItemStartPosition)
+	else
+
+		moveEditCursorPosition(noteLength)
+  end
+end
+
+--
 
 function getCursorPositionPPQ()
 
-	local activeMidiEditor = reaper.MIDIEditor_GetActive()
-	local activeTake = reaper.MIDIEditor_GetTake(activeMidiEditor)
+	local activeTake = getActiveTake()
 
 	local cursorPosition = reaper.GetCursorPosition()
 	local cursorPositionPPQ = reaper.MIDI_GetPPQPosFromProjTime(activeTake, cursorPosition)
@@ -1088,8 +1198,7 @@ end
 
 function getNoteLength()
 
-	local activeMidiEditor = reaper.MIDIEditor_GetActive()
-	local activeTake = reaper.MIDIEditor_GetTake(activeMidiEditor)
+	local activeTake = getActiveTake()
 	local gridLen, _, noteLen = reaper.MIDI_GetGrid(activeTake)
 	
 	local noteLength = gridLen
@@ -1103,8 +1212,7 @@ end
 
 local function getEndPosition()
 
-	local activeMidiEditor = reaper.MIDIEditor_GetActive()
-	local activeTake = reaper.MIDIEditor_GetTake(activeMidiEditor)
+	local activeTake = getActiveTake()
 
 	local noteLength = getNoteLength()
 	local startPosition = getCursorPositionQN(activeTake)
@@ -1115,8 +1223,7 @@ end
 
 function insertMidiNote(note)
 
-	local activeMidiEditor = reaper.MIDIEditor_GetActive()
-	local activeTake = reaper.MIDIEditor_GetTake(activeMidiEditor)
+	local activeTake = getActiveTake()
 	local noteIsSelected = false
 	local noteIsMuted = false
 	local startPosition = getCursorPositionPPQ()
@@ -1677,8 +1784,8 @@ function insertScaleChord1Action()
 
 	updateScaleData()
 	setSelectedScaleNote(1)
-	playChord()
 	insertChord()
+	playChord()
 end
 
 --
@@ -1687,8 +1794,8 @@ function insertScaleChord2Action()
 
 	updateScaleData()
 	setSelectedScaleNote(2)
-	playChord()
 	insertChord()
+	playChord()
 end
 
 --
@@ -1697,8 +1804,8 @@ function insertScaleChord3Action()
 
 	updateScaleData()
 	setSelectedScaleNote(3)
-	playChord()
 	insertChord()
+	playChord()
 end
 
 --
@@ -1707,8 +1814,8 @@ function insertScaleChord4Action()
 
 	updateScaleData()
 	setSelectedScaleNote(4)
-	playChord()
 	insertChord()
+	playChord()
 end
 
 --
@@ -1717,16 +1824,17 @@ function insertScaleChord5Action()
 
 	updateScaleData()
 	setSelectedScaleNote(5)
-	playChord()
 	insertChord()
+	playChord()
 end
 
 --
 
-function playScaleChord6Action()
+function insertScaleChord6Action()
 
 	updateScaleData()
 	setSelectedScaleNote(6)
+	insertChord()
 	playChord()
 end
 
@@ -1787,12 +1895,11 @@ end
 
 --
 
-function insertScaleChord6Action()
+function playScaleChord6Action()
 
 	updateScaleData()
 	setSelectedScaleNote(6)
 	playChord()
-	insertChord()
 end
 
 --
@@ -1999,7 +2106,8 @@ function insertScaleNote1Action()
 
 	updateScaleData()
 	setSelectedScaleNote(1)
-	return insertScaleNote()
+	insertScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2008,7 +2116,8 @@ function insertScaleNote2Action()
 
 	updateScaleData()
 	setSelectedScaleNote(2)
-	return insertScaleNote()
+	insertScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2017,7 +2126,8 @@ function insertScaleNote3Action()
 
 	updateScaleData()
 	setSelectedScaleNote(3)
-	return insertScaleNote()
+	insertScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2026,7 +2136,8 @@ function insertScaleNote4Action()
 
 	updateScaleData()
 	setSelectedScaleNote(4)
-	return insertScaleNote()
+	insertScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2035,7 +2146,8 @@ function insertScaleNote5Action()
 
 	updateScaleData()
 	setSelectedScaleNote(5)
-	return insertScaleNote()
+	insertScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2044,7 +2156,8 @@ function insertScaleNote6Action()
 
 	updateScaleData()
 	setSelectedScaleNote(6)
-	return insertScaleNote()
+	insertScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2053,7 +2166,8 @@ function insertScaleNote7Action()
 
 	updateScaleData()
 	setSelectedScaleNote(7)
-	return insertScaleNote()
+	insertScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2062,7 +2176,8 @@ function insertLowerScaleNote1Action()
 
 	updateScaleData()
 	setSelectedScaleNote(1)
-	return insertLowerScaleNote()
+	insertLowerScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2071,7 +2186,8 @@ function insertLowerScaleNote2Action()
 
 	updateScaleData()
 	setSelectedScaleNote(2)
-	return insertLowerScaleNote()
+	insertLowerScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2080,7 +2196,8 @@ function insertLowerScaleNote3Action()
 
 	updateScaleData()
 	setSelectedScaleNote(3)
-	return insertLowerScaleNote()
+	insertLowerScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2089,7 +2206,8 @@ function insertLowerScaleNote4Action()
 
 	updateScaleData()
 	setSelectedScaleNote(4)
-	return insertLowerScaleNote()
+	insertLowerScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2098,7 +2216,8 @@ function insertLowerScaleNote5Action()
 
 	updateScaleData()
 	setSelectedScaleNote(5)
-	return insertLowerScaleNote()
+	insertLowerScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2107,7 +2226,8 @@ function insertLowerScaleNote6Action()
 
 	updateScaleData()
 	setSelectedScaleNote(6)
-	return insertLowerScaleNote()
+	insertLowerScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2116,7 +2236,8 @@ function insertLowerScaleNote7Action()
 
 	updateScaleData()
 	setSelectedScaleNote(7)
-	return insertLowerScaleNote()
+	insertLowerScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2125,7 +2246,8 @@ function insertHigherScaleNote1Action()
 
 	updateScaleData()
 	setSelectedScaleNote(1)
-	return insertHigherScaleNote()
+	insertHigherScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2134,7 +2256,8 @@ function insertHigherScaleNote2Action()
 
 	updateScaleData()
 	setSelectedScaleNote(2)
-	return insertHigherScaleNote()
+	insertHigherScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2143,7 +2266,8 @@ function insertHigherScaleNote3Action()
 
 	updateScaleData()
 	setSelectedScaleNote(3)
-	return insertHigherScaleNote()
+	insertHigherScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2152,7 +2276,8 @@ function insertHigherScaleNote4Action()
 
 	updateScaleData()
 	setSelectedScaleNote(4)
-	return insertHigherScaleNote()
+	insertHigherScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2161,7 +2286,8 @@ function insertHigherScaleNote5Action()
 
 	updateScaleData()
 	setSelectedScaleNote(5)
-	return insertHigherScaleNote()
+	insertHigherScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2170,7 +2296,8 @@ function insertHigherScaleNote6Action()
 
 	updateScaleData()
 	setSelectedScaleNote(6)
-	return insertHigherScaleNote()
+	insertHigherScaleNote()
+	playScaleNote()
 end
 
 --
@@ -2179,7 +2306,8 @@ function insertHigherScaleNote7Action()
 
 	updateScaleData()
 	setSelectedScaleNote(7)
-	return insertHigherScaleNote()
+	insertHigherScaleNote()
+	playScaleNote()
 end
 
 --
