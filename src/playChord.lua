@@ -23,5 +23,7 @@ function playChord()
     playMidiNote(chordNotesArray[note])
   end
 
+  setNotesThatArePlaying(chordNotesArray)
+
   updateChordText(root, chord, chordNotesArray)
 end

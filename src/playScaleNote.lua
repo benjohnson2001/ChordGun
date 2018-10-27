@@ -13,14 +13,10 @@ local function playScaleNoteImpl(octaveAdjustment)
   local octave = getOctave()
   local noteValue = root + ((octave+1+octaveAdjustment) * 12) - 1
 
-
-  stopAllNotesFromPlaying()
+  stopNotesFromPlaying()
   notesPlayingTimer:start()
   playMidiNote(noteValue)
-
-  	-- TODO
-    -- highlight the scale degree header for a few seconds
-    -- TODO
+  setNotesThatArePlaying({noteValue})
 
   return noteValue
 end
@@ -33,6 +29,6 @@ function playScaleNote()
   return playScaleNoteImpl(0)
 end
 
-function playLowerScaleNote()
+function playHigherScaleNote()
 	return playScaleNoteImpl(1)
 end

@@ -22,6 +22,7 @@ local selectedInversionStates4Key = "selectedInversionStates4"
 local selectedInversionStates5Key = "selectedInversionStates5"
 local selectedInversionStates6Key = "selectedInversionStates6"
 local selectedInversionStates7Key = "selectedInversionStates7"
+local notesThatArePlayingKey = "notesThatArePlaying"
 
 --
 
@@ -364,3 +365,15 @@ function resetSelectedInversionStates()
     setSelectedInversionState7(0)
   end
 end
+
+--
+
+function getNotesThatArePlaying()
+  return getTableValue(notesThatArePlayingKey, defaultNotesThatArePlaying)
+end
+
+function setNotesThatArePlaying(arg)
+  setTableValue(notesThatArePlayingKey, arg)
+end
+
+--

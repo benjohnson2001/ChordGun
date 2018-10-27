@@ -3,26 +3,15 @@ require(workingDirectory .. "/midiMessages")
 require(workingDirectory .. "/inputCharacters")
 
 local numberOfZeros = 0
-local maximumNumberOfZeros = 16
+local maximumNumberOfZeros = 16 -- this number probably system dependent
 local lastRecognizedCharacter = -1
 local lastMidiNote = -1
-
--- 113 ("q")
--- 0
--- 0
--- 113 ("q")
 
 
 function handleInput()
 
 
---	reaper.Main_OnCommand(41624, 0)
---	reaper.Main_OnCommand(41625, 0)
---  local commandId = reaper.NamedCommandLookup("_RSf5a1fbe71eaa92f79bc6a4c8726309dfbc8dc7a1")
---is_new,name,sec,cmd,rel,res,val = reaper.get_action_context()
---print("sec: ".. sec)
---print("cmd: " .. cmd)
-  --reaper.SetToggleCommandState(0, commandId, 1)
+
 
 	inputCharacter = gfx.getchar()
 

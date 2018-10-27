@@ -101,6 +101,8 @@ end
 
 defaultScaleNoteNames = {'C', 'D', 'E', 'F', 'G', 'A', 'B'}
 defaultScaleDegreeHeaders = {'I', 'ii', 'iii', 'IV', 'V', 'vi', 'viio'}
+
+defaultNotesThatArePlaying = {}
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 local activeProjectIndex = 0
@@ -124,6 +126,7 @@ local selectedInversionStates4Key = "selectedInversionStates4"
 local selectedInversionStates5Key = "selectedInversionStates5"
 local selectedInversionStates6Key = "selectedInversionStates6"
 local selectedInversionStates7Key = "selectedInversionStates7"
+local notesThatArePlayingKey = "notesThatArePlaying"
 
 --
 
@@ -466,6 +469,18 @@ function resetSelectedInversionStates()
     setSelectedInversionState7(0)
   end
 end
+
+--
+
+function getNotesThatArePlaying()
+  return getTableValue(notesThatArePlayingKey, defaultNotesThatArePlaying)
+end
+
+function setNotesThatArePlaying(arg)
+  setTableValue(notesThatArePlayingKey, arg)
+end
+
+--
 function mouseIsHoveringOver(element)
 
 	local x = gfx.mouse_x
@@ -879,6 +894,17 @@ function stopNoteFromPlaying(midiNote)
 
   reaper.StuffMIDIMessage(virtualKeyboardMode, noteOffCommand, midiNote, velocity)
 end
+
+function stopNotesFromPlaying()
+
+  local notesThatArePlaying = getNotesThatArePlaying()
+
+  for noteIndex = 1, #notesThatArePlaying do
+    stopNoteFromPlaying(notesThatArePlaying[noteIndex])
+  end
+
+  setNotesThatArePlaying({})
+end
 inversionStates = {}
 
 function updateInversionStates()
@@ -1026,6 +1052,19 @@ function getChordNotesArray(root, chord, octave)
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
+function moveCursor()
+  
+  local activeMidiEditor = reaper.MIDIEditor_GetActive()
+  local activeTake = reaper.MIDIEditor_GetTake(activeMidiEditor)
+
+  local noteLengthQN = getNoteLength()
+  local noteLengthPPQ = reaper.MIDI_GetPPQPosFromProjQN(activeTake, noteLengthQN)
+  local noteLength = reaper.MIDI_GetProjTimeFromPPQPos(activeTake, noteLengthPPQ)
+
+  local timeSelection = false
+  reaper.MoveEditCursor(noteLength, timeSelection)
+end
+
 function getCursorPositionPPQ()
 
 	local activeMidiEditor = reaper.MIDIEditor_GetActive()
@@ -1087,19 +1126,6 @@ function insertMidiNote(note)
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
-local function moveCursor()
-  
-  local activeMidiEditor = reaper.MIDIEditor_GetActive()
-  local activeTake = reaper.MIDIEditor_GetTake(activeMidiEditor)
-
-  local noteLengthQN = getNoteLength()
-  local noteLengthPPQ = reaper.MIDI_GetPPQPosFromProjQN(activeTake, noteLengthQN)
-  local noteLength = reaper.MIDI_GetProjTimeFromPPQPos(activeTake, noteLengthPPQ)
-
-  local timeSelection = false
-  reaper.MoveEditCursor(noteLength, timeSelection)
-end
-
 function insertChord()
   
   local scaleNoteIndex = getSelectedScaleNote()
@@ -1138,6 +1164,8 @@ function playChord()
   for note = 1, #chordNotesArray do
     playMidiNote(chordNotesArray[note])
   end
+
+  setNotesThatArePlaying(chordNotesArray)
 
   updateChordText(root, chord, chordNotesArray)
 end
@@ -1365,6 +1393,32 @@ end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 
+local function insertScaleNoteImpl(octaveAdjustment)
+
+  local scaleNoteIndex = getSelectedScaleNote()
+
+  local root = scaleNotes[scaleNoteIndex]
+  local octave = getOctave()
+  local noteValue = root + ((octave+1+octaveAdjustment) * 12) - 1
+
+  insertMidiNote(noteValue)
+  moveCursor()
+end
+
+function insertLowerScaleNote()
+	return insertScaleNoteImpl(-1)
+end
+
+function insertScaleNote()
+  insertScaleNoteImpl(0)
+end
+
+function insertHigherScaleNote()
+	insertScaleNoteImpl(1)
+end
+local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
+
+
 local function playScaleNoteImpl(octaveAdjustment)
 
   local scaleNoteIndex = getSelectedScaleNote()
@@ -1373,14 +1427,10 @@ local function playScaleNoteImpl(octaveAdjustment)
   local octave = getOctave()
   local noteValue = root + ((octave+1+octaveAdjustment) * 12) - 1
 
-
-  stopAllNotesFromPlaying()
+  stopNotesFromPlaying()
   notesPlayingTimer:start()
   playMidiNote(noteValue)
-
-  	-- TODO
-    -- highlight the scale degree header for a few seconds
-    -- TODO
+  setNotesThatArePlaying({noteValue})
 
   return noteValue
 end
@@ -1393,7 +1443,7 @@ function playScaleNote()
   return playScaleNoteImpl(0)
 end
 
-function playLowerScaleNote()
+function playHigherScaleNote()
 	return playScaleNoteImpl(1)
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
@@ -1740,6 +1790,377 @@ function playScaleNote1Action()
 end
 
 --
+
+function playScaleNote2Action()
+
+	updateScaleData()
+	setSelectedScaleNote(2)
+	return playScaleNote()
+end
+
+--
+
+function playScaleNote3Action()
+
+	updateScaleData()
+	setSelectedScaleNote(3)
+	return playScaleNote()
+end
+
+--
+
+function playScaleNote4Action()
+
+	updateScaleData()
+	setSelectedScaleNote(4)
+	return playScaleNote()
+end
+
+--
+
+function playScaleNote5Action()
+
+	updateScaleData()
+	setSelectedScaleNote(5)
+	return playScaleNote()
+end
+
+--
+
+function playScaleNote6Action()
+
+	updateScaleData()
+	setSelectedScaleNote(6)
+	return playScaleNote()
+end
+
+--
+
+function playScaleNote7Action()
+
+	updateScaleData()
+	setSelectedScaleNote(7)
+	return playScaleNote()
+end
+
+--
+
+function playLowerScaleNote1Action()
+
+	updateScaleData()
+	setSelectedScaleNote(1)
+	return playLowerScaleNote()
+end
+
+--
+
+function playLowerScaleNote2Action()
+
+	updateScaleData()
+	setSelectedScaleNote(2)
+	return playLowerScaleNote()
+end
+
+--
+
+function playLowerScaleNote3Action()
+
+	updateScaleData()
+	setSelectedScaleNote(3)
+	return playLowerScaleNote()
+end
+
+--
+
+function playLowerScaleNote4Action()
+
+	updateScaleData()
+	setSelectedScaleNote(4)
+	return playLowerScaleNote()
+end
+
+--
+
+function playLowerScaleNote5Action()
+
+	updateScaleData()
+	setSelectedScaleNote(5)
+	return playLowerScaleNote()
+end
+
+--
+
+function playLowerScaleNote6Action()
+
+	updateScaleData()
+	setSelectedScaleNote(6)
+	return playLowerScaleNote()
+end
+
+--
+
+function playLowerScaleNote7Action()
+
+	updateScaleData()
+	setSelectedScaleNote(7)
+	return playLowerScaleNote()
+end
+
+--
+
+function playHigherScaleNote1Action()
+
+	updateScaleData()
+	setSelectedScaleNote(1)
+	return playHigherScaleNote()
+end
+
+--
+
+function playHigherScaleNote2Action()
+
+	updateScaleData()
+	setSelectedScaleNote(2)
+	return playHigherScaleNote()
+end
+
+--
+
+function playHigherScaleNote3Action()
+
+	updateScaleData()
+	setSelectedScaleNote(3)
+	return playHigherScaleNote()
+end
+
+--
+
+function playHigherScaleNote4Action()
+
+	updateScaleData()
+	setSelectedScaleNote(4)
+	return playHigherScaleNote()
+end
+
+--
+
+function playHigherScaleNote5Action()
+
+	updateScaleData()
+	setSelectedScaleNote(5)
+	return playHigherScaleNote()
+end
+
+--
+
+function playHigherScaleNote6Action()
+
+	updateScaleData()
+	setSelectedScaleNote(6)
+	return playHigherScaleNote()
+end
+
+--
+
+function playHigherScaleNote7Action()
+
+	updateScaleData()
+	setSelectedScaleNote(7)
+	return playHigherScaleNote()
+end
+
+--
+
+function insertScaleNote1Action()
+
+	updateScaleData()
+	setSelectedScaleNote(1)
+	return insertScaleNote()
+end
+
+--
+
+function insertScaleNote2Action()
+
+	updateScaleData()
+	setSelectedScaleNote(2)
+	return insertScaleNote()
+end
+
+--
+
+function insertScaleNote3Action()
+
+	updateScaleData()
+	setSelectedScaleNote(3)
+	return insertScaleNote()
+end
+
+--
+
+function insertScaleNote4Action()
+
+	updateScaleData()
+	setSelectedScaleNote(4)
+	return insertScaleNote()
+end
+
+--
+
+function insertScaleNote5Action()
+
+	updateScaleData()
+	setSelectedScaleNote(5)
+	return insertScaleNote()
+end
+
+--
+
+function insertScaleNote6Action()
+
+	updateScaleData()
+	setSelectedScaleNote(6)
+	return insertScaleNote()
+end
+
+--
+
+function insertScaleNote7Action()
+
+	updateScaleData()
+	setSelectedScaleNote(7)
+	return insertScaleNote()
+end
+
+--
+
+function insertLowerScaleNote1Action()
+
+	updateScaleData()
+	setSelectedScaleNote(1)
+	return insertLowerScaleNote()
+end
+
+--
+
+function insertLowerScaleNote2Action()
+
+	updateScaleData()
+	setSelectedScaleNote(2)
+	return insertLowerScaleNote()
+end
+
+--
+
+function insertLowerScaleNote3Action()
+
+	updateScaleData()
+	setSelectedScaleNote(3)
+	return insertLowerScaleNote()
+end
+
+--
+
+function insertLowerScaleNote4Action()
+
+	updateScaleData()
+	setSelectedScaleNote(4)
+	return insertLowerScaleNote()
+end
+
+--
+
+function insertLowerScaleNote5Action()
+
+	updateScaleData()
+	setSelectedScaleNote(5)
+	return insertLowerScaleNote()
+end
+
+--
+
+function insertLowerScaleNote6Action()
+
+	updateScaleData()
+	setSelectedScaleNote(6)
+	return insertLowerScaleNote()
+end
+
+--
+
+function insertLowerScaleNote7Action()
+
+	updateScaleData()
+	setSelectedScaleNote(7)
+	return insertLowerScaleNote()
+end
+
+--
+
+function insertHigherScaleNote1Action()
+
+	updateScaleData()
+	setSelectedScaleNote(1)
+	return insertHigherScaleNote()
+end
+
+--
+
+function insertHigherScaleNote2Action()
+
+	updateScaleData()
+	setSelectedScaleNote(2)
+	return insertHigherScaleNote()
+end
+
+--
+
+function insertHigherScaleNote3Action()
+
+	updateScaleData()
+	setSelectedScaleNote(3)
+	return insertHigherScaleNote()
+end
+
+--
+
+function insertHigherScaleNote4Action()
+
+	updateScaleData()
+	setSelectedScaleNote(4)
+	return insertHigherScaleNote()
+end
+
+--
+
+function insertHigherScaleNote5Action()
+
+	updateScaleData()
+	setSelectedScaleNote(5)
+	return insertHigherScaleNote()
+end
+
+--
+
+function insertHigherScaleNote6Action()
+
+	updateScaleData()
+	setSelectedScaleNote(6)
+	return insertHigherScaleNote()
+end
+
+--
+
+function insertHigherScaleNote7Action()
+
+	if getOctave() > 7 then
+		return
+	end
+
+	updateScaleData()
+	setSelectedScaleNote(7)
+	return insertHigherScaleNote()
+end
 
 --
 function drawDropdownIcon()
@@ -3850,26 +4271,15 @@ inputCharacters["Z"] = 90
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 local numberOfZeros = 0
-local maximumNumberOfZeros = 16
+local maximumNumberOfZeros = 16 -- this number probably system dependent
 local lastRecognizedCharacter = -1
 local lastMidiNote = -1
-
--- 113 ("q")
--- 0
--- 0
--- 113 ("q")
 
 
 function handleInput()
 
 
---	reaper.Main_OnCommand(41624, 0)
---	reaper.Main_OnCommand(41625, 0)
---  local commandId = reaper.NamedCommandLookup("_RSf5a1fbe71eaa92f79bc6a4c8726309dfbc8dc7a1")
---is_new,name,sec,cmd,rel,res,val = reaper.get_action_context()
---print("sec: ".. sec)
---print("cmd: " .. cmd)
-  --reaper.SetToggleCommandState(0, commandId, 1)
+
 
 	inputCharacter = gfx.getchar()
 

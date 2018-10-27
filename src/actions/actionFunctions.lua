@@ -345,4 +345,375 @@ end
 
 --
 
+function playScaleNote2Action()
+
+	updateScaleData()
+	setSelectedScaleNote(2)
+	return playScaleNote()
+end
+
+--
+
+function playScaleNote3Action()
+
+	updateScaleData()
+	setSelectedScaleNote(3)
+	return playScaleNote()
+end
+
+--
+
+function playScaleNote4Action()
+
+	updateScaleData()
+	setSelectedScaleNote(4)
+	return playScaleNote()
+end
+
+--
+
+function playScaleNote5Action()
+
+	updateScaleData()
+	setSelectedScaleNote(5)
+	return playScaleNote()
+end
+
+--
+
+function playScaleNote6Action()
+
+	updateScaleData()
+	setSelectedScaleNote(6)
+	return playScaleNote()
+end
+
+--
+
+function playScaleNote7Action()
+
+	updateScaleData()
+	setSelectedScaleNote(7)
+	return playScaleNote()
+end
+
+--
+
+function playLowerScaleNote1Action()
+
+	updateScaleData()
+	setSelectedScaleNote(1)
+	return playLowerScaleNote()
+end
+
+--
+
+function playLowerScaleNote2Action()
+
+	updateScaleData()
+	setSelectedScaleNote(2)
+	return playLowerScaleNote()
+end
+
+--
+
+function playLowerScaleNote3Action()
+
+	updateScaleData()
+	setSelectedScaleNote(3)
+	return playLowerScaleNote()
+end
+
+--
+
+function playLowerScaleNote4Action()
+
+	updateScaleData()
+	setSelectedScaleNote(4)
+	return playLowerScaleNote()
+end
+
+--
+
+function playLowerScaleNote5Action()
+
+	updateScaleData()
+	setSelectedScaleNote(5)
+	return playLowerScaleNote()
+end
+
+--
+
+function playLowerScaleNote6Action()
+
+	updateScaleData()
+	setSelectedScaleNote(6)
+	return playLowerScaleNote()
+end
+
+--
+
+function playLowerScaleNote7Action()
+
+	updateScaleData()
+	setSelectedScaleNote(7)
+	return playLowerScaleNote()
+end
+
+--
+
+function playHigherScaleNote1Action()
+
+	updateScaleData()
+	setSelectedScaleNote(1)
+	return playHigherScaleNote()
+end
+
+--
+
+function playHigherScaleNote2Action()
+
+	updateScaleData()
+	setSelectedScaleNote(2)
+	return playHigherScaleNote()
+end
+
+--
+
+function playHigherScaleNote3Action()
+
+	updateScaleData()
+	setSelectedScaleNote(3)
+	return playHigherScaleNote()
+end
+
+--
+
+function playHigherScaleNote4Action()
+
+	updateScaleData()
+	setSelectedScaleNote(4)
+	return playHigherScaleNote()
+end
+
+--
+
+function playHigherScaleNote5Action()
+
+	updateScaleData()
+	setSelectedScaleNote(5)
+	return playHigherScaleNote()
+end
+
+--
+
+function playHigherScaleNote6Action()
+
+	updateScaleData()
+	setSelectedScaleNote(6)
+	return playHigherScaleNote()
+end
+
+--
+
+function playHigherScaleNote7Action()
+
+	updateScaleData()
+	setSelectedScaleNote(7)
+	return playHigherScaleNote()
+end
+
+--
+
+function insertScaleNote1Action()
+
+	updateScaleData()
+	setSelectedScaleNote(1)
+	return insertScaleNote()
+end
+
+--
+
+function insertScaleNote2Action()
+
+	updateScaleData()
+	setSelectedScaleNote(2)
+	return insertScaleNote()
+end
+
+--
+
+function insertScaleNote3Action()
+
+	updateScaleData()
+	setSelectedScaleNote(3)
+	return insertScaleNote()
+end
+
+--
+
+function insertScaleNote4Action()
+
+	updateScaleData()
+	setSelectedScaleNote(4)
+	return insertScaleNote()
+end
+
+--
+
+function insertScaleNote5Action()
+
+	updateScaleData()
+	setSelectedScaleNote(5)
+	return insertScaleNote()
+end
+
+--
+
+function insertScaleNote6Action()
+
+	updateScaleData()
+	setSelectedScaleNote(6)
+	return insertScaleNote()
+end
+
+--
+
+function insertScaleNote7Action()
+
+	updateScaleData()
+	setSelectedScaleNote(7)
+	return insertScaleNote()
+end
+
+--
+
+function insertLowerScaleNote1Action()
+
+	updateScaleData()
+	setSelectedScaleNote(1)
+	return insertLowerScaleNote()
+end
+
+--
+
+function insertLowerScaleNote2Action()
+
+	updateScaleData()
+	setSelectedScaleNote(2)
+	return insertLowerScaleNote()
+end
+
+--
+
+function insertLowerScaleNote3Action()
+
+	updateScaleData()
+	setSelectedScaleNote(3)
+	return insertLowerScaleNote()
+end
+
+--
+
+function insertLowerScaleNote4Action()
+
+	updateScaleData()
+	setSelectedScaleNote(4)
+	return insertLowerScaleNote()
+end
+
+--
+
+function insertLowerScaleNote5Action()
+
+	updateScaleData()
+	setSelectedScaleNote(5)
+	return insertLowerScaleNote()
+end
+
+--
+
+function insertLowerScaleNote6Action()
+
+	updateScaleData()
+	setSelectedScaleNote(6)
+	return insertLowerScaleNote()
+end
+
+--
+
+function insertLowerScaleNote7Action()
+
+	updateScaleData()
+	setSelectedScaleNote(7)
+	return insertLowerScaleNote()
+end
+
+--
+
+function insertHigherScaleNote1Action()
+
+	updateScaleData()
+	setSelectedScaleNote(1)
+	return insertHigherScaleNote()
+end
+
+--
+
+function insertHigherScaleNote2Action()
+
+	updateScaleData()
+	setSelectedScaleNote(2)
+	return insertHigherScaleNote()
+end
+
+--
+
+function insertHigherScaleNote3Action()
+
+	updateScaleData()
+	setSelectedScaleNote(3)
+	return insertHigherScaleNote()
+end
+
+--
+
+function insertHigherScaleNote4Action()
+
+	updateScaleData()
+	setSelectedScaleNote(4)
+	return insertHigherScaleNote()
+end
+
+--
+
+function insertHigherScaleNote5Action()
+
+	updateScaleData()
+	setSelectedScaleNote(5)
+	return insertHigherScaleNote()
+end
+
+--
+
+function insertHigherScaleNote6Action()
+
+	updateScaleData()
+	setSelectedScaleNote(6)
+	return insertHigherScaleNote()
+end
+
+--
+
+function insertHigherScaleNote7Action()
+
+	if getOctave() > 7 then
+		return
+	end
+
+	updateScaleData()
+	setSelectedScaleNote(7)
+	return insertHigherScaleNote()
+end
+
 --

@@ -33,3 +33,14 @@ function stopNoteFromPlaying(midiNote)
 
   reaper.StuffMIDIMessage(virtualKeyboardMode, noteOffCommand, midiNote, velocity)
 end
+
+function stopNotesFromPlaying()
+
+  local notesThatArePlaying = getNotesThatArePlaying()
+
+  for noteIndex = 1, #notesThatArePlaying do
+    stopNoteFromPlaying(notesThatArePlaying[noteIndex])
+  end
+
+  setNotesThatArePlaying({})
+end
