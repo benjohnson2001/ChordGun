@@ -2,7 +2,6 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/chordNotesArray")
 require(workingDirectory .. "/midiMessages")
 require(workingDirectory .. "/preferences")
-require(workingDirectory .. "/timer")
 
 
 function playChord()
@@ -16,8 +15,7 @@ function playChord()
   
   local chordNotesArray = getChordNotesArray(root, chord, octave)   
 
-  stopAllNotesFromPlaying()
-  notesPlayingTimer:start()
+  stopNotesFromPlaying()
   
   for note = 1, #chordNotesArray do
     playMidiNote(chordNotesArray[note])

@@ -610,9 +610,6 @@ currentWidth = 0
 
 scaleTonicNote = getScaleTonicNote()
 scaleType = getScaleType()
-
-local numberOfSecondsForChordPlay = 5
-notesPlayingTimer = Timer:new(numberOfSecondsForChordPlay)
 scales = {
   { name = "Major", pattern = "101011010101" },
   { name = "Natural Minor", pattern = "101101011010" },
@@ -1255,8 +1252,7 @@ function playChord()
   
   local chordNotesArray = getChordNotesArray(root, chord, octave)   
 
-  stopAllNotesFromPlaying()
-  notesPlayingTimer:start()
+  stopNotesFromPlaying()
   
   for note = 1, #chordNotesArray do
     playMidiNote(chordNotesArray[note])
@@ -1535,7 +1531,6 @@ local function playScaleNoteImpl(octaveAdjustment)
   local noteValue = root + ((octave+1+octaveAdjustment) * 12) - 1
 
   stopNotesFromPlaying()
-  notesPlayingTimer:start()
   playMidiNote(noteValue)
   setNotesThatArePlaying({noteValue})
 
@@ -4603,11 +4598,6 @@ function Interface:update()
 
 	if not mouseButtonIsNotPressedDown and leftMouseButtonIsNotHeldDown() then
 		mouseButtonIsNotPressedDown = true
-	end
-
-	if notesPlayingTimer:timeHasElapsed() then
-		stopAllNotesFromPlaying()
-		notesPlayingTimer:stop()
 	end
 
 	if scaleTonicNote ~= getScaleTonicNote() then

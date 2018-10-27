@@ -143,11 +143,6 @@ function Interface:update()
 		mouseButtonIsNotPressedDown = true
 	end
 
-	if notesPlayingTimer:timeHasElapsed() then
-		stopAllNotesFromPlaying()
-		notesPlayingTimer:stop()
-	end
-
 	if scaleTonicNote ~= getScaleTonicNote() then
 		scaleTonicNote = getScaleTonicNote()
 		updateScaleData()

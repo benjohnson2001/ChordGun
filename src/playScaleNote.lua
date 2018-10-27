@@ -2,7 +2,6 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/chordNotesArray")
 require(workingDirectory .. "/midiMessages")
 require(workingDirectory .. "/preferences")
-require(workingDirectory .. "/timer")
 
 
 local function playScaleNoteImpl(octaveAdjustment)
@@ -14,7 +13,6 @@ local function playScaleNoteImpl(octaveAdjustment)
   local noteValue = root + ((octave+1+octaveAdjustment) * 12) - 1
 
   stopNotesFromPlaying()
-  notesPlayingTimer:start()
   playMidiNote(noteValue)
   setNotesThatArePlaying({noteValue})
 
