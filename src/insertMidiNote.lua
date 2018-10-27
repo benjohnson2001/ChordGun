@@ -1,42 +1,52 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/midiEditor")
 
-local function getActiveTake()
 
-	local activeMidiEditor = reaper.MIDIEditor_GetActive()
-  return reaper.MIDIEditor_GetTake(activeMidiEditor)
+local function activeMidiEditor()
+	return reaper.MIDIEditor_GetActive()
 end
 
-local function getMediaItem()
-
-	local activeTake = getActiveTake()
-	return reaper.GetMediaItemTake_Item(activeTake)
+local function activeTake()
+  return reaper.MIDIEditor_GetTake(activeMidiEditor())
 end
 
-
-local function getMediaItemStartPosition()
-
-	local mediaItem = getMediaItem()
-
-	return reaper.GetMediaItemInfo_Value(mediaItem, "D_POSITION")
+local function activeMediaItem()
+	return reaper.GetMediaItemTake_Item(activeTake())
 end
 
-local function getMediaItemEndPosition()
-
-	local mediaItem = getMediaItem()
-
-	local position = reaper.GetMediaItemInfo_Value(mediaItem, "D_POSITION")
-	local length = reaper.GetMediaItemInfo_Value(mediaItem, "D_LENGTH")
-
-	return position + length
+local function mediaItemStartPosition()
+	return reaper.GetMediaItemInfo_Value(activeMediaItem(), "D_POSITION")
 end
 
-local function getNoteLengthInSeconds()
+local function mediaItemLength()
+	return reaper.GetMediaItemInfo_Value(activeMediaItem(), "D_LENGTH")
+end
 
-	local activeTake = getActiveTake()
-  local noteLengthQN = getNoteLength()
-  local noteLengthPPQ = reaper.MIDI_GetPPQPosFromProjQN(activeTake, noteLengthQN)
-  return reaper.MIDI_GetProjTimeFromPPQPos(activeTake, noteLengthPPQ)
+local function mediaItemEndPosition()
+	return mediaItemStartPosition() + mediaItemLength()
+end
+
+local function cursorPosition()
+	return reaper.GetCursorPosition()
+end
+
+local function loopStartPosition()
+
+	local loopStartPosition, _ = reaper.GetSet_LoopTimeRange2(0, false, false, 0, 0, false)
+	return loopStartPosition
+end
+
+local function loopEndPosition()
+
+	local _, loopEndPosition = reaper.GetSet_LoopTimeRange2(0, false, false, 0, 0, false)
+	return loopEndPosition
+end
+
+local function noteLength()
+
+  local noteLengthQN = getNoteLengthQN()
+  local noteLengthPPQ = reaper.MIDI_GetPPQPosFromProjQN(activeTake(), noteLengthQN)
+  return reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), noteLengthPPQ)
 end
 
 local function setEditCursorPosition(arg)
@@ -53,17 +63,17 @@ local function moveEditCursorPosition(arg)
   reaper.MoveEditCursor(arg, moveTimeSelection)
 end
 
+local function repeatIsNotOn()
+	return reaper.GetSetRepeat(-1) == 0
+end
+
 local function loopIsActive()
 
-	local repeatIsNotOn = (reaper.GetSetRepeat(-1) == 0)
-
-	if repeatIsNotOn then
+	if repeatIsNotOn() then
 		return false
 	end
 
-	local loopStartPosition, loopEndPosition = reaper.GetSet_LoopTimeRange2(0, false, false, 0, 0, false)
-
-	if loopStartPosition == loopEndPosition then
+	if loopStartPosition() == loopEndPosition() then
 		return false
 	else
 		return true
@@ -71,84 +81,57 @@ local function loopIsActive()
 end
 
 function moveCursor()
-  
-  local cursorPosition = reaper.GetCursorPosition()
-  local noteLength = getNoteLengthInSeconds()
-
-  local mediaItemStartPosition = getMediaItemStartPosition()
-  local mediaItemEndPosition = getMediaItemEndPosition()
-  
-  local loopStartPosition, loopEndPosition = reaper.GetSet_LoopTimeRange2(0, false, false, 0, 0, false)
-
---[[
-  print("cursorPosition: " .. cursorPosition)
-  print("noteLength: " .. noteLength)
-  print("mediaItemStartPosition: " .. mediaItemStartPosition)
-  print("mediaItemEndPosition: " .. mediaItemEndPosition)
-  print("loopStartPosition: " .. loopStartPosition)
-  print("loopEndPosition: " .. loopEndPosition)
-  print("loopIsActive: " .. tostring(loopIsActive))
-]]--
 
 	local tolerance = 0.000001
-  if loopIsActive() and loopEndPosition < mediaItemEndPosition then
+  if loopIsActive() and loopEndPosition() < mediaItemEndPosition() then
 
-  	if cursorPosition + noteLength >= loopEndPosition - tolerance then
+  	if cursorPosition() + noteLength() >= loopEndPosition() - tolerance then
 
-  		if loopStartPosition > mediaItemStartPosition then
-  			setEditCursorPosition(loopStartPosition)
+  		if loopStartPosition() > mediaItemStartPosition() then
+  			setEditCursorPosition(loopStartPosition())
   		else
-  			setEditCursorPosition(mediaItemStartPosition)
+  			setEditCursorPosition(mediaItemStartPosition())
   		end
 
   	else
-  		moveEditCursorPosition(noteLength)
+  		moveEditCursorPosition(noteLength())
   	end
 
-  elseif loopIsActive() and mediaItemEndPosition <= loopEndPosition then 
+  elseif loopIsActive() and mediaItemEndPosition() <= loopEndPosition() then 
 
-  	if cursorPosition + noteLength >= mediaItemEndPosition - tolerance then
+  	if cursorPosition() + noteLength() >= mediaItemEndPosition() - tolerance then
 
-  		if loopStartPosition > mediaItemStartPosition then
-  			setEditCursorPosition(loopStartPosition)
+  		if loopStartPosition() > mediaItemStartPosition() then
+  			setEditCursorPosition(loopStartPosition())
   		else
-  			setEditCursorPosition(mediaItemStartPosition)
+  			setEditCursorPosition(mediaItemStartPosition())
   		end
 
   	else
-  		moveEditCursorPosition(noteLength)
+  		moveEditCursorPosition(noteLength())
   	end
 
-  elseif cursorPosition + noteLength >= mediaItemEndPosition then
-			setEditCursorPosition(mediaItemStartPosition)
+  elseif cursorPosition() + noteLength() >= mediaItemEndPosition() then
+			setEditCursorPosition(mediaItemStartPosition())
 	else
 
-		moveEditCursorPosition(noteLength)
+		moveEditCursorPosition(noteLength())
   end
 end
 
 --
 
 function getCursorPositionPPQ()
-
-	local activeTake = getActiveTake()
-
-	local cursorPosition = reaper.GetCursorPosition()
-	local cursorPositionPPQ = reaper.MIDI_GetPPQPosFromProjTime(activeTake, cursorPosition)
-	return cursorPositionPPQ
+	return reaper.MIDI_GetPPQPosFromProjTime(activeTake(), cursorPosition())
 end
 
-local function getCursorPositionQN(activeTake)
-	local cursorPosition = reaper.GetCursorPosition()
-	local cursorPositionPPQ = reaper.MIDI_GetPPQPosFromProjTime(activeTake, cursorPosition)
-	local cursorPositionQN = reaper.MIDI_GetProjQNFromPPQPos(activeTake, cursorPositionPPQ)
-	return cursorPositionQN
+local function getCursorPositionQN()
+	return reaper.MIDI_GetProjQNFromPPQPos(activeTake(), getCursorPositionPPQ())
 end
 
-function getNoteLength()
+function getNoteLengthQN()
 
-	local activeTake = getActiveTake()
-	local gridLen, _, noteLen = reaper.MIDI_GetGrid(activeTake)
+	local gridLen, _, noteLen = reaper.MIDI_GetGrid(activeTake())
 	
 	local noteLength = gridLen
 
@@ -159,28 +142,29 @@ function getNoteLength()
 	return noteLength
 end
 
-local function getEndPosition()
+local function getMidiEndPositionPPQ()
 
-	local activeTake = getActiveTake()
+	local noteLength = getNoteLengthQN()
+	local startPosition = getCursorPositionQN()
+	return reaper.MIDI_GetPPQPosFromProjQN(activeTake(), startPosition + noteLength)
+end
 
-	local noteLength = getNoteLength()
-	local startPosition = getCursorPositionQN(activeTake)
-	local endPosition = reaper.MIDI_GetPPQPosFromProjQN(activeTake, startPosition + noteLength)
+function deselectAllNotes()
 
-	return endPosition
+	local selectAllNotes = false
+	reaper.MIDI_SelectAll(activeTake(), selectAllNotes)
 end
 
 function insertMidiNote(note)
 
-	local activeTake = getActiveTake()
-	local noteIsSelected = false
+	local noteIsSelected = true
 	local noteIsMuted = false
 	local startPosition = getCursorPositionPPQ()
-	local endPosition = getEndPosition()
+	local endPosition = getMidiEndPositionPPQ()
 
 	local channel = getCurrentNoteChannel()
 	local velocity = getCurrentVelocity()
 	local noSort = false
 
-	reaper.MIDI_InsertNote(activeTake, noteIsSelected, noteIsMuted, startPosition, endPosition, channel, note, velocity, noSort)
+	reaper.MIDI_InsertNote(activeTake(), noteIsSelected, noteIsMuted, startPosition, endPosition, channel, note, velocity, noSort)
 end

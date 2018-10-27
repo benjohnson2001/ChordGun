@@ -14,6 +14,8 @@ function insertChord()
   
   local chordNotesArray = getChordNotesArray(root, chord, octave)   
   
+  deselectAllNotes()
+
   for note = 1, #chordNotesArray do
     insertMidiNote(chordNotesArray[note])
   end
