@@ -206,6 +206,10 @@ end
 
 function multiplyGridSizeByOneHalf()
 
+  if activeTake() == nil then
+    return
+  end
+
   local gridSize = reaper.MIDI_GetGrid(reaper.MIDIEditor_GetTake(reaper.MIDIEditor_GetActive()))/4
 
   if gridSize <= 1/1024 then
@@ -217,6 +221,10 @@ function multiplyGridSizeByOneHalf()
 end
 
 function multiplyGridSizeByTwo()
+
+  if activeTake() == nil then
+    return
+  end
 
   local gridSize = reaper.MIDI_GetGrid(reaper.MIDIEditor_GetTake(reaper.MIDIEditor_GetActive()))/4
 
