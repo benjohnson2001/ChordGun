@@ -356,13 +356,13 @@ function resetSelectedInversionStates()
   local numberOfSelectedInversionStates = #defaultSelectedInversionStates
 
   for i = 1, numberOfSelectedInversionStates do
-    setSelectedInversionState1(0)
-    setSelectedInversionState2(0)
-    setSelectedInversionState3(0)
-    setSelectedInversionState4(0)
-    setSelectedInversionState5(0)
-    setSelectedInversionState6(0)
-    setSelectedInversionState7(0)
+    setSelectedInversionState1(i, 0)
+    setSelectedInversionState2(i, 0)
+    setSelectedInversionState3(i, 0)
+    setSelectedInversionState4(i, 0)
+    setSelectedInversionState5(i, 0)
+    setSelectedInversionState6(i, 0)
+    setSelectedInversionState7(i, 0)
   end
 end
 

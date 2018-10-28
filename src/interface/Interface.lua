@@ -146,6 +146,7 @@ function Interface:update()
 	if scaleTonicNote ~= getScaleTonicNote() then
 		scaleTonicNote = getScaleTonicNote()
 		updateScaleData()
+		print("gui restarted because of scale note change")
 		self:restartGui()
 	end
 

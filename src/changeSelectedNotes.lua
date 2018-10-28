@@ -14,6 +14,10 @@ end
 
 local function thereAreNotesSelected()
 
+	if activeTake() == nil then
+		return false
+	end
+
 	local numberOfNotes = getNumberOfNotes()
 
 	for noteIndex = 0, numberOfNotes-1 do

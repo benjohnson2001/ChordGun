@@ -460,13 +460,13 @@ function resetSelectedInversionStates()
   local numberOfSelectedInversionStates = #defaultSelectedInversionStates
 
   for i = 1, numberOfSelectedInversionStates do
-    setSelectedInversionState1(0)
-    setSelectedInversionState2(0)
-    setSelectedInversionState3(0)
-    setSelectedInversionState4(0)
-    setSelectedInversionState5(0)
-    setSelectedInversionState6(0)
-    setSelectedInversionState7(0)
+    setSelectedInversionState1(i, 0)
+    setSelectedInversionState2(i, 0)
+    setSelectedInversionState3(i, 0)
+    setSelectedInversionState4(i, 0)
+    setSelectedInversionState5(i, 0)
+    setSelectedInversionState6(i, 0)
+    setSelectedInversionState7(i, 0)
   end
 end
 
@@ -1228,6 +1228,10 @@ local function deleteNote(noteIndex)
 end
 
 local function thereAreNotesSelected()
+
+	if activeTake() == nil then
+		return false
+	end
 
 	local numberOfNotes = getNumberOfNotes()
 
@@ -4754,6 +4758,7 @@ function Interface:update()
 	if scaleTonicNote ~= getScaleTonicNote() then
 		scaleTonicNote = getScaleTonicNote()
 		updateScaleData()
+		print("gui restarted because of scale note change")
 		self:restartGui()
 	end
 
@@ -4824,6 +4829,8 @@ function Interface:addScaleTonicNoteDropdown()
 	local onScaleTonicNoteSelection = function(i)
 
 		setScaleTonicNote(i)
+		setSelectedScaleNote(1)
+		setChordText("")
 		resetSelectedChordTypes()
 		resetSelectedInversionStates()
 		updateScaleData()
@@ -4844,6 +4851,8 @@ function Interface:addScaleTypeDropdown()
 	local onScaleTypeSelection = function(i)
 
 		setScaleType(i)
+		setSelectedScaleNote(1)
+		setChordText("")
 		resetSelectedChordTypes()
 		resetSelectedInversionStates()
 		updateScaleData()
