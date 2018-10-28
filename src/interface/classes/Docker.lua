@@ -1,5 +1,6 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/util")
+require(workingDirectory .. "/globalState")
 
 Docker = {}
 Docker.__index = Docker
@@ -32,6 +33,7 @@ end
 
 local function undockWindow()
   gfx.dock(0)
+  guiShouldBeUpdated = true
 end
 
 function Docker:drawUndockWindowContextMenu()

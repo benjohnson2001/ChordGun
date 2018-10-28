@@ -159,6 +159,12 @@ function Interface:update()
 		self:restartGui()
 	end
 
+	if guiShouldBeUpdated then
+		
+		self:restartGui()
+		guiShouldBeUpdated = false
+	end
+
 	gfx.update()
 end
 

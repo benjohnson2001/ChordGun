@@ -24,6 +24,10 @@ end
 
 local function insertScaleNoteImpl(octaveAdjustment)
 
+  if activeTake() == nil then
+    return
+  end
+
   if thereAreNotesSelected() then 
     changeSelectedNotesToScaleNotes(octaveAdjustment)
   else

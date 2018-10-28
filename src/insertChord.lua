@@ -29,6 +29,10 @@ end
 
 function insertChord()
 
+  if activeTake() == nil then
+    return
+  end
+
   if thereAreNotesSelected() then 
     changeSelectedNotesToScaleChords()
   else

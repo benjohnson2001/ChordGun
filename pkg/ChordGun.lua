@@ -610,6 +610,8 @@ currentWidth = 0
 
 scaleTonicNote = getScaleTonicNote()
 scaleType = getScaleType()
+
+guiShouldBeUpdated = false
 scales = {
   { name = "Major", pattern = "101011010101" },
   { name = "Natural Minor", pattern = "101101011010" },
@@ -1043,11 +1045,27 @@ function thereAreNotesSelected()
 end
 
 function multiplyGridSizeByOneHalf()
-  reaper.Main_OnCommand(40212, 0)
+
+  local gridSize = reaper.MIDI_GetGrid(reaper.MIDIEditor_GetTake(reaper.MIDIEditor_GetActive()))/4
+
+  if gridSize <= 1/512 then
+    return
+  end
+
+  local activeProjectIndex = 0
+  reaper.SetMIDIEditorGrid(activeProjectIndex, gridSize/2)
 end
 
 function multiplyGridSizeByTwo()
-  reaper.Main_OnCommand(40210, 0)
+
+  local gridSize = reaper.MIDI_GetGrid(reaper.MIDIEditor_GetTake(reaper.MIDIEditor_GetActive()))/4
+
+  if gridSize >= 512 then
+    return
+  end
+
+  local activeProjectIndex = 0
+  reaper.SetMIDIEditorGrid(activeProjectIndex, gridSize*2)
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
@@ -1346,6 +1364,10 @@ end
 
 function insertChord()
 
+  if activeTake() == nil then
+    return
+  end
+
   if thereAreNotesSelected() then 
     changeSelectedNotesToScaleChords()
   else
@@ -1643,6 +1665,10 @@ function insertScaleNoteForSelection(octaveAdjustment)
 end
 
 local function insertScaleNoteImpl(octaveAdjustment)
+
+  if activeTake() == nil then
+    return
+  end
 
   if thereAreNotesSelected() then 
     changeSelectedNotesToScaleNotes(octaveAdjustment)
@@ -3772,6 +3798,7 @@ end
 
 local function undockWindow()
   gfx.dock(0)
+  guiShouldBeUpdated = true
 end
 
 function Docker:drawUndockWindowContextMenu()
@@ -5075,6 +5102,12 @@ function Interface:update()
 
 	if currentWidth ~= gfx.w then
 		self:restartGui()
+	end
+
+	if guiShouldBeUpdated then
+		
+		self:restartGui()
+		guiShouldBeUpdated = false
 	end
 
 	gfx.update()

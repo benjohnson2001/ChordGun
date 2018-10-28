@@ -205,9 +205,25 @@ function thereAreNotesSelected()
 end
 
 function multiplyGridSizeByOneHalf()
-  reaper.Main_OnCommand(40212, 0)
+
+  local gridSize = reaper.MIDI_GetGrid(reaper.MIDIEditor_GetTake(reaper.MIDIEditor_GetActive()))/4
+
+  if gridSize <= 1/1024 then
+    return
+  end
+
+  local activeProjectIndex = 0
+  reaper.SetMIDIEditorGrid(activeProjectIndex, gridSize/2)
 end
 
 function multiplyGridSizeByTwo()
-  reaper.Main_OnCommand(40210, 0)
+
+  local gridSize = reaper.MIDI_GetGrid(reaper.MIDIEditor_GetTake(reaper.MIDIEditor_GetActive()))/4
+
+  if gridSize >= 1024 then
+    return
+  end
+
+  local activeProjectIndex = 0
+  reaper.SetMIDIEditorGrid(activeProjectIndex, gridSize*2)
 end
