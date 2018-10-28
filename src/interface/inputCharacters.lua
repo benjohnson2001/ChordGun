@@ -70,3 +70,8 @@ inputCharacters["W"] = 87
 inputCharacters["X"] = 88
 inputCharacters["Y"] = 89
 inputCharacters["Z"] = 90
+
+inputCharacters[","] = 44
+inputCharacters["."] = 46
+inputCharacters["<"] = 60
+inputCharacters[">"] = 62

@@ -203,3 +203,11 @@ function thereAreNotesSelected()
 
   return false
 end
+
+function multiplyGridSizeByOneHalf()
+  reaper.Main_OnCommand(40212, 0)
+end
+
+function multiplyGridSizeByTwo()
+  reaper.Main_OnCommand(40210, 0)
+end

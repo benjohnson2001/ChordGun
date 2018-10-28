@@ -1041,6 +1041,14 @@ function thereAreNotesSelected()
 
   return false
 end
+
+function multiplyGridSizeByOneHalf()
+  reaper.Main_OnCommand(40212, 0)
+end
+
+function multiplyGridSizeByTwo()
+  reaper.Main_OnCommand(40210, 0)
+end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 function playMidiNote(midiNote)
@@ -1678,6 +1686,7 @@ local function playScaleNoteImpl(octaveAdjustment)
   stopNotesFromPlaying()
   playMidiNote(noteValue)
   setNotesThatArePlaying({noteValue})
+  setChordText("")
 
   return noteValue
 end

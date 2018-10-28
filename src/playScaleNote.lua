@@ -15,6 +15,7 @@ local function playScaleNoteImpl(octaveAdjustment)
   stopNotesFromPlaying()
   playMidiNote(noteValue)
   setNotesThatArePlaying({noteValue})
+  setChordText("")
 
   return noteValue
 end
