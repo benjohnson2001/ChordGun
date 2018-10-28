@@ -172,3 +172,34 @@ function getCurrentVelocity()
 
   return reaper.MIDIEditor_GetSetting_int(activeMidiEditor, "default_note_vel")
 end
+
+function getNumberOfNotes()
+
+  local _, numberOfNotes = reaper.MIDI_CountEvts(activeTake())
+  return numberOfNotes
+end
+
+function deleteNote(noteIndex)
+
+  reaper.MIDI_DeleteNote(activeTake(), noteIndex)
+end
+
+function thereAreNotesSelected()
+
+  if activeTake() == nil then
+    return false
+  end
+
+  local numberOfNotes = getNumberOfNotes()
+
+  for noteIndex = 0, numberOfNotes-1 do
+
+    local _, noteIsSelected = reaper.MIDI_GetNote(activeTake(), noteIndex)
+
+    if noteIsSelected then
+      return true
+    end
+  end
+
+  return false
+end

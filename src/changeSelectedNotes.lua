@@ -1,37 +1,6 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/midiEditor")
 
-local function getNumberOfNotes()
-
-	local _, numberOfNotes = reaper.MIDI_CountEvts(activeTake())
-	return numberOfNotes
-end
-
-local function deleteNote(noteIndex)
-
-	reaper.MIDI_DeleteNote(activeTake(), noteIndex)
-end
-
-local function thereAreNotesSelected()
-
-	if activeTake() == nil then
-		return false
-	end
-
-	local numberOfNotes = getNumberOfNotes()
-
-	for noteIndex = 0, numberOfNotes-1 do
-
-		local _, noteIsSelected = reaper.MIDI_GetNote(activeTake(), noteIndex)
-
-		if noteIsSelected then
-			return true
-		end
-	end
-
-	return false
-end
-
 local function getNoteStartingPositions()
 
 	local numberOfNotes = getNumberOfNotes()

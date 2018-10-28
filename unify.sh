@@ -39,6 +39,7 @@ function unifyMainProgram() {
 	insertIntoFile src/insertChord.lua $1
 	insertIntoFile src/playChord.lua $1
 	insertIntoFile src/scaleData.lua $1
+	insertIntoFile src/transposeSelectedNotes.lua $1
 	insertIntoFile src/insertScaleNote.lua $1
 	insertIntoFile src/playScaleNote.lua $1
 
@@ -90,6 +91,7 @@ function unifyKeyboardShortcut() {
 	insertIntoFile src/insertChord.lua $1
 	insertIntoFile src/playChord.lua $1
 	insertIntoFile src/scaleData.lua $1
+	insertIntoFile src/transposeSelectedNotes.lua $1
 	insertIntoFile src/insertScaleNote.lua $1
 	insertIntoFile src/playScaleNote.lua $1
 	

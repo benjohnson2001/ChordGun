@@ -40,3 +40,18 @@ function playHigherScaleNote()
 
 	return playScaleNoteImpl(1)
 end
+
+--
+
+function playTonicNote()
+
+  local root = scaleNotes[1]
+  local octave = getOctave()
+  local noteValue = root + ((octave+1) * 12) - 1
+
+  stopNotesFromPlaying()
+  playMidiNote(noteValue)
+  setNotesThatArePlaying({noteValue})
+
+  return noteValue
+end

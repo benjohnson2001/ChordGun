@@ -112,12 +112,12 @@ function OctaveValueBox:update()
 
   if mouseButtonIsNotPressedDown and leftButtonHasBeenClicked(self) then
     mouseButtonIsNotPressedDown = false
-    decrementOctave()
+    decrementOctaveAction()
   end
 
   if mouseButtonIsNotPressedDown and rightButtonHasBeenClicked(self) then
     mouseButtonIsNotPressedDown = false
-    incrementOctave()
+    incrementOctaveAction()
   end
 
   self:drawText()

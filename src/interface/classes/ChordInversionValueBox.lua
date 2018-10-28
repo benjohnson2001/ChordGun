@@ -120,24 +120,12 @@ function ChordInversionValueBox:update()
 
   if mouseButtonIsNotPressedDown and leftButtonHasBeenClicked(self) then
     mouseButtonIsNotPressedDown = false
-    decrementChordInversion()
-
-    if thereAreNotesSelected() then
-      insertChord()
-    end
-    
-    playChord()
+    decrementChordInversionAction()
   end
 
   if mouseButtonIsNotPressedDown and rightButtonHasBeenClicked(self) then
     mouseButtonIsNotPressedDown = false
-    incrementChordInversion()
-    
-    if thereAreNotesSelected() then
-      insertChord()
-    end
-    
-    playChord()
+    incrementChordInversionAction()
   end
 
   self:drawText()
