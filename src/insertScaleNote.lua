@@ -3,9 +3,10 @@ require(workingDirectory .. "/chordNotesArray")
 require(workingDirectory .. "/midiMessages")
 require(workingDirectory .. "/preferences")
 require(workingDirectory .. "/insertMidiNote")
+require(workingDirectory .. "/changeSelectedNotes")
 
 
-local function insertScaleNoteImpl(octaveAdjustment)
+local function insertScaleNoteImplImpl(octaveAdjustment, keepNotesSelected)
 
   local scaleNoteIndex = getSelectedScaleNote()
 
@@ -13,8 +14,21 @@ local function insertScaleNoteImpl(octaveAdjustment)
   local octave = getOctave()
   local noteValue = root + ((octave+1+octaveAdjustment) * 12) - 1
 
-  insertMidiNote(noteValue)
+  insertMidiNote(noteValue, keepNotesSelected)
   moveCursor()
+end
+
+function insertScaleNoteForSelection(octaveAdjustment)
+	insertScaleNoteImplImpl(octaveAdjustment, true)
+end
+
+local function insertScaleNoteImpl(octaveAdjustment)
+
+  if thereAreNotesSelected() then 
+    changeSelectedNotesToScaleNotes(octaveAdjustment)
+  else
+    insertScaleNoteImplImpl(octaveAdjustment, false)
+  end
 end
 
 function insertLowerScaleNote()
@@ -23,7 +37,7 @@ function insertLowerScaleNote()
 		return
 	end
 
-	return insertScaleNoteImpl(-1)
+	insertScaleNoteImpl(-1)
 end
 
 function insertScaleNote()

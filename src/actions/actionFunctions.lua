@@ -19,8 +19,40 @@ function decrementChordInversionAction()
 
 	updateScaleData()
 	decrementChordInversion()
+
+	if thereAreNotesSelected() then
+		insertChord()
+	end
+
 	playChord()
 end
+
+--
+
+local function incrementChordInversion()
+
+  local chordInversionMax = getChordInversionMax()
+  local chordInversion = getCurrentInversionValue()
+
+  if chordInversion >= chordInversionMax then
+    return
+  end
+
+  setInversionState(chordInversion+1)
+end
+
+function incrementChordInversionAction()
+
+	updateScaleData()
+	incrementChordInversion()
+
+	if thereAreNotesSelected() then
+		insertChord()
+	end
+	
+	playChord()
+end
+
 
 --
 
@@ -40,6 +72,37 @@ function decrementChordTypeAction()
 
 	updateScaleData()
 	decrementChordType()
+
+	if thereAreNotesSelected() then
+		insertChord()
+	end
+
+	playChord()
+end
+
+--
+
+local function incrementChordType()
+
+	local selectedScaleNote = getSelectedScaleNote()
+	local selectedChordType = getSelectedChordType(selectedScaleNote)
+
+  if selectedChordType >= #chords then
+    return
+  end
+
+  setSelectedChordType(selectedScaleNote, selectedChordType+1)
+end
+
+function incrementChordTypeAction()
+
+	updateScaleData()
+	incrementChordType()
+
+	if thereAreNotesSelected() then
+		insertChord()
+	end
+		
 	playChord()
 end
 
@@ -64,6 +127,25 @@ end
 
 --
 
+local function incrementOctave()
+
+  local octave = getOctave()
+
+  if octave >= 8 then
+    return
+  end
+
+  setOctave(octave+1)
+end
+
+function incrementOctaveAction()
+
+	updateScaleData()
+	incrementOctave()
+end
+
+--
+
 local function decrementScaleTonicNote()
 
 	local scaleTonicNote = getScaleTonicNote()
@@ -79,6 +161,25 @@ function decrementScaleTonicNoteAction()
 
 	updateScaleData()
 	decrementScaleTonicNote()
+end
+
+--
+
+local function incrementScaleTonicNote()
+
+	local scaleTonicNote = getScaleTonicNote()
+
+	if scaleTonicNote >= #notes then
+		return
+	end
+
+	setScaleTonicNote(scaleTonicNote+1)
+end
+
+function incrementScaleTonicNoteAction()
+
+	updateScaleData()
+	incrementScaleTonicNote()
 end
 
 --
@@ -99,86 +200,6 @@ function decrementScaleTypeAction()
 
 	updateScaleData()
 	decrementScaleType()
-end
-
---
-
-local function incrementChordInversion()
-
-  local chordInversionMax = getChordInversionMax()
-  local chordInversion = getCurrentInversionValue()
-
-  if chordInversion >= chordInversionMax then
-    return
-  end
-
-  setInversionState(chordInversion+1)
-end
-
-function incrementChordInversionAction()
-
-	updateScaleData()
-	incrementChordInversion()
-	playChord()
-end
-
---
-
-local function incrementChordType()
-
-	local selectedScaleNote = getSelectedScaleNote()
-	local selectedChordType = getSelectedChordType(selectedScaleNote)
-
-  if selectedChordType >= #chords then
-    return
-  end
-
-  setSelectedChordType(selectedScaleNote, selectedChordType+1)
-end
-
-function incrementChordTypeAction()
-
-	updateScaleData()
-	incrementChordType()
-	playChord()
-end
-
---
-
-local function incrementOctave()
-
-  local octave = getOctave()
-
-  if octave >= 8 then
-    return
-  end
-
-  setOctave(octave+1)
-end
-
-function incrementOctaveAction()
-
-	updateScaleData()
-	incrementOctave()
-end
-
---
-
-local function incrementScaleTonicNote()
-
-	local scaleTonicNote = getScaleTonicNote()
-
-	if scaleTonicNote >= #notes then
-		return
-	end
-
-	setScaleTonicNote(scaleTonicNote+1)
-end
-
-function incrementScaleTonicNoteAction()
-
-	updateScaleData()
-	incrementScaleTonicNote()
 end
 
 --

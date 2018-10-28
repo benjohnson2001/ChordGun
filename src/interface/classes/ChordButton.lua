@@ -139,6 +139,10 @@ end
 
 function ChordButton:onPress()
 	playChord()
+
+  if thereAreNotesSelected() then
+    insertChord()
+  end
 end
 
 function ChordButton:onShiftPress()

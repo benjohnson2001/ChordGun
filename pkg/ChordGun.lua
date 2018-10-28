@@ -836,6 +836,159 @@ end
   gfx.drawchar(degreeSymbolCharacter)
 
 ]]--
+function activeMidiEditor()
+  return reaper.MIDIEditor_GetActive()
+end
+
+function activeTake()
+  return reaper.MIDIEditor_GetTake(activeMidiEditor())
+end
+
+function activeMediaItem()
+  return reaper.GetMediaItemTake_Item(activeTake())
+end
+
+local function mediaItemStartPosition()
+  return reaper.GetMediaItemInfo_Value(activeMediaItem(), "D_POSITION")
+end
+
+local function mediaItemLength()
+  return reaper.GetMediaItemInfo_Value(activeMediaItem(), "D_LENGTH")
+end
+
+local function mediaItemEndPosition()
+  return mediaItemStartPosition() + mediaItemLength()
+end
+
+local function cursorPosition()
+  return reaper.GetCursorPosition()
+end
+
+local function loopStartPosition()
+
+  local loopStartPosition, _ = reaper.GetSet_LoopTimeRange2(0, false, false, 0, 0, false)
+  return loopStartPosition
+end
+
+local function loopEndPosition()
+
+  local _, loopEndPosition = reaper.GetSet_LoopTimeRange2(0, false, false, 0, 0, false)
+  return loopEndPosition
+end
+
+local function noteLength()
+
+  local noteLengthQN = getNoteLengthQN()
+  local noteLengthPPQ = reaper.MIDI_GetPPQPosFromProjQN(activeTake(), noteLengthQN)
+  return reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), noteLengthPPQ)
+end
+
+local function setEditCursorPosition(arg)
+
+  local activeProjectIndex = 0
+  local moveView = false
+  local seekPlay = false
+  reaper.SetEditCurPos2(activeProjectIndex, arg, moveView, seekPlay)
+end
+
+local function moveEditCursorPosition(arg)
+
+  local moveTimeSelection = false
+  reaper.MoveEditCursor(arg, moveTimeSelection)
+end
+
+local function repeatIsNotOn()
+  return reaper.GetSetRepeat(-1) == 0
+end
+
+local function loopIsActive()
+
+  if repeatIsNotOn() then
+    return false
+  end
+
+  if loopStartPosition() == loopEndPosition() then
+    return false
+  else
+    return true
+  end
+end
+
+function moveCursor()
+
+  local tolerance = 0.000001
+  if loopIsActive() and loopEndPosition() < mediaItemEndPosition() then
+
+    if cursorPosition() + noteLength() >= loopEndPosition() - tolerance then
+
+      if loopStartPosition() > mediaItemStartPosition() then
+        setEditCursorPosition(loopStartPosition())
+      else
+        setEditCursorPosition(mediaItemStartPosition())
+      end
+
+    else
+      moveEditCursorPosition(noteLength())
+    end
+
+  elseif loopIsActive() and mediaItemEndPosition() <= loopEndPosition() then 
+
+    if cursorPosition() + noteLength() >= mediaItemEndPosition() - tolerance then
+
+      if loopStartPosition() > mediaItemStartPosition() then
+        setEditCursorPosition(loopStartPosition())
+      else
+        setEditCursorPosition(mediaItemStartPosition())
+      end
+
+    else
+      moveEditCursorPosition(noteLength())
+    end
+
+  elseif cursorPosition() + noteLength() >= mediaItemEndPosition() then
+      setEditCursorPosition(mediaItemStartPosition())
+  else
+
+    moveEditCursorPosition(noteLength())
+  end
+end
+
+--
+
+function getCursorPositionPPQ()
+  return reaper.MIDI_GetPPQPosFromProjTime(activeTake(), cursorPosition())
+end
+
+local function getCursorPositionQN()
+  return reaper.MIDI_GetProjQNFromPPQPos(activeTake(), getCursorPositionPPQ())
+end
+
+function getNoteLengthQN()
+
+  local gridLen, _, noteLen = reaper.MIDI_GetGrid(activeTake())
+  
+  local noteLength = gridLen
+
+  if noteLen ~= 0 then
+    noteLength = noteLen
+  end
+
+  return noteLength
+end
+
+function getMidiEndPositionPPQ()
+
+  local noteLength = getNoteLengthQN()
+  local startPosition = getCursorPositionQN()
+  return reaper.MIDI_GetPPQPosFromProjQN(activeTake(), startPosition + noteLength)
+end
+
+function deselectAllNotes()
+
+  local selectAllNotes = false
+  reaper.MIDI_SelectAll(activeTake(), selectAllNotes)
+end
+
 function getCurrentNoteChannel()
 
   local activeMidiEditor = reaper.MIDIEditor_GetActive()
@@ -1049,163 +1202,8 @@ function getChordNotesArray(root, chord, octave)
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
+function insertMidiNote(note, keepNotesSelected)
 
-local function activeMidiEditor()
-	return reaper.MIDIEditor_GetActive()
-end
-
-local function activeTake()
-  return reaper.MIDIEditor_GetTake(activeMidiEditor())
-end
-
-local function activeMediaItem()
-	return reaper.GetMediaItemTake_Item(activeTake())
-end
-
-local function mediaItemStartPosition()
-	return reaper.GetMediaItemInfo_Value(activeMediaItem(), "D_POSITION")
-end
-
-local function mediaItemLength()
-	return reaper.GetMediaItemInfo_Value(activeMediaItem(), "D_LENGTH")
-end
-
-local function mediaItemEndPosition()
-	return mediaItemStartPosition() + mediaItemLength()
-end
-
-local function cursorPosition()
-	return reaper.GetCursorPosition()
-end
-
-local function loopStartPosition()
-
-	local loopStartPosition, _ = reaper.GetSet_LoopTimeRange2(0, false, false, 0, 0, false)
-	return loopStartPosition
-end
-
-local function loopEndPosition()
-
-	local _, loopEndPosition = reaper.GetSet_LoopTimeRange2(0, false, false, 0, 0, false)
-	return loopEndPosition
-end
-
-local function noteLength()
-
-  local noteLengthQN = getNoteLengthQN()
-  local noteLengthPPQ = reaper.MIDI_GetPPQPosFromProjQN(activeTake(), noteLengthQN)
-  return reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), noteLengthPPQ)
-end
-
-local function setEditCursorPosition(arg)
-
-	local activeProjectIndex = 0
-	local moveView = false
-	local seekPlay = false
-	reaper.SetEditCurPos2(activeProjectIndex, arg, moveView, seekPlay)
-end
-
-local function moveEditCursorPosition(arg)
-
-	local moveTimeSelection = false
-  reaper.MoveEditCursor(arg, moveTimeSelection)
-end
-
-local function repeatIsNotOn()
-	return reaper.GetSetRepeat(-1) == 0
-end
-
-local function loopIsActive()
-
-	if repeatIsNotOn() then
-		return false
-	end
-
-	if loopStartPosition() == loopEndPosition() then
-		return false
-	else
-		return true
-	end
-end
-
-function moveCursor()
-
-	local tolerance = 0.000001
-  if loopIsActive() and loopEndPosition() < mediaItemEndPosition() then
-
-  	if cursorPosition() + noteLength() >= loopEndPosition() - tolerance then
-
-  		if loopStartPosition() > mediaItemStartPosition() then
-  			setEditCursorPosition(loopStartPosition())
-  		else
-  			setEditCursorPosition(mediaItemStartPosition())
-  		end
-
-  	else
-  		moveEditCursorPosition(noteLength())
-  	end
-
-  elseif loopIsActive() and mediaItemEndPosition() <= loopEndPosition() then 
-
-  	if cursorPosition() + noteLength() >= mediaItemEndPosition() - tolerance then
-
-  		if loopStartPosition() > mediaItemStartPosition() then
-  			setEditCursorPosition(loopStartPosition())
-  		else
-  			setEditCursorPosition(mediaItemStartPosition())
-  		end
-
-  	else
-  		moveEditCursorPosition(noteLength())
-  	end
-
-  elseif cursorPosition() + noteLength() >= mediaItemEndPosition() then
-			setEditCursorPosition(mediaItemStartPosition())
-	else
-
-		moveEditCursorPosition(noteLength())
-  end
-end
-
---
-
-function getCursorPositionPPQ()
-	return reaper.MIDI_GetPPQPosFromProjTime(activeTake(), cursorPosition())
-end
-
-local function getCursorPositionQN()
-	return reaper.MIDI_GetProjQNFromPPQPos(activeTake(), getCursorPositionPPQ())
-end
-
-function getNoteLengthQN()
-
-	local gridLen, _, noteLen = reaper.MIDI_GetGrid(activeTake())
-	
-	local noteLength = gridLen
-
-	if noteLen ~= 0 then
-		noteLength = noteLen
-	end
-
-	return noteLength
-end
-
-local function getMidiEndPositionPPQ()
-
-	local noteLength = getNoteLengthQN()
-	local startPosition = getCursorPositionQN()
-	return reaper.MIDI_GetPPQPosFromProjQN(activeTake(), startPosition + noteLength)
-end
-
-function deselectAllNotes()
-
-	local selectAllNotes = false
-	reaper.MIDI_SelectAll(activeTake(), selectAllNotes)
-end
-
-function insertMidiNote(note)
-
-	local noteIsSelected = true
 	local noteIsMuted = false
 	local startPosition = getCursorPositionPPQ()
 	local endPosition = getMidiEndPositionPPQ()
@@ -1214,12 +1212,105 @@ function insertMidiNote(note)
 	local velocity = getCurrentVelocity()
 	local noSort = false
 
-	reaper.MIDI_InsertNote(activeTake(), noteIsSelected, noteIsMuted, startPosition, endPosition, channel, note, velocity, noSort)
+	reaper.MIDI_InsertNote(activeTake(), keepNotesSelected, noteIsMuted, startPosition, endPosition, channel, note, velocity, noSort)
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
-function insertChord()
-  
+local function getNumberOfNotes()
+
+	local _, numberOfNotes = reaper.MIDI_CountEvts(activeTake())
+	return numberOfNotes
+end
+
+local function deleteNote(noteIndex)
+
+	reaper.MIDI_DeleteNote(activeTake(), noteIndex)
+end
+
+local function thereAreNotesSelected()
+
+	local numberOfNotes = getNumberOfNotes()
+
+	for noteIndex = 0, numberOfNotes-1 do
+
+		local _, noteIsSelected = reaper.MIDI_GetNote(activeTake(), noteIndex)
+
+		if noteIsSelected then
+			return true
+		end
+	end
+
+	return false
+end
+
+local function getNoteStartingPositions()
+
+	local numberOfNotes = getNumberOfNotes()
+	local previousNoteStartPositionPPQ = -1
+	local noteStartingPositions = {}
+
+	for noteIndex = 0, numberOfNotes-1 do
+
+		local _, noteIsSelected, noteIsMuted, noteStartPositionPPQ, noteEndPositionPPQ = reaper.MIDI_GetNote(activeTake(), noteIndex)
+	
+		if noteIsSelected then
+
+			if noteStartPositionPPQ ~= previousNoteStartPositionPPQ then
+				table.insert(noteStartingPositions, noteStartPositionPPQ)
+			end
+
+			previousNoteStartPositionPPQ = noteStartPositionPPQ
+		end
+	end
+
+	return noteStartingPositions
+end
+
+local function deleteSelectedNotes()
+
+	local numberOfNotes = getNumberOfNotes()
+
+	for noteIndex = numberOfNotes-1, 0, -1 do
+
+		local _, noteIsSelected = reaper.MIDI_GetNote(activeTake(), noteIndex)
+	
+		if noteIsSelected then
+			deleteNote(noteIndex)
+		end
+	end
+end
+
+local function setEditCursorTo(arg)
+
+	local cursorPosition = reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), arg)
+	setEditCursorPosition(cursorPosition)
+end
+
+function changeSelectedNotesToScaleChords()
+
+	local noteStartingPositions = getNoteStartingPositions()
+	deleteSelectedNotes()
+	
+	for i = 1, #noteStartingPositions do
+		setEditCursorTo(noteStartingPositions[i])
+		insertChordForSelection()
+	end
+end
+
+function changeSelectedNotesToScaleNotes(octaveAdjustment)
+
+	local noteStartingPositions = getNoteStartingPositions()
+	deleteSelectedNotes()
+
+	for i = 1, #noteStartingPositions do
+		setEditCursorTo(noteStartingPositions[i])
+		insertScaleNoteForSelection(octaveAdjustment)
+	end
+end
+local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
+
+local function insertChordImpl(keepNotesSelected)
+
   local scaleNoteIndex = getSelectedScaleNote()
   local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
   
@@ -1227,17 +1318,29 @@ function insertChord()
   local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
   local octave = getOctave()
   
-  local chordNotesArray = getChordNotesArray(root, chord, octave)   
-  
-  deselectAllNotes()
+  local chordNotesArray = getChordNotesArray(root, chord, octave)
 
   for note = 1, #chordNotesArray do
-    insertMidiNote(chordNotesArray[note])
+    insertMidiNote(chordNotesArray[note], keepNotesSelected)
   end
 
   updateChordText(root, chord, chordNotesArray)
   moveCursor()
 end
+
+function insertChordForSelection()
+  insertChordImpl(true)
+end
+
+function insertChord()
+
+  if thereAreNotesSelected() then 
+    changeSelectedNotesToScaleChords()
+  else
+    insertChordImpl(false)
+  end
+end
+
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 
@@ -1486,7 +1589,7 @@ end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 
-local function insertScaleNoteImpl(octaveAdjustment)
+local function insertScaleNoteImplImpl(octaveAdjustment, keepNotesSelected)
 
   local scaleNoteIndex = getSelectedScaleNote()
 
@@ -1494,8 +1597,21 @@ local function insertScaleNoteImpl(octaveAdjustment)
   local octave = getOctave()
   local noteValue = root + ((octave+1+octaveAdjustment) * 12) - 1
 
-  insertMidiNote(noteValue)
+  insertMidiNote(noteValue, keepNotesSelected)
   moveCursor()
+end
+
+function insertScaleNoteForSelection(octaveAdjustment)
+	insertScaleNoteImplImpl(octaveAdjustment, true)
+end
+
+local function insertScaleNoteImpl(octaveAdjustment)
+
+  if thereAreNotesSelected() then 
+    changeSelectedNotesToScaleNotes(octaveAdjustment)
+  else
+    insertScaleNoteImplImpl(octaveAdjustment, false)
+  end
 end
 
 function insertLowerScaleNote()
@@ -1504,7 +1620,7 @@ function insertLowerScaleNote()
 		return
 	end
 
-	return insertScaleNoteImpl(-1)
+	insertScaleNoteImpl(-1)
 end
 
 function insertScaleNote()
@@ -1577,8 +1693,40 @@ function decrementChordInversionAction()
 
 	updateScaleData()
 	decrementChordInversion()
+
+	if thereAreNotesSelected() then
+		insertChord()
+	end
+
 	playChord()
 end
+
+--
+
+local function incrementChordInversion()
+
+  local chordInversionMax = getChordInversionMax()
+  local chordInversion = getCurrentInversionValue()
+
+  if chordInversion >= chordInversionMax then
+    return
+  end
+
+  setInversionState(chordInversion+1)
+end
+
+function incrementChordInversionAction()
+
+	updateScaleData()
+	incrementChordInversion()
+
+	if thereAreNotesSelected() then
+		insertChord()
+	end
+	
+	playChord()
+end
+
 
 --
 
@@ -1598,6 +1746,37 @@ function decrementChordTypeAction()
 
 	updateScaleData()
 	decrementChordType()
+
+	if thereAreNotesSelected() then
+		insertChord()
+	end
+
+	playChord()
+end
+
+--
+
+local function incrementChordType()
+
+	local selectedScaleNote = getSelectedScaleNote()
+	local selectedChordType = getSelectedChordType(selectedScaleNote)
+
+  if selectedChordType >= #chords then
+    return
+  end
+
+  setSelectedChordType(selectedScaleNote, selectedChordType+1)
+end
+
+function incrementChordTypeAction()
+
+	updateScaleData()
+	incrementChordType()
+
+	if thereAreNotesSelected() then
+		insertChord()
+	end
+		
 	playChord()
 end
 
@@ -1622,6 +1801,25 @@ end
 
 --
 
+local function incrementOctave()
+
+  local octave = getOctave()
+
+  if octave >= 8 then
+    return
+  end
+
+  setOctave(octave+1)
+end
+
+function incrementOctaveAction()
+
+	updateScaleData()
+	incrementOctave()
+end
+
+--
+
 local function decrementScaleTonicNote()
 
 	local scaleTonicNote = getScaleTonicNote()
@@ -1637,6 +1835,25 @@ function decrementScaleTonicNoteAction()
 
 	updateScaleData()
 	decrementScaleTonicNote()
+end
+
+--
+
+local function incrementScaleTonicNote()
+
+	local scaleTonicNote = getScaleTonicNote()
+
+	if scaleTonicNote >= #notes then
+		return
+	end
+
+	setScaleTonicNote(scaleTonicNote+1)
+end
+
+function incrementScaleTonicNoteAction()
+
+	updateScaleData()
+	incrementScaleTonicNote()
 end
 
 --
@@ -1657,86 +1874,6 @@ function decrementScaleTypeAction()
 
 	updateScaleData()
 	decrementScaleType()
-end
-
---
-
-local function incrementChordInversion()
-
-  local chordInversionMax = getChordInversionMax()
-  local chordInversion = getCurrentInversionValue()
-
-  if chordInversion >= chordInversionMax then
-    return
-  end
-
-  setInversionState(chordInversion+1)
-end
-
-function incrementChordInversionAction()
-
-	updateScaleData()
-	incrementChordInversion()
-	playChord()
-end
-
---
-
-local function incrementChordType()
-
-	local selectedScaleNote = getSelectedScaleNote()
-	local selectedChordType = getSelectedChordType(selectedScaleNote)
-
-  if selectedChordType >= #chords then
-    return
-  end
-
-  setSelectedChordType(selectedScaleNote, selectedChordType+1)
-end
-
-function incrementChordTypeAction()
-
-	updateScaleData()
-	incrementChordType()
-	playChord()
-end
-
---
-
-local function incrementOctave()
-
-  local octave = getOctave()
-
-  if octave >= 8 then
-    return
-  end
-
-  setOctave(octave+1)
-end
-
-function incrementOctaveAction()
-
-	updateScaleData()
-	incrementOctave()
-end
-
---
-
-local function incrementScaleTonicNote()
-
-	local scaleTonicNote = getScaleTonicNote()
-
-	if scaleTonicNote >= #notes then
-		return
-	end
-
-	setScaleTonicNote(scaleTonicNote+1)
-end
-
-function incrementScaleTonicNoteAction()
-
-	updateScaleData()
-	incrementScaleTonicNote()
 end
 
 --
@@ -4152,12 +4289,22 @@ function ChordInversionValueBox:update()
   if mouseButtonIsNotPressedDown and leftButtonHasBeenClicked(self) then
     mouseButtonIsNotPressedDown = false
     decrementChordInversion()
+
+    if thereAreNotesSelected() then
+      insertChord()
+    end
+    
     playChord()
   end
 
   if mouseButtonIsNotPressedDown and rightButtonHasBeenClicked(self) then
     mouseButtonIsNotPressedDown = false
     incrementChordInversion()
+    
+    if thereAreNotesSelected() then
+      insertChord()
+    end
+    
     playChord()
   end
 
@@ -4299,6 +4446,10 @@ end
 
 function ChordButton:onPress()
 	playChord()
+
+  if thereAreNotesSelected() then
+    insertChord()
+  end
 end
 
 function ChordButton:onShiftPress()
