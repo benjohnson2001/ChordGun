@@ -129,6 +129,7 @@ local selectedInversionStates5Key = "selectedInversionStates5"
 local selectedInversionStates6Key = "selectedInversionStates6"
 local selectedInversionStates7Key = "selectedInversionStates7"
 local notesThatArePlayingKey = "notesThatArePlaying"
+local dockStateKey = "dockState"
 
 --
 
@@ -483,6 +484,14 @@ function setNotesThatArePlaying(arg)
 end
 
 --
+
+function getDockState()
+  return getTableValue(dockStateKey, defaultNotesThatArePlaying)
+end
+
+function setDockState(arg)
+  setTableValue(dockStateKey, arg)
+end
 
 function mouseIsHoveringOver(element)
 

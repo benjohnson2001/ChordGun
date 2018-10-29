@@ -139,6 +139,7 @@ end
 function Interface:update()
 
 	self:updateElements()
+	gfx.update()
 
 	if not mouseButtonIsNotPressedDown and leftMouseButtonIsNotHeldDown() then
 		mouseButtonIsNotPressedDown = true
@@ -165,8 +166,6 @@ function Interface:update()
 		self:restartGui()
 		guiShouldBeUpdated = false
 	end
-
-	gfx.update()
 end
 
 require(workingDirectory .. "/interface/frames/InterfaceTopFrame")

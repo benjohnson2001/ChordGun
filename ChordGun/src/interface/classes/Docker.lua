@@ -18,6 +18,7 @@ local function dockWindow()
 
   local windowAtBottom = 0x0201
   gfx.dock(windowAtBottom)
+  guiShouldBeUpdated = true
 end
 
 function Docker:drawDockWindowContextMenu()
@@ -30,9 +31,11 @@ function Docker:drawDockWindowContextMenu()
   end
 
   dockWindow()
+  gfx.mouse_cap = 0
 end
 
 local function undockWindow()
+
   gfx.dock(0)
   guiShouldBeUpdated = true
 end
@@ -47,6 +50,7 @@ function Docker:drawUndockWindowContextMenu()
   end
 
   undockWindow()
+  gfx.mouse_cap = 0
 end
 
 function Docker:update()

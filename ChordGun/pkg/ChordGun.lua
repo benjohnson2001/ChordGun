@@ -129,6 +129,7 @@ local selectedInversionStates5Key = "selectedInversionStates5"
 local selectedInversionStates6Key = "selectedInversionStates6"
 local selectedInversionStates7Key = "selectedInversionStates7"
 local notesThatArePlayingKey = "notesThatArePlaying"
+local dockStateKey = "dockState"
 
 --
 
@@ -483,6 +484,14 @@ function setNotesThatArePlaying(arg)
 end
 
 --
+
+function getDockState()
+  return getTableValue(dockStateKey, defaultNotesThatArePlaying)
+end
+
+function setDockState(arg)
+  setTableValue(dockStateKey, arg)
+end
 
 function mouseIsHoveringOver(element)
 
@@ -3794,6 +3803,7 @@ local function dockWindow()
 
   local windowAtBottom = 0x0201
   gfx.dock(windowAtBottom)
+  guiShouldBeUpdated = true
 end
 
 function Docker:drawDockWindowContextMenu()
@@ -3806,9 +3816,11 @@ function Docker:drawDockWindowContextMenu()
   end
 
   dockWindow()
+  gfx.mouse_cap = 0
 end
 
 local function undockWindow()
+
   gfx.dock(0)
   guiShouldBeUpdated = true
 end
@@ -3823,6 +3835,7 @@ function Docker:drawUndockWindowContextMenu()
   end
 
   undockWindow()
+  gfx.mouse_cap = 0
 end
 
 function Docker:update()
@@ -5096,6 +5109,7 @@ end
 function Interface:update()
 
 	self:updateElements()
+	gfx.update()
 
 	if not mouseButtonIsNotPressedDown and leftMouseButtonIsNotHeldDown() then
 		mouseButtonIsNotPressedDown = true
@@ -5122,8 +5136,6 @@ function Interface:update()
 		self:restartGui()
 		guiShouldBeUpdated = false
 	end
-
-	gfx.update()
 end
 
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
