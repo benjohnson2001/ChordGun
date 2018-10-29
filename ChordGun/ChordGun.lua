@@ -8,7 +8,7 @@ Donate: https://paypal.me/benjohnson2001
 Link: https://forum.cockos.com/member.php?u=127396
 Metapackage: true
 Provides:
-    [main,midi_editor] pkg/*.lua
+    [main=main,midi_editor] pkg/*.lua
 About:
     ### ChordGun
     #### What is it?
