@@ -1,19 +1,4 @@
---[[
-@description ChordGun
-@author: pandabot
-@license MIT
-@version 1.0
-@screenshot https://imgur.com/a/VZPzSu1
-@about 
-  ### ChordGun
-  #### What is it?
-  Reaper tool that plays chords and scale notes into Media Items and fires chords into the Midi Editor
-  
-  #### How do I use it?
-
-  //TODO -- insert youtube video link
-
---]]
+@noindex
 
 chords = {
   {

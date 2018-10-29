@@ -9,6 +9,10 @@ function removeFile() {
 	rm "./pkg/$outputFile"
 }
 
+function insertNoIndexHeader() {
+	echo "@noindex" >> ./pkg/${1##*/}
+}
+
 function insertIntoFile() {
 
 	dependencyFile=$1
@@ -21,7 +25,8 @@ function unifyMainProgram() {
 
 	removeFile $1
 
-	insertIntoFile src/header.txt $1
+	insertNoIndexHeader $1
+
 	insertIntoFile src/chords.lua $1
 	insertIntoFile src/defaultValues.lua $1
 	insertIntoFile src/preferences.lua $1
@@ -74,7 +79,8 @@ function unifyKeyboardShortcut() {
 
 	removeFile $1
 
-	insertIntoFile src/header.txt $1
+	insertNoIndexHeader $1
+
 	insertIntoFile src/chords.lua $1
 	insertIntoFile src/defaultValues.lua $1
 	insertIntoFile src/preferences.lua $1
