@@ -11,10 +11,14 @@ Provides:
     [main=main,midi_editor] pkg/*.lua
 About:
     ### Chord Gun
+    
+
     #### What is it?
+
     Reaper tool that fires scale chords and notes into a composition, either by sequencing through the MIDI Editor or recording directly into Media Items.
      
+    
     #### How do I use it?
 
-    //TODO -- insert youtube video link
+    There is an instructional video [here](https://www.youtube.com/watch?v=imMDeInH-Yg)
 --]]
