@@ -89,7 +89,7 @@ defaultChordTextValue = ""
 defaultChordInversionMin = -8
 defaultChordInversionMax = 8
 defaultSelectedScaleNote = 1
-defaultOctave = 4
+defaultOctave = 3
 
 defaultSelectedChordTypes = {}
 for i = 1, 7 do
