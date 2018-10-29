@@ -10,7 +10,7 @@ Metapackage: true
 Provides:
     [main=main,midi_editor] pkg/*.lua
 About:
-    ### Chord Gun
+    ### Chord Gun 
     
 
     #### What is it?
