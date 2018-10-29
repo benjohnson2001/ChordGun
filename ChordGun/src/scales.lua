@@ -1,4 +1,4 @@
-@noindex
+-- @noindex
 
 scales = {
   { name = "Major", pattern = "101011010101" },

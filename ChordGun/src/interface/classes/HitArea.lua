@@ -1,4 +1,4 @@
-@noindex
+-- @noindex
 
 HitArea = {}
 HitArea.__index = HitArea

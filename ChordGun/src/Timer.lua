@@ -1,4 +1,4 @@
-@noindex
+-- @noindex
 
 Timer = {}
 Timer.__index = Timer

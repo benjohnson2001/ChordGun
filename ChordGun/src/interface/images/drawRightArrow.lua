@@ -1,4 +1,4 @@
-@noindex
+-- @noindex
 function drawRightArrow()
 
     local xOffset = gfx.x

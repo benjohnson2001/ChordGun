@@ -1,4 +1,4 @@
-@noindex
+-- @noindex
 
 chords = {
   {

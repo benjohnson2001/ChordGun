@@ -1,4 +1,4 @@
-@noindex
+-- @noindex
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/util")
 require(workingDirectory .. "/globalState")

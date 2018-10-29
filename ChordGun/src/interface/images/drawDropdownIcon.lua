@@ -1,4 +1,4 @@
-@noindex
+-- @noindex
 function drawDropdownIcon()
 
     local xOffset = gfx.x

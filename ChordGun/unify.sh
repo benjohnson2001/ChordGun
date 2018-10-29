@@ -10,7 +10,7 @@ function removeFile() {
 }
 
 function insertNoIndexHeader() {
-	echo "@noindex" >> ./pkg/${1##*/}
+	echo "-- @noindex" >> ./pkg/${1##*/}
 }
 
 function insertIntoFile() {
@@ -18,7 +18,7 @@ function insertIntoFile() {
 	dependencyFile=$1
 	outputFile=${2##*/}
 
-	grep -v -e "^require" -e "^@noindex" "${DIR}"/$dependencyFile >> ./pkg/$outputFile
+	grep -v -e "^require" -e "^-- @noindex" "${DIR}"/$dependencyFile >> ./pkg/$outputFile
 }
 
 function unifyMainProgram() {

@@ -1,4 +1,4 @@
-@noindex
+-- @noindex
 local function hex2rgb(arg) 
 
 	local r, g, b = arg:match('(..)(..)(..)')

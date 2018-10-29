@@ -1,4 +1,4 @@
-@noindex
+-- @noindex
 
 function activeMidiEditor()
   return reaper.MIDIEditor_GetActive()
