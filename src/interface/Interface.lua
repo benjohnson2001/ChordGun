@@ -1,3 +1,4 @@
+@noindex
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/interface/classes/ChordButton")
 require(workingDirectory .. "/interface/classes/Header")

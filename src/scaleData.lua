@@ -1,3 +1,4 @@
+@noindex
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/inversionStates")
 require(workingDirectory .. "/scaleFunctions")

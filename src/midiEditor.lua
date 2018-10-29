@@ -1,3 +1,5 @@
+@noindex
+
 function activeMidiEditor()
   return reaper.MIDIEditor_GetActive()
 end
@@ -204,7 +206,7 @@ function thereAreNotesSelected()
   return false
 end
 
-function multiplyGridSizeByOneHalf()
+function halveGridSize()
 
   if activeTake() == nil then
     return
@@ -220,7 +222,7 @@ function multiplyGridSizeByOneHalf()
   reaper.SetMIDIEditorGrid(activeProjectIndex, gridSize/2)
 end
 
-function multiplyGridSizeByTwo()
+function doubleGridSize()
 
   if activeTake() == nil then
     return

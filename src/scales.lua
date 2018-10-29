@@ -1,3 +1,5 @@
+@noindex
+
 scales = {
   { name = "Major", pattern = "101011010101" },
   { name = "Natural Minor", pattern = "101101011010" },

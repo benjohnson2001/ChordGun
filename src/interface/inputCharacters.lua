@@ -1,3 +1,5 @@
+@noindex
+
 inputCharacters = {}
 
 inputCharacters["1"] = 49

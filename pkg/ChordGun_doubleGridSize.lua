@@ -2515,5 +2515,4 @@ end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 
-updateScaleData()
-playLowerScaleNote5Action()
+doubleGridSize()

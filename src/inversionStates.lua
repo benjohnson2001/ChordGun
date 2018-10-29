@@ -1,3 +1,5 @@
+@noindex
+
 inversionStates = {}
 
 function updateInversionStates()

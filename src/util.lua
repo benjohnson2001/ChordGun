@@ -1,3 +1,5 @@
+@noindex
+
 function mouseIsHoveringOver(element)
 
 	local x = gfx.mouse_x

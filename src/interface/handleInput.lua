@@ -1,3 +1,4 @@
+@noindex
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/midiMessages")
 require(workingDirectory .. "/inputCharacters")
@@ -325,11 +326,11 @@ function handleInput()
 	end
 
 	if inputCharacter == inputCharacters[","] and optionModifierIsActive() then
-		multiplyGridSizeByOneHalf()
+		halveGridSize()
 	end
 
 	if inputCharacter == inputCharacters["."] and optionModifierIsActive() then
-		multiplyGridSizeByTwo()
+		doubleGridSize()
 	end
 
 	if inputCharacter == inputCharacters["<"] and optionModifierIsActive() then

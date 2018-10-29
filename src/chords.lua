@@ -1,3 +1,5 @@
+@noindex
+
 chords = {
   {
     name = 'major',

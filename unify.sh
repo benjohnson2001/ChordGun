@@ -14,13 +14,14 @@ function insertIntoFile() {
 	dependencyFile=$1
 	outputFile=${2##*/}
 
-	grep -v "^require" "${DIR}"/$dependencyFile >> ./pkg/$outputFile
+	grep -v -e "^require" -e "^@noindex" "${DIR}"/$dependencyFile >> ./pkg/$outputFile
 }
 
 function unifyMainProgram() {
 
 	removeFile $1
 
+	insertIntoFile src/header.txt $1
 	insertIntoFile src/chords.lua $1
 	insertIntoFile src/defaultValues.lua $1
 	insertIntoFile src/preferences.lua $1
@@ -73,6 +74,7 @@ function unifyKeyboardShortcut() {
 
 	removeFile $1
 
+	insertIntoFile src/header.txt $1
 	insertIntoFile src/chords.lua $1
 	insertIntoFile src/defaultValues.lua $1
 	insertIntoFile src/preferences.lua $1
@@ -183,3 +185,5 @@ unifyKeyboardShortcut actions/ChordGun_insertHigherScaleNote6.lua
 unifyKeyboardShortcut actions/ChordGun_insertHigherScaleNote7.lua
 
 unifyKeyboardShortcut actions/ChordGun_stopAllNotesFromPlaying.lua
+unifyKeyboardShortcut actions/ChordGun_doubleGridSize.lua
+unifyKeyboardShortcut actions/ChordGun_halveGridSize.lua

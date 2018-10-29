@@ -1,3 +1,20 @@
+--[[
+@description ChordGun
+@author: pandabot
+@license MIT
+@version 1.0
+@screenshot https://imgur.com/a/VZPzSu1
+@about 
+  ### ChordGun
+  #### What is it?
+  Reaper tool that plays chords and scale notes into Media Items and fires chords into the Midi Editor
+  
+  #### How do I use it?
+
+  //TODO -- insert youtube video link
+
+--]]
+
 chords = {
   {
     name = 'major',
@@ -481,6 +498,7 @@ function setNotesThatArePlaying(arg)
 end
 
 --
+
 function mouseIsHoveringOver(element)
 
 	local x = gfx.mouse_x
@@ -558,6 +576,7 @@ function notesAreSelected()
 	return false
 end
 
+
 Timer = {}
 Timer.__index = Timer
 
@@ -612,6 +631,7 @@ scaleTonicNote = getScaleTonicNote()
 scaleType = getScaleType()
 
 guiShouldBeUpdated = false
+
 scales = {
   { name = "Major", pattern = "101011010101" },
   { name = "Natural Minor", pattern = "101101011010" },
@@ -838,6 +858,7 @@ end
   gfx.drawchar(degreeSymbolCharacter)
 
 ]]--
+
 function activeMidiEditor()
   return reaper.MIDIEditor_GetActive()
 end
@@ -1044,7 +1065,7 @@ function thereAreNotesSelected()
   return false
 end
 
-function multiplyGridSizeByOneHalf()
+function halveGridSize()
 
   if activeTake() == nil then
     return
@@ -1060,7 +1081,7 @@ function multiplyGridSizeByOneHalf()
   reaper.SetMIDIEditorGrid(activeProjectIndex, gridSize/2)
 end
 
-function multiplyGridSizeByTwo()
+function doubleGridSize()
 
   if activeTake() == nil then
     return
@@ -1120,6 +1141,7 @@ function stopNotesFromPlaying()
 
   setNotesThatArePlaying({})
 end
+
 inversionStates = {}
 
 function updateInversionStates()
@@ -1762,7 +1784,6 @@ function playTonicNote()
   return noteValue
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
-
 
 local function decrementChordInversion()
 
@@ -2491,8 +2512,6 @@ function insertHigherScaleNote7Action()
 	insertHigherScaleNote()
 	playScaleNote()
 end
-
---
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 stopAllNotesFromPlaying()

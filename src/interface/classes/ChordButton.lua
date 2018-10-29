@@ -1,10 +1,10 @@
+@noindex
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/interface/colors")
 require(workingDirectory .. "/util")
 require(workingDirectory .. "/insertChord")
 require(workingDirectory .. "/playChord")
 require(workingDirectory .. "/globalState")
---require(workingDirectory .. "/insertMidiNote")
 
 ChordButton = {}
 ChordButton.__index = ChordButton
