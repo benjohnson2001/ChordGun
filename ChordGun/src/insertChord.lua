@@ -16,6 +16,8 @@ local function insertChordImpl(keepNotesSelected)
   
   local chordNotesArray = getChordNotesArray(root, chord, octave)
 
+  deleteExistingNotesInNextInsertionTimePeriod()
+
   for note = 1, #chordNotesArray do
     insertMidiNote(chordNotesArray[note], keepNotesSelected)
   end

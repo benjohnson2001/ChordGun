@@ -15,6 +15,7 @@ local function insertScaleNoteImplImpl(octaveAdjustment, keepNotesSelected)
   local octave = getOctave()
   local noteValue = root + ((octave+1+octaveAdjustment) * 12) - 1
 
+  deleteExistingNotesInNextInsertionTimePeriod()
   insertMidiNote(noteValue, keepNotesSelected)
   moveCursor()
 end

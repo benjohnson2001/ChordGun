@@ -1,5 +1,7 @@
 -- @noindex
 
+local tolerance = 0.000001
+
 function activeMidiEditor()
   return reaper.MIDIEditor_GetActive()
 end
@@ -80,7 +82,6 @@ end
 
 function moveCursor()
 
-  local tolerance = 0.000001
   if loopIsActive() and loopEndPosition() < mediaItemEndPosition() then
 
     if cursorPosition() + noteLength() >= loopEndPosition() - tolerance then
@@ -109,7 +110,7 @@ function moveCursor()
       moveEditCursorPosition(noteLength())
     end
 
-  elseif cursorPosition() + noteLength() >= mediaItemEndPosition() then
+  elseif cursorPosition() + noteLength() >= mediaItemEndPosition() - tolerance then
       setEditCursorPosition(mediaItemStartPosition())
   else
 
@@ -129,15 +130,8 @@ end
 
 function getNoteLengthQN()
 
-  local gridLen, _, noteLen = reaper.MIDI_GetGrid(activeTake())
-  
-  local noteLength = gridLen
-
-  if noteLen ~= 0 then
-    noteLength = noteLen
-  end
-
-  return noteLength
+  local gridLength = reaper.MIDI_GetGrid(activeTake())
+  return gridLength
 end
 
 function getMidiEndPositionPPQ()
@@ -155,24 +149,20 @@ end
 
 function getCurrentNoteChannel()
 
-  local activeMidiEditor = reaper.MIDIEditor_GetActive()
-
-  if activeMidiEditor == nil then
+  if activeMidiEditor() == nil then
     return 0
   end
 
-  return reaper.MIDIEditor_GetSetting_int(activeMidiEditor, "default_note_chan")
+  return reaper.MIDIEditor_GetSetting_int(activeMidiEditor(), "default_note_chan")
 end
 
 function getCurrentVelocity()
 
-  local activeMidiEditor = reaper.MIDIEditor_GetActive()
-
-  if activeMidiEditor == nil then
+  if activeMidiEditor() == nil then
     return 96
   end
 
-  return reaper.MIDIEditor_GetSetting_int(activeMidiEditor, "default_note_vel")
+  return reaper.MIDIEditor_GetSetting_int(activeMidiEditor(), "default_note_vel")
 end
 
 function getNumberOfNotes()
@@ -212,7 +202,7 @@ function halveGridSize()
     return
   end
 
-  local gridSize = reaper.MIDI_GetGrid(reaper.MIDIEditor_GetTake(reaper.MIDIEditor_GetActive()))/4
+  local gridSize = reaper.MIDI_GetGrid(activeTake())/4
 
   if gridSize <= 1/1024 then
     return
@@ -228,7 +218,7 @@ function doubleGridSize()
     return
   end
 
-  local gridSize = reaper.MIDI_GetGrid(reaper.MIDIEditor_GetTake(reaper.MIDIEditor_GetActive()))/4
+  local gridSize = reaper.MIDI_GetGrid(activeTake())/4
 
   if gridSize >= 1024 then
     return
@@ -236,4 +226,24 @@ function doubleGridSize()
 
   local activeProjectIndex = 0
   reaper.SetMIDIEditorGrid(activeProjectIndex, gridSize*2)
+end
+
+--
+
+function deleteExistingNotesInNextInsertionTimePeriod()
+
+  local insertionStartTime = cursorPosition()
+  local insertionEndTime = insertionStartTime + noteLength()
+
+  local numberOfNotes = getNumberOfNotes()
+
+  for noteIndex = numberOfNotes-1, 0, -1 do
+
+    local _, _, _, noteStartPositionPPQ = reaper.MIDI_GetNote(activeTake(), noteIndex)
+    local noteStartTime = reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), noteStartPositionPPQ)
+
+    if noteStartTime + tolerance >= insertionStartTime and noteStartTime + tolerance <= insertionEndTime then
+      deleteNote(noteIndex)
+    end
+  end
 end
