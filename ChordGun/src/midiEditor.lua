@@ -73,6 +73,14 @@ local function loopIsActive()
     return false
   end
 
+  if loopStartPosition() < mediaItemStartPosition() and loopEndPosition() < mediaItemStartPosition() then
+    return false
+  end
+
+  if loopStartPosition() > mediaItemEndPosition() and loopEndPosition() > mediaItemEndPosition() then
+    return false
+  end
+
   if loopStartPosition() == loopEndPosition() then
     return false
   else

@@ -77,3 +77,18 @@ function notesAreSelected()
 	return false
 end
 
+function startUndoBlock()
+
+	local activeProjectIndex = 0
+	reaper.Undo_BeginBlock2(activeProjectIndex)
+end
+
+function endUndoBlock(actionDescription)
+
+	local activeProjectIndex = 0
+	reaper.Undo_EndBlock2(activeProjectIndex, actionDescription, -1)
+end
+
+
+
+

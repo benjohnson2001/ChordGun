@@ -570,6 +570,21 @@ function notesAreSelected()
 	return false
 end
 
+function startUndoBlock()
+
+	local activeProjectIndex = 0
+	reaper.Undo_BeginBlock2(activeProjectIndex)
+end
+
+function endUndoBlock(actionDescription)
+
+	local activeProjectIndex = 0
+	reaper.Undo_EndBlock2(activeProjectIndex, actionDescription, -1)
+end
+
+
+
+
 
 Timer = {}
 Timer.__index = Timer
@@ -923,6 +938,14 @@ end
 local function loopIsActive()
 
   if repeatIsNotOn() then
+    return false
+  end
+
+  if loopStartPosition() < mediaItemStartPosition() and loopEndPosition() < mediaItemStartPosition() then
+    return false
+  end
+
+  if loopStartPosition() > mediaItemEndPosition() and loopEndPosition() > mediaItemEndPosition() then
     return false
   end
 
@@ -1375,6 +1398,8 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 local function insertChordImpl(keepNotesSelected)
 
+  startUndoBlock()
+
   local scaleNoteIndex = getSelectedScaleNote()
   local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
   
@@ -1392,6 +1417,8 @@ local function insertChordImpl(keepNotesSelected)
 
   updateChordText(root, chord, chordNotesArray)
   moveCursor()
+
+  endUndoBlock("inserted scale chord " .. scaleNoteIndex)
 end
 
 function insertChordForSelection()
