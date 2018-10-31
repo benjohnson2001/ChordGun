@@ -2,6 +2,7 @@
 
 inputCharacters = {}
 
+inputCharacters["0"] = 48
 inputCharacters["1"] = 49
 inputCharacters["2"] = 50
 inputCharacters["3"] = 51

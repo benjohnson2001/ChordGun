@@ -4,4 +4,4 @@ require(workingDirectory .. "/actionFunctions")
 
 
 updateScaleData()
-playScaleChord1Action()
+playScaleChordAction(1)

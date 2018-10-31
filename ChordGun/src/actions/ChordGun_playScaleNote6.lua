@@ -4,4 +4,4 @@ require(workingDirectory .. "/actionFunctions")
 
 
 updateScaleData()
-playScaleNote6Action()
+playScaleNoteAction(6)

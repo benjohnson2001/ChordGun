@@ -4,4 +4,4 @@ require(workingDirectory .. "/actionFunctions")
 
 
 updateScaleData()
-insertScaleChord2Action()
+insertScaleChordAction(2)

@@ -1,5 +1,8 @@
 -- @noindex
 
 
+startUndoBlock()
 
-stopAllNotesFromPlaying()
+	stopAllNotesFromPlaying()
+
+endUndoBlock("stop all notes from playing")

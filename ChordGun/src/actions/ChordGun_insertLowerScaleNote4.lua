@@ -4,4 +4,4 @@ require(workingDirectory .. "/actionFunctions")
 
 
 updateScaleData()
-insertLowerScaleNote4Action()
+insertLowerScaleNoteAction(4)

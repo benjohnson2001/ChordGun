@@ -17,8 +17,6 @@ local function playScaleNoteImpl(octaveAdjustment)
   playMidiNote(noteValue)
   setNotesThatArePlaying({noteValue})
   setChordText("")
-
-  return noteValue
 end
 
 function playLowerScaleNote()
@@ -27,11 +25,11 @@ function playLowerScaleNote()
     return
   end
 
-	return playScaleNoteImpl(-1)
+	playScaleNoteImpl(-1)
 end
 
 function playScaleNote()
-  return playScaleNoteImpl(0)
+  playScaleNoteImpl(0)
 end
 
 function playHigherScaleNote()
@@ -40,7 +38,7 @@ function playHigherScaleNote()
     return
   end
 
-	return playScaleNoteImpl(1)
+	playScaleNoteImpl(1)
 end
 
 --
@@ -54,6 +52,4 @@ function playTonicNote()
   stopNotesFromPlaying()
   playMidiNote(noteValue)
   setNotesThatArePlaying({noteValue})
-
-  return noteValue
 end
