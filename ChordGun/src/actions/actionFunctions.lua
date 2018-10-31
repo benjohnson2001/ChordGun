@@ -1,7 +1,6 @@
 -- @noindex
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/scaleData")
-require(workingDirectory .. "/playScaleNote")
 
 local function decrementChordInversion()
 
@@ -20,12 +19,7 @@ function decrementChordInversionAction()
 	startUndoBlock()
 
 		decrementChordInversion()
-
-		if thereAreNotesSelected() then
-			insertChord()
-		end
-
-		playChord()
+		playOrInsertScaleChord()
 
 	endUndoBlock("decrement chord inversion")
 end
@@ -49,16 +43,10 @@ function incrementChordInversionAction()
 	startUndoBlock()
 
 		incrementChordInversion()
-
-		if thereAreNotesSelected() then
-			insertChord()
-		end
-		
-		playChord()
+		playOrInsertScaleChord()
 
 	endUndoBlock("increment chord inversion")
 end
-
 
 --
 
@@ -79,12 +67,7 @@ function decrementChordTypeAction()
 	startUndoBlock()
 
 		decrementChordType()
-
-		if thereAreNotesSelected() then
-			insertChord()
-		end
-
-		playChord()
+		playOrInsertScaleChord()
 
 	endUndoBlock("decrement chord type")
 end
@@ -108,17 +91,23 @@ function incrementChordTypeAction()
 	startUndoBlock()
 
 		incrementChordType()
-
-		if thereAreNotesSelected() then
-			insertChord()	
-		end
-
-		playChord()
+		playOrInsertScaleChord()
 
 	endUndoBlock("increment chord type")
 end
 
 --
+
+function playTonicNote()
+
+  local root = scaleNotes[1]
+  local octave = getOctave()
+  local noteValue = root + ((octave+1) * 12) - 1
+
+  stopNotesFromPlaying()
+  playMidiNote(noteValue)
+  setNotesThatArePlaying({noteValue})
+end
 
 local function decrementOctave()
 
@@ -297,106 +286,59 @@ end
 
 ----
 
-function insertScaleChordAction(scaleNoteIndex)
+function scaleChordAction(scaleNoteIndex)
 
 	startUndoBlock()
 
 		setSelectedScaleNote(scaleNoteIndex)
-		insertChord()
-		playChord()
+		playOrInsertScaleChord()
 
 		local selectedChordType = getSelectedChordType(scaleNoteIndex)
 		local chord = scaleChords[scaleNoteIndex][selectedChordType]
 
-	endUndoBlock("insert scale chord " .. scaleNoteIndex .. "  (" .. chord.code .. ")")
+	endUndoBlock("scale chord " .. scaleNoteIndex .. "  (" .. chord.code .. ")")
 end
 
 --
 
-function playScaleChordAction(scaleNoteIndex)
+function scaleNoteAction(scaleNoteIndex)
 
 	startUndoBlock()
 
 		setSelectedScaleNote(scaleNoteIndex)
-		playChord()
+		playOrInsertScaleNote(0)
 
-		local selectedChordType = getSelectedChordType(scaleNoteIndex)
-		local chord = scaleChords[scaleNoteIndex][selectedChordType]
-
-	endUndoBlock("play scale chord " .. scaleNoteIndex .. "  (" .. chord.code .. ")")
+	endUndoBlock("scale note " .. scaleNoteIndex)
 end
 
 --
 
-function playScaleNoteAction(scaleNoteIndex)
+function lowerScaleNoteAction(scaleNoteIndex)
+
+  if getOctave() <= -1 then
+    return
+  end
 
 	startUndoBlock()
 
 		setSelectedScaleNote(scaleNoteIndex)
-		playScaleNote()
+		playOrInsertScaleNote(-1)
 
-	endUndoBlock("play scale note " .. scaleNoteIndex)
+	endUndoBlock("lower scale note " .. scaleNoteIndex)
 end
 
 --
 
-function playLowerScaleNoteAction(scaleNoteIndex)
+function higherScaleNoteAction(scaleNoteIndex)
+
+  if getOctave() >= 8 then
+    return
+  end
 
 	startUndoBlock()
 
 		setSelectedScaleNote(scaleNoteIndex)
-		playLowerScaleNote()
+		playOrInsertScaleNote(1)
 
-	endUndoBlock("play lower scale note " .. scaleNoteIndex)
-end
-
---
-
-function playHigherScaleNoteAction(scaleNoteIndex)
-
-	startUndoBlock()
-
-		setSelectedScaleNote(scaleNoteIndex)
-		playHigherScaleNote()
-
-	endUndoBlock("play higher scale note " .. scaleNoteIndex)
-end
-
---
-
-function insertScaleNoteAction(scaleNoteIndex)
-
-	startUndoBlock()
-
-		setSelectedScaleNote(scaleNoteIndex)
-		insertScaleNote()
-		playScaleNote()
-
-	endUndoBlock("insert scale note " .. scaleNoteIndex)
-end
-
---
-
-function insertLowerScaleNoteAction(scaleNoteIndex)
-
-	startUndoBlock()
-
-		setSelectedScaleNote(scaleNoteIndex)
-		insertLowerScaleNote()
-		playLowerScaleNote()
-
-	endUndoBlock("insert lower scale note " .. scaleNoteIndex)
-end
-
---
-
-function insertHigherScaleNoteAction(scaleNoteIndex)
-
-	startUndoBlock()
-
-		setSelectedScaleNote(scaleNoteIndex)
-		insertHigherScaleNote()
-		playHigherScaleNote()
-
-	endUndoBlock("insert higher scale note " .. scaleNoteIndex)
+	endUndoBlock("higher scale note " .. scaleNoteIndex)
 end

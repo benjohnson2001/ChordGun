@@ -45,24 +45,24 @@ local function setEditCursorTo(arg)
 	setEditCursorPosition(cursorPosition)
 end
 
-function changeSelectedNotesToScaleChords()
+function changeSelectedNotesToScaleChords(chordNotesArray)
 
 	local noteStartingPositions = getNoteStartingPositions()
 	deleteSelectedNotes()
 	
 	for i = 1, #noteStartingPositions do
 		setEditCursorTo(noteStartingPositions[i])
-		insertChordForSelection()
+		insertScaleChord(chordNotesArray, true)
 	end
 end
 
-function changeSelectedNotesToScaleNotes(octaveAdjustment)
+function changeSelectedNotesToScaleNotes(noteValue)
 
 	local noteStartingPositions = getNoteStartingPositions()
 	deleteSelectedNotes()
 
 	for i = 1, #noteStartingPositions do
 		setEditCursorTo(noteStartingPositions[i])
-		insertScaleNoteForSelection(octaveAdjustment)
+		insertScaleNote(noteValue, true)
 	end
 end

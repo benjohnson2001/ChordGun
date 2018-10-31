@@ -49,6 +49,12 @@ local function noteLength()
   return reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), noteLengthPPQ)
 end
 
+function notCurrentlyRecording()
+  
+  local activeProjectIndex = 0
+  return reaper.GetPlayStateEx(activeProjectIndex) & 4 ~= 4
+end
+
 local function setEditCursorPosition(arg)
 
   local activeProjectIndex = 0

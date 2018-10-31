@@ -2,8 +2,6 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/interface/colors")
 require(workingDirectory .. "/util")
-require(workingDirectory .. "/insertChord")
-require(workingDirectory .. "/playChord")
 require(workingDirectory .. "/globalState")
 
 ChordButton = {}
@@ -139,18 +137,22 @@ end
 
 function ChordButton:onPress()
 	
-	playChord()
+	startUndoBlock()
+
+		local chord = scaleChords[self.scaleNoteIndex][self.chordTypeIndex]
+		previewChord()
+	
+	endUndoBlock("preview scale chord " .. self.scaleNoteIndex .. "  (" .. chord.code .. ")")
 end
 
 function ChordButton:onShiftPress()
 
 	startUndoBlock()
 
-		insertChord()
-		playChord()
+		playOrInsertScaleChord()
 		local chord = scaleChords[self.scaleNoteIndex][self.chordTypeIndex]
 
-	endUndoBlock("insert scale chord " .. self.scaleNoteIndex .. "  (" .. chord.code .. ")")
+	endUndoBlock("scale chord " .. self.scaleNoteIndex .. "  (" .. chord.code .. ")")
 end
 
 function ChordButton:update()
