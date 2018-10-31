@@ -20,7 +20,9 @@ function decrementChordInversionAction()
 	decrementChordInversion()
 
 	if thereAreNotesSelected() then
+		startUndoBlock()
 		insertChord()
+		endUndoBlock("decrement chord inversion")
 	end
 
 	playChord()
@@ -45,7 +47,9 @@ function incrementChordInversionAction()
 	incrementChordInversion()
 
 	if thereAreNotesSelected() then
+		startUndoBlock()
 		insertChord()
+		endUndoBlock("increment chord inversion")
 	end
 	
 	playChord()
@@ -71,7 +75,9 @@ function decrementChordTypeAction()
 	decrementChordType()
 
 	if thereAreNotesSelected() then
+		startUndoBlock()
 		insertChord()
+		endUndoBlock("decrement chord type")
 	end
 
 	playChord()
@@ -96,7 +102,9 @@ function incrementChordTypeAction()
 	incrementChordType()
 
 	if thereAreNotesSelected() then
+		startUndoBlock()
 		insertChord()
+		endUndoBlock("increment chord type")
 	end
 
 	playChord()
@@ -120,7 +128,9 @@ function decrementOctaveAction()
 	decrementOctave()
 
 	if thereAreNotesSelected() then
+		startUndoBlock()
 		transposeSelectedNotesDownOneOctave()
+		endUndoBlock("decrement octave")
 	else
 		playTonicNote()
 	end
@@ -144,7 +154,9 @@ function incrementOctaveAction()
 	incrementOctave()
 
 	if thereAreNotesSelected() then
+		startUndoBlock()
 		transposeSelectedNotesUpOneOctave()
+		endUndoBlock("increment octave")
 	else
 		playTonicNote()
 	end	
@@ -255,67 +267,60 @@ function incrementScaleTypeAction()
 	showScaleStatus()
 end
 
+----
+
+local function insertScaleChordAction(scaleNoteIndex)
+
+	startUndoBlock()
+	setSelectedScaleNote(scaleNoteIndex)
+	insertChord()
+	playChord()
+
+	local selectedChordType = getSelectedChordType(scaleNoteIndex)
+	local chord = scaleChords[scaleNoteIndex][selectedChordType]
+	endUndoBlock("insert scale chord " .. scaleNoteIndex .. "  (" .. chord.code .. ")")
+end
+
 --
 
 function insertScaleChord1Action()
-
-	setSelectedScaleNote(1)
-	insertChord()
-	playChord()
+	insertScaleChordAction(1)
 end
 
 --
 
 function insertScaleChord2Action()
-
-	setSelectedScaleNote(2)
-	insertChord()
-	playChord()
+	insertScaleChordAction(2)
 end
 
 --
 
 function insertScaleChord3Action()
-
-	setSelectedScaleNote(3)
-	insertChord()
-	playChord()
+	insertScaleChordAction(3)
 end
 
 --
 
 function insertScaleChord4Action()
-
-	setSelectedScaleNote(4)
-	insertChord()
-	playChord()
+	insertScaleChordAction(4)
 end
 
 --
 
 function insertScaleChord5Action()
-
-	setSelectedScaleNote(5)
-	insertChord()
-	playChord()
+	insertScaleChordAction(5)
 end
 
 --
 
 function insertScaleChord6Action()
-
-	setSelectedScaleNote(6)
-	insertChord()
-	playChord()
+	insertScaleChordAction(6)
 end
 
 --
 
 function insertScaleChord7Action()
-
-	setSelectedScaleNote(7)
-	playChord()
-	insertChord()
+	insertScaleChordAction(7)
 end
 
 --
@@ -542,191 +547,182 @@ function playHigherScaleNote7Action()
 	return playHigherScaleNote()
 end
 
+----
+
+local function insertScaleNoteAction(scaleNoteIndex)
+
+	startUndoBlock()
+	setSelectedScaleNote(scaleNoteIndex)
+	insertScaleNote()
+	playScaleNote()
+	endUndoBlock("insert scale note " .. scaleNoteIndex)
+end
+
 --
 
 function insertScaleNote1Action()
 
-	setSelectedScaleNote(1)
-	insertScaleNote()
-	playScaleNote()
+	insertScaleNoteAction(1)
 end
 
 --
 
 function insertScaleNote2Action()
 
-	setSelectedScaleNote(2)
-	insertScaleNote()
-	playScaleNote()
+	insertScaleNoteAction(2)
 end
 
 --
 
 function insertScaleNote3Action()
 
-	setSelectedScaleNote(3)
-	insertScaleNote()
-	playScaleNote()
+	insertScaleNoteAction(3)
 end
 
 --
 
 function insertScaleNote4Action()
 
-	setSelectedScaleNote(4)
-	insertScaleNote()
-	playScaleNote()
+	insertScaleNoteAction(4)
 end
 
 --
 
 function insertScaleNote5Action()
 
-	setSelectedScaleNote(5)
-	insertScaleNote()
-	playScaleNote()
+	insertScaleNoteAction(5)
 end
 
 --
 
 function insertScaleNote6Action()
 
-	setSelectedScaleNote(6)
-	insertScaleNote()
-	playScaleNote()
+	insertScaleNoteAction(6)
 end
 
 --
 
 function insertScaleNote7Action()
 
-	setSelectedScaleNote(7)
-	insertScaleNote()
+	insertScaleNoteAction(7)
+end
+
+----
+
+local function insertLowerScaleNoteAction(scaleNoteIndex)
+
+	startUndoBlock()
+	setSelectedScaleNote(scaleNoteIndex)
+	insertLowerScaleNote()
 	playScaleNote()
+	endUndoBlock("insert lower scale note " .. scaleNoteIndex)
 end
 
 --
 
 function insertLowerScaleNote1Action()
 
-	setSelectedScaleNote(1)
-	insertLowerScaleNote()
-	playScaleNote()
+	insertLowerScaleNoteAction(1)
 end
 
 --
 
 function insertLowerScaleNote2Action()
 
-	setSelectedScaleNote(2)
-	insertLowerScaleNote()
-	playScaleNote()
+	insertLowerScaleNoteAction(2)
 end
 
 --
 
 function insertLowerScaleNote3Action()
 
-	setSelectedScaleNote(3)
-	insertLowerScaleNote()
-	playScaleNote()
+	insertLowerScaleNoteAction(3)
 end
 
 --
 
 function insertLowerScaleNote4Action()
 
-	setSelectedScaleNote(4)
-	insertLowerScaleNote()
-	playScaleNote()
+	insertLowerScaleNoteAction(4)
 end
 
 --
 
 function insertLowerScaleNote5Action()
 
-	setSelectedScaleNote(5)
-	insertLowerScaleNote()
-	playScaleNote()
+	insertLowerScaleNoteAction(5)
 end
 
 --
 
 function insertLowerScaleNote6Action()
 
-	setSelectedScaleNote(6)
-	insertLowerScaleNote()
-	playScaleNote()
+	insertLowerScaleNoteAction(6)
 end
 
 --
 
 function insertLowerScaleNote7Action()
 
-	setSelectedScaleNote(7)
-	insertLowerScaleNote()
+	insertLowerScaleNoteAction(7)
+end
+
+----
+
+local function insertHigherScaleNoteAction(scaleNoteIndex)
+
+	startUndoBlock()
+	setSelectedScaleNote(scaleNoteIndex)
+	insertHigherScaleNote()
 	playScaleNote()
+	endUndoBlock("insert higher scale note " .. scaleNoteIndex)
 end
 
 --
 
 function insertHigherScaleNote1Action()
 
-	setSelectedScaleNote(1)
-	insertHigherScaleNote()
-	playScaleNote()
+	insertHigherScaleNoteAction(1)
 end
 
 --
 
 function insertHigherScaleNote2Action()
 
-	setSelectedScaleNote(2)
-	insertHigherScaleNote()
-	playScaleNote()
+	insertHigherScaleNoteAction(2)
 end
 
 --
 
 function insertHigherScaleNote3Action()
 
-	setSelectedScaleNote(3)
-	insertHigherScaleNote()
-	playScaleNote()
+	insertHigherScaleNoteAction(3)
 end
 
 --
 
 function insertHigherScaleNote4Action()
 
-	setSelectedScaleNote(4)
-	insertHigherScaleNote()
-	playScaleNote()
+	insertHigherScaleNoteAction(4)
 end
 
 --
 
 function insertHigherScaleNote5Action()
 
-	setSelectedScaleNote(5)
-	insertHigherScaleNote()
-	playScaleNote()
+	insertHigherScaleNoteAction(5)
 end
 
 --
 
 function insertHigherScaleNote6Action()
 
-	setSelectedScaleNote(6)
-	insertHigherScaleNote()
-	playScaleNote()
+	insertHigherScaleNoteAction(6)
 end
 
 --
 
 function insertHigherScaleNote7Action()
 
-	setSelectedScaleNote(7)
-	insertHigherScaleNote()
-	playScaleNote()
+	insertHigherScaleNoteAction(7)
 end

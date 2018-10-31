@@ -78,15 +78,12 @@ function notesAreSelected()
 end
 
 function startUndoBlock()
-
-	local activeProjectIndex = 0
-	reaper.Undo_BeginBlock2(activeProjectIndex)
+	reaper.Undo_BeginBlock()
 end
 
 function endUndoBlock(actionDescription)
-
-	local activeProjectIndex = 0
-	reaper.Undo_EndBlock2(activeProjectIndex, actionDescription, -1)
+	reaper.Undo_OnStateChange(actionDescription)
+	reaper.Undo_EndBlock(actionDescription, -1)
 end
 
 

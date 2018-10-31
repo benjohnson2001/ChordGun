@@ -7,8 +7,6 @@ require(workingDirectory .. "/changeSelectedNotes")
 
 local function insertChordImpl(keepNotesSelected)
 
-  startUndoBlock()
-
   local scaleNoteIndex = getSelectedScaleNote()
   local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
   
@@ -26,8 +24,6 @@ local function insertChordImpl(keepNotesSelected)
 
   updateChordText(root, chord, chordNotesArray)
   moveCursor()
-
-  endUndoBlock("inserted scale chord " .. scaleNoteIndex)
 end
 
 function insertChordForSelection()

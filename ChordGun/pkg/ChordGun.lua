@@ -571,15 +571,12 @@ function notesAreSelected()
 end
 
 function startUndoBlock()
-
-	local activeProjectIndex = 0
-	reaper.Undo_BeginBlock2(activeProjectIndex)
+	reaper.Undo_BeginBlock()
 end
 
 function endUndoBlock(actionDescription)
-
-	local activeProjectIndex = 0
-	reaper.Undo_EndBlock2(activeProjectIndex, actionDescription, -1)
+	reaper.Undo_OnStateChange(actionDescription)
+	reaper.Undo_EndBlock(actionDescription, -1)
 end
 
 
@@ -1398,8 +1395,6 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 local function insertChordImpl(keepNotesSelected)
 
-  startUndoBlock()
-
   local scaleNoteIndex = getSelectedScaleNote()
   local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
   
@@ -1417,8 +1412,6 @@ local function insertChordImpl(keepNotesSelected)
 
   updateChordText(root, chord, chordNotesArray)
   moveCursor()
-
-  endUndoBlock("inserted scale chord " .. scaleNoteIndex)
 end
 
 function insertChordForSelection()
@@ -1836,7 +1829,9 @@ function decrementChordInversionAction()
 	decrementChordInversion()
 
 	if thereAreNotesSelected() then
+		startUndoBlock()
 		insertChord()
+		endUndoBlock("decrement chord inversion")
 	end
 
 	playChord()
@@ -1861,7 +1856,9 @@ function incrementChordInversionAction()
 	incrementChordInversion()
 
 	if thereAreNotesSelected() then
+		startUndoBlock()
 		insertChord()
+		endUndoBlock("increment chord inversion")
 	end
 	
 	playChord()
@@ -1887,7 +1884,9 @@ function decrementChordTypeAction()
 	decrementChordType()
 
 	if thereAreNotesSelected() then
+		startUndoBlock()
 		insertChord()
+		endUndoBlock("decrement chord type")
 	end
 
 	playChord()
@@ -1912,7 +1911,9 @@ function incrementChordTypeAction()
 	incrementChordType()
 
 	if thereAreNotesSelected() then
+		startUndoBlock()
 		insertChord()
+		endUndoBlock("increment chord type")
 	end
 
 	playChord()
@@ -1936,7 +1937,9 @@ function decrementOctaveAction()
 	decrementOctave()
 
 	if thereAreNotesSelected() then
+		startUndoBlock()
 		transposeSelectedNotesDownOneOctave()
+		endUndoBlock("decrement octave")
 	else
 		playTonicNote()
 	end
@@ -1960,7 +1963,9 @@ function incrementOctaveAction()
 	incrementOctave()
 
 	if thereAreNotesSelected() then
+		startUndoBlock()
 		transposeSelectedNotesUpOneOctave()
+		endUndoBlock("increment octave")
 	else
 		playTonicNote()
 	end	
@@ -2071,67 +2076,60 @@ function incrementScaleTypeAction()
 	showScaleStatus()
 end
 
+----
+
+local function insertScaleChordAction(scaleNoteIndex)
+
+	startUndoBlock()
+	setSelectedScaleNote(scaleNoteIndex)
+	insertChord()
+	playChord()
+
+	local selectedChordType = getSelectedChordType(scaleNoteIndex)
+	local chord = scaleChords[scaleNoteIndex][selectedChordType]
+	endUndoBlock("insert scale chord " .. scaleNoteIndex .. "  (" .. chord.code .. ")")
+end
+
 --
 
 function insertScaleChord1Action()
-
-	setSelectedScaleNote(1)
-	insertChord()
-	playChord()
+	insertScaleChordAction(1)
 end
 
 --
 
 function insertScaleChord2Action()
-
-	setSelectedScaleNote(2)
-	insertChord()
-	playChord()
+	insertScaleChordAction(2)
 end
 
 --
 
 function insertScaleChord3Action()
-
-	setSelectedScaleNote(3)
-	insertChord()
-	playChord()
+	insertScaleChordAction(3)
 end
 
 --
 
 function insertScaleChord4Action()
-
-	setSelectedScaleNote(4)
-	insertChord()
-	playChord()
+	insertScaleChordAction(4)
 end
 
 --
 
 function insertScaleChord5Action()
-
-	setSelectedScaleNote(5)
-	insertChord()
-	playChord()
+	insertScaleChordAction(5)
 end
 
 --
 
 function insertScaleChord6Action()
-
-	setSelectedScaleNote(6)
-	insertChord()
-	playChord()
+	insertScaleChordAction(6)
 end
 
 --
 
 function insertScaleChord7Action()
-
-	setSelectedScaleNote(7)
-	playChord()
-	insertChord()
+	insertScaleChordAction(7)
 end
 
 --
@@ -2358,193 +2356,184 @@ function playHigherScaleNote7Action()
 	return playHigherScaleNote()
 end
 
+----
+
+local function insertScaleNoteAction(scaleNoteIndex)
+
+	startUndoBlock()
+	setSelectedScaleNote(scaleNoteIndex)
+	insertScaleNote()
+	playScaleNote()
+	endUndoBlock("insert scale note " .. scaleNoteIndex)
+end
+
 --
 
 function insertScaleNote1Action()
 
-	setSelectedScaleNote(1)
-	insertScaleNote()
-	playScaleNote()
+	insertScaleNoteAction(1)
 end
 
 --
 
 function insertScaleNote2Action()
 
-	setSelectedScaleNote(2)
-	insertScaleNote()
-	playScaleNote()
+	insertScaleNoteAction(2)
 end
 
 --
 
 function insertScaleNote3Action()
 
-	setSelectedScaleNote(3)
-	insertScaleNote()
-	playScaleNote()
+	insertScaleNoteAction(3)
 end
 
 --
 
 function insertScaleNote4Action()
 
-	setSelectedScaleNote(4)
-	insertScaleNote()
-	playScaleNote()
+	insertScaleNoteAction(4)
 end
 
 --
 
 function insertScaleNote5Action()
 
-	setSelectedScaleNote(5)
-	insertScaleNote()
-	playScaleNote()
+	insertScaleNoteAction(5)
 end
 
 --
 
 function insertScaleNote6Action()
 
-	setSelectedScaleNote(6)
-	insertScaleNote()
-	playScaleNote()
+	insertScaleNoteAction(6)
 end
 
 --
 
 function insertScaleNote7Action()
 
-	setSelectedScaleNote(7)
-	insertScaleNote()
+	insertScaleNoteAction(7)
+end
+
+----
+
+local function insertLowerScaleNoteAction(scaleNoteIndex)
+
+	startUndoBlock()
+	setSelectedScaleNote(scaleNoteIndex)
+	insertLowerScaleNote()
 	playScaleNote()
+	endUndoBlock("insert lower scale note " .. scaleNoteIndex)
 end
 
 --
 
 function insertLowerScaleNote1Action()
 
-	setSelectedScaleNote(1)
-	insertLowerScaleNote()
-	playScaleNote()
+	insertLowerScaleNoteAction(1)
 end
 
 --
 
 function insertLowerScaleNote2Action()
 
-	setSelectedScaleNote(2)
-	insertLowerScaleNote()
-	playScaleNote()
+	insertLowerScaleNoteAction(2)
 end
 
 --
 
 function insertLowerScaleNote3Action()
 
-	setSelectedScaleNote(3)
-	insertLowerScaleNote()
-	playScaleNote()
+	insertLowerScaleNoteAction(3)
 end
 
 --
 
 function insertLowerScaleNote4Action()
 
-	setSelectedScaleNote(4)
-	insertLowerScaleNote()
-	playScaleNote()
+	insertLowerScaleNoteAction(4)
 end
 
 --
 
 function insertLowerScaleNote5Action()
 
-	setSelectedScaleNote(5)
-	insertLowerScaleNote()
-	playScaleNote()
+	insertLowerScaleNoteAction(5)
 end
 
 --
 
 function insertLowerScaleNote6Action()
 
-	setSelectedScaleNote(6)
-	insertLowerScaleNote()
-	playScaleNote()
+	insertLowerScaleNoteAction(6)
 end
 
 --
 
 function insertLowerScaleNote7Action()
 
-	setSelectedScaleNote(7)
-	insertLowerScaleNote()
+	insertLowerScaleNoteAction(7)
+end
+
+----
+
+local function insertHigherScaleNoteAction(scaleNoteIndex)
+
+	startUndoBlock()
+	setSelectedScaleNote(scaleNoteIndex)
+	insertHigherScaleNote()
 	playScaleNote()
+	endUndoBlock("insert higher scale note " .. scaleNoteIndex)
 end
 
 --
 
 function insertHigherScaleNote1Action()
 
-	setSelectedScaleNote(1)
-	insertHigherScaleNote()
-	playScaleNote()
+	insertHigherScaleNoteAction(1)
 end
 
 --
 
 function insertHigherScaleNote2Action()
 
-	setSelectedScaleNote(2)
-	insertHigherScaleNote()
-	playScaleNote()
+	insertHigherScaleNoteAction(2)
 end
 
 --
 
 function insertHigherScaleNote3Action()
 
-	setSelectedScaleNote(3)
-	insertHigherScaleNote()
-	playScaleNote()
+	insertHigherScaleNoteAction(3)
 end
 
 --
 
 function insertHigherScaleNote4Action()
 
-	setSelectedScaleNote(4)
-	insertHigherScaleNote()
-	playScaleNote()
+	insertHigherScaleNoteAction(4)
 end
 
 --
 
 function insertHigherScaleNote5Action()
 
-	setSelectedScaleNote(5)
-	insertHigherScaleNote()
-	playScaleNote()
+	insertHigherScaleNoteAction(5)
 end
 
 --
 
 function insertHigherScaleNote6Action()
 
-	setSelectedScaleNote(6)
-	insertHigherScaleNote()
-	playScaleNote()
+	insertHigherScaleNoteAction(6)
 end
 
 --
 
 function insertHigherScaleNote7Action()
 
-	setSelectedScaleNote(7)
-	insertHigherScaleNote()
-	playScaleNote()
+	insertHigherScaleNoteAction(7)
 end
 function drawDropdownIcon()
 
@@ -4563,8 +4552,14 @@ function ChordButton:onPress()
 end
 
 function ChordButton:onShiftPress()
+
+	startUndoBlock()
+	
 	playChord()
 	insertChord()
+
+	local chord = scaleChords[self.scaleNoteIndex][self.chordTypeIndex]
+	endUndoBlock("insert scale chord " .. self.scaleNoteIndex .. "  (" .. chord.code .. ")")
 end
 
 function ChordButton:update()
@@ -4670,6 +4665,10 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 function handleInput()
 
 	inputCharacter = gfx.getchar()
+
+	if inputCharacter == inputCharacters["0"] then
+		stopAllNotesFromPlaying()
+	end
 
 	if inputCharacter == inputCharacters["1"] then
 		playScaleChord1Action()
@@ -4824,91 +4823,91 @@ function handleInput()
 
 
 	if inputCharacter == inputCharacters["Q"] then
-		playHigherScaleNote1Action()
+		insertHigherScaleNote1Action()
 	end
 
 	if inputCharacter == inputCharacters["W"] then
-		playHigherScaleNote2Action()
+		insertHigherScaleNote2Action()
 	end
 
 	if inputCharacter == inputCharacters["E"] then
-		playHigherScaleNote3Action()
+		insertHigherScaleNote3Action()
 	end
 
 	if inputCharacter == inputCharacters["R"] then
-		playHigherScaleNote4Action()
+		insertHigherScaleNote4Action()
 	end
 
 	if inputCharacter == inputCharacters["T"] then
-		playHigherScaleNote5Action()
+		insertHigherScaleNote5Action()
 	end
 
 	if inputCharacter == inputCharacters["Y"] then
-		playHigherScaleNote6Action()
+		insertHigherScaleNote6Action()
 	end
 
 	if inputCharacter == inputCharacters["U"] then
-		playHigherScaleNote7Action()
+		insertHigherScaleNote7Action()
 	end
 
 	--
 
 	if inputCharacter == inputCharacters["A"] then
-		playScaleNote1Action()
+		insertScaleNote1Action()
 	end
 
 	if inputCharacter == inputCharacters["S"] then
-		playScaleNote2Action()
+		insertScaleNote2Action()
 	end
 
 	if inputCharacter == inputCharacters["D"] then
-		playScaleNote3Action()
+		insertScaleNote3Action()
 	end
 
 	if inputCharacter == inputCharacters["F"] then
-		playScaleNote4Action()
+		insertScaleNote4Action()
 	end
 
 	if inputCharacter == inputCharacters["G"] then
-		playScaleNote5Action()
+		insertScaleNote5Action()
 	end
 
 	if inputCharacter == inputCharacters["H"] then
-		playScaleNote6Action()
+		insertScaleNote6Action()
 	end
 
 	if inputCharacter == inputCharacters["J"] then
-		playScaleNote7Action()
+		insertScaleNote7Action()
 	end
 
 	--
 
 	if inputCharacter == inputCharacters["Z"] then
-		playLowerScaleNote1Action()
+		insertLowerScaleNote1Action()
 	end
 
 	if inputCharacter == inputCharacters["X"] then
-		playLowerScaleNote2Action()
+		insertLowerScaleNote2Action()
 	end
 
 	if inputCharacter == inputCharacters["C"] then
-		playLowerScaleNote3Action()
+		insertLowerScaleNote3Action()
 	end
 
 	if inputCharacter == inputCharacters["V"] then
-		playLowerScaleNote4Action()
+		insertLowerScaleNote4Action()
 	end
 
 	if inputCharacter == inputCharacters["B"] then
-		playLowerScaleNote5Action()
+		insertLowerScaleNote5Action()
 	end
 
 	if inputCharacter == inputCharacters["N"] then
-		playLowerScaleNote6Action()
+		insertLowerScaleNote6Action()
 	end
 
 	if inputCharacter == inputCharacters["M"] then
-		playLowerScaleNote7Action()
+		insertLowerScaleNote7Action()
 	end
 
 -----------------
