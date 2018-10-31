@@ -13,243 +13,243 @@ function handleInput()
 	end
 
 	if inputCharacter == inputCharacters["1"] then
-		playScaleChord1Action()
+		playScaleChordAction(1)
 	end
 
 	if inputCharacter == inputCharacters["2"] then
-		playScaleChord2Action()
+		playScaleChordAction(2)
 	end
 
 	if inputCharacter == inputCharacters["3"] then
-		playScaleChord3Action()
+		playScaleChordAction(3)
 	end
 
 	if inputCharacter == inputCharacters["4"] then
-		playScaleChord4Action()
+		playScaleChordAction(4)
 	end
 
 	if inputCharacter == inputCharacters["5"] then
-		playScaleChord5Action()
+		playScaleChordAction(5)
 	end
 
 	if inputCharacter == inputCharacters["6"] then
-		playScaleChord6Action()
+		playScaleChordAction(6)
 	end
 
 	if inputCharacter == inputCharacters["7"] then
-		playScaleChord7Action()
+		playScaleChordAction(7)
 	end
 
 	--
 
 	if inputCharacter == inputCharacters["!"] then
-		insertScaleChord1Action()
+		insertScaleChordAction(1)
 	end
 
 	if inputCharacter == inputCharacters["@"] then
-		insertScaleChord2Action()
+		insertScaleChordAction(2)
 	end
 
 	if inputCharacter == inputCharacters["#"] then
-		insertScaleChord3Action()
+		insertScaleChordAction(3)
 	end
 
 	if inputCharacter == inputCharacters["$"] then
-		insertScaleChord4Action()
+		insertScaleChordAction(4)
 	end
 
 	if inputCharacter == inputCharacters["%"] then
-		insertScaleChord5Action()
+		insertScaleChordAction(5)
 	end
 
 	if inputCharacter == inputCharacters["^"] then
-		insertScaleChord6Action()
+		insertScaleChordAction(6)
 	end
 
 	if inputCharacter == inputCharacters["&"] then
-		insertScaleChord7Action()
+		insertScaleChordAction(7)
 	end
 
 	--
 
 
 	if inputCharacter == inputCharacters["q"] then
-		playHigherScaleNote1Action()
+		playHigherScaleNoteAction(1)
 	end
 
 	if inputCharacter == inputCharacters["w"] then
-		playHigherScaleNote2Action()
+		playHigherScaleNoteAction(2)
 	end
 
 	if inputCharacter == inputCharacters["e"] then
-		playHigherScaleNote3Action()
+		playHigherScaleNoteAction(3)
 	end
 
 	if inputCharacter == inputCharacters["r"] then
-		playHigherScaleNote4Action()
+		playHigherScaleNoteAction(4)
 	end
 
 	if inputCharacter == inputCharacters["t"] then
-		playHigherScaleNote5Action()
+		playHigherScaleNoteAction(5)
 	end
 
 	if inputCharacter == inputCharacters["y"] then
-		playHigherScaleNote6Action()
+		playHigherScaleNoteAction(6)
 	end
 
 	if inputCharacter == inputCharacters["u"] then
-		playHigherScaleNote7Action()
+		playHigherScaleNoteAction(7)
 	end
 
 	--
 
 	if inputCharacter == inputCharacters["a"] then
-		playScaleNote1Action()
+		playScaleNoteAction(1)
 	end
 
 	if inputCharacter == inputCharacters["s"] then
-		playScaleNote2Action()
+		playScaleNoteAction(2)
 	end
 
 	if inputCharacter == inputCharacters["d"] then
-		playScaleNote3Action()
+		playScaleNoteAction(3)
 	end
 
 	if inputCharacter == inputCharacters["f"] then
-		playScaleNote4Action()
+		playScaleNoteAction(4)
 	end
 
 	if inputCharacter == inputCharacters["g"] then
-		playScaleNote5Action()
+		playScaleNoteAction(5)
 	end
 
 	if inputCharacter == inputCharacters["h"] then
-		playScaleNote6Action()
+		playScaleNoteAction(6)
 	end
 
 	if inputCharacter == inputCharacters["j"] then
-		playScaleNote7Action()
+		playScaleNoteAction(7)
 	end
 
 	--
 
 	if inputCharacter == inputCharacters["z"] then
-		playLowerScaleNote1Action()
+		playLowerScaleNoteAction(1)
 	end
 
 	if inputCharacter == inputCharacters["x"] then
-		playLowerScaleNote2Action()
+		playLowerScaleNoteAction(2)
 	end
 
 	if inputCharacter == inputCharacters["c"] then
-		playLowerScaleNote3Action()
+		playLowerScaleNoteAction(3)
 	end
 
 	if inputCharacter == inputCharacters["v"] then
-		playLowerScaleNote4Action()
+		playLowerScaleNoteAction(4)
 	end
 
 	if inputCharacter == inputCharacters["b"] then
-		playLowerScaleNote5Action()
+		playLowerScaleNoteAction(5)
 	end
 
 	if inputCharacter == inputCharacters["n"] then
-		playLowerScaleNote6Action()
+		playLowerScaleNoteAction(6)
 	end
 
 	if inputCharacter == inputCharacters["m"] then
-		playLowerScaleNote7Action()
+		playLowerScaleNoteAction(7)
 	end
 
 		--
 
 
 	if inputCharacter == inputCharacters["Q"] then
-		insertHigherScaleNote1Action()
+		insertHigherScaleNoteAction(1)
 	end
 
 	if inputCharacter == inputCharacters["W"] then
-		insertHigherScaleNote2Action()
+		insertHigherScaleNoteAction(2)
 	end
 
 	if inputCharacter == inputCharacters["E"] then
-		insertHigherScaleNote3Action()
+		insertHigherScaleNoteAction(3)
 	end
 
 	if inputCharacter == inputCharacters["R"] then
-		insertHigherScaleNote4Action()
+		insertHigherScaleNoteAction(4)
 	end
 
 	if inputCharacter == inputCharacters["T"] then
-		insertHigherScaleNote5Action()
+		insertHigherScaleNoteAction(5)
 	end
 
 	if inputCharacter == inputCharacters["Y"] then
-		insertHigherScaleNote6Action()
+		insertHigherScaleNoteAction(6)
 	end
 
 	if inputCharacter == inputCharacters["U"] then
-		insertHigherScaleNote7Action()
+		insertHigherScaleNoteAction(7)
 	end
 
 	--
 
 	if inputCharacter == inputCharacters["A"] then
-		insertScaleNote1Action()
+		insertScaleNoteAction(1)
 	end
 
 	if inputCharacter == inputCharacters["S"] then
-		insertScaleNote2Action()
+		insertScaleNoteAction(2)
 	end
 
 	if inputCharacter == inputCharacters["D"] then
-		insertScaleNote3Action()
+		insertScaleNoteAction(3)
 	end
 
 	if inputCharacter == inputCharacters["F"] then
-		insertScaleNote4Action()
+		insertScaleNoteAction(4)
 	end
 
 	if inputCharacter == inputCharacters["G"] then
-		insertScaleNote5Action()
+		insertScaleNoteAction(5)
 	end
 
 	if inputCharacter == inputCharacters["H"] then
-		insertScaleNote6Action()
+		insertScaleNoteAction(6)
 	end
 
 	if inputCharacter == inputCharacters["J"] then
-		insertScaleNote7Action()
+		insertScaleNoteAction(7)
 	end
 
 	--
 
 	if inputCharacter == inputCharacters["Z"] then
-		insertLowerScaleNote1Action()
+		insertLowerScaleNoteAction(1)
 	end
 
 	if inputCharacter == inputCharacters["X"] then
-		insertLowerScaleNote2Action()
+		insertLowerScaleNoteAction(2)
 	end
 
 	if inputCharacter == inputCharacters["C"] then
-		insertLowerScaleNote3Action()
+		insertLowerScaleNoteAction(3)
 	end
 
 	if inputCharacter == inputCharacters["V"] then
-		insertLowerScaleNote4Action()
+		insertLowerScaleNoteAction(4)
 	end
 
 	if inputCharacter == inputCharacters["B"] then
-		insertLowerScaleNote5Action()
+		insertLowerScaleNoteAction(5)
 	end
 
 	if inputCharacter == inputCharacters["N"] then
-		insertLowerScaleNote6Action()
+		insertLowerScaleNoteAction(6)
 	end
 
 	if inputCharacter == inputCharacters["M"] then
-		insertLowerScaleNote7Action()
+		insertLowerScaleNoteAction(7)
 	end
 
 -----------------

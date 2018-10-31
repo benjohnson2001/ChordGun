@@ -145,9 +145,11 @@ end
 function ChordButton:onShiftPress()
 
 	startUndoBlock()
-	playChord()
-	insertChord()
-	local chord = scaleChords[self.scaleNoteIndex][self.chordTypeIndex]
+
+		insertChord()
+		playChord()
+		local chord = scaleChords[self.scaleNoteIndex][self.chordTypeIndex]
+
 	endUndoBlock("insert scale chord " .. self.scaleNoteIndex .. "  (" .. chord.code .. ")")
 end
 

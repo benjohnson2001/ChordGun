@@ -216,8 +216,12 @@ function halveGridSize()
     return
   end
 
-  local activeProjectIndex = 0
-  reaper.SetMIDIEditorGrid(activeProjectIndex, gridSize/2)
+  startUndoBlock()
+
+    local activeProjectIndex = 0
+    reaper.SetMIDIEditorGrid(activeProjectIndex, gridSize/2)
+
+  endUndoBlock("halve grid size")
 end
 
 function doubleGridSize()
@@ -232,8 +236,12 @@ function doubleGridSize()
     return
   end
 
-  local activeProjectIndex = 0
-  reaper.SetMIDIEditorGrid(activeProjectIndex, gridSize*2)
+  startUndoBlock()
+
+    local activeProjectIndex = 0
+    reaper.SetMIDIEditorGrid(activeProjectIndex, gridSize*2)
+
+  endUndoBlock("double grid size")
 end
 
 --
