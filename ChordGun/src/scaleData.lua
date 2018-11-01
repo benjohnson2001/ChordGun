@@ -1,6 +1,5 @@
 -- @noindex
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
-require(workingDirectory .. "/inversionStates")
 require(workingDirectory .. "/scaleFunctions")
 require(workingDirectory .. "/scales")
 require(workingDirectory .. "/scaleDegreeHeaders")
@@ -138,7 +137,8 @@ end
 
 function getChordInversionText(chordNotesArray)
 
-  local inversionValue = getCurrentInversionValue()
+  local selectedScaleNote = getSelectedScaleNote()
+  local inversionValue = getInversionState(selectedScaleNote)
   
   if inversionValue == 0 then
     return ''
@@ -153,7 +153,8 @@ end
 
 function getChordInversionOctaveIndicator(numberOfChordNotes)
 
-  local inversionValue = getCurrentInversionValue()
+  local selectedScaleNote = getSelectedScaleNote()
+  local inversionValue = getInversionState(selectedScaleNote)
 
   local octaveIndicator = nil
    

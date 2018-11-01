@@ -38,7 +38,6 @@ function unifyMainProgram() {
 	insertIntoFile src/scaleDegreeHeaders.lua $1
 	insertIntoFile src/midiEditor.lua $1
 	insertIntoFile src/midiMessages.lua $1
-	insertIntoFile src/inversionStates.lua $1
 	insertIntoFile src/chordNotesArray.lua $1
 	insertIntoFile src/insertMidiNote.lua $1
 	insertIntoFile src/playOrInsertScaleChord.lua $1
@@ -90,7 +89,6 @@ function unifyKeyboardShortcut() {
 	insertIntoFile src/scaleDegreeHeaders.lua $1
 	insertIntoFile src/midiEditor.lua $1
 	insertIntoFile src/midiMessages.lua $1
-	insertIntoFile src/inversionStates.lua $1
 	insertIntoFile src/chordNotesArray.lua $1
 	insertIntoFile src/insertMidiNote.lua $1
 	insertIntoFile src/playOrInsertScaleChord.lua $1

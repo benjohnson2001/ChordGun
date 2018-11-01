@@ -1,11 +1,13 @@
 -- @noindex
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
-require(workingDirectory .. "/inversionStates")
+require(workingDirectory .. "/preferences")
 
 function applyInversion(chord)
   
   local chordLength = #chord
-  local chordInversionValue = getCurrentInversionValue()
+
+  local selectedScaleNote = getSelectedScaleNote()
+  local chordInversionValue = getInversionState(selectedScaleNote)
   local chord_ = chord
   local oct = 0  
   

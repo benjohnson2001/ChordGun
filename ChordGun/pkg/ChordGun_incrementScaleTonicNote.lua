@@ -96,9 +96,9 @@ for i = 1, 7 do
   table.insert(defaultSelectedChordTypes, 1)
 end
 
-defaultSelectedInversionStates = {}
-for i = 1, #chords do
-  table.insert(defaultSelectedInversionStates, 0)
+defaultInversionStates = {}
+for i = 1, 7 do
+  table.insert(defaultInversionStates, 0)
 end
 
 defaultScaleNoteNames = {'C', 'D', 'E', 'F', 'G', 'A', 'B'}
@@ -121,13 +121,7 @@ local octaveKey = "octave"
 local selectedChordTypesKey = "selectedChordTypes"
 local scaleNoteNamesKey = "scaleNoteNames"
 local scaleDegreeHeadersKey = "scaleDegreeHeaders"
-local selectedInversionStates1Key = "selectedInversionStates1"
-local selectedInversionStates2Key = "selectedInversionStates2"
-local selectedInversionStates3Key = "selectedInversionStates3"
-local selectedInversionStates4Key = "selectedInversionStates4"
-local selectedInversionStates5Key = "selectedInversionStates5"
-local selectedInversionStates6Key = "selectedInversionStates6"
-local selectedInversionStates7Key = "selectedInversionStates7"
+local inversionStatesKey = "inversionStates"
 local notesThatArePlayingKey = "notesThatArePlaying"
 local dockStateKey = "dockState"
 
@@ -316,135 +310,21 @@ end
 
 --
 
-function getSelectedInversionStates1()
-  return getTableValue(selectedInversionStates1Key, defaultSelectedInversionStates)
+function getInversionStates()
+  return getTableValue(inversionStatesKey, defaultInversionStates)
 end
 
-function getSelectedInversionState1(index)
+function getInversionState(index)
 
-  local temp = getTableValue(selectedInversionStates1Key, defaultSelectedInversionStates)
+  local temp = getTableValue(inversionStatesKey, defaultInversionStates)
   return tonumber(temp[index])
 end
 
-function setSelectedInversionState1(index, arg)
+function setInversionState(index, arg)
 
-  local temp = getSelectedInversionStates1()
+  local temp = getInversionStates()
   temp[index] = arg
-  setTableValue(selectedInversionStates1Key, temp)
-end
-
---
-
-function getSelectedInversionStates2()
-  return getTableValue(selectedInversionStates2Key, defaultSelectedInversionStates)
-end
-
-function getSelectedInversionState2(index)
-
-  local temp = getTableValue(selectedInversionStates2Key, defaultSelectedInversionStates)
-  return tonumber(temp[index])
-end
-
-function setSelectedInversionState2(index, arg)
-
-  local temp = getSelectedInversionStates2()
-  temp[index] = arg
-  setTableValue(selectedInversionStates2Key, temp)
-end
-
---
-
-function getSelectedInversionStates3()
-  return getTableValue(selectedInversionStates3Key, defaultSelectedInversionStates)
-end
-
-function getSelectedInversionState3(index)
-
-  local temp = getTableValue(selectedInversionStates3Key, defaultSelectedInversionStates)
-  return tonumber(temp[index])
-end
-
-function setSelectedInversionState3(index, arg)
-
-  local temp = getSelectedInversionStates3()
-  temp[index] = arg
-  setTableValue(selectedInversionStates3Key, temp)
-end
-
---
-
-function getSelectedInversionStates4()
-  return getTableValue(selectedInversionStates4Key, defaultSelectedInversionStates)
-end
-
-function getSelectedInversionState4(index)
-
-  local temp = getTableValue(selectedInversionStates4Key, defaultSelectedInversionStates)
-  return tonumber(temp[index])
-end
-
-function setSelectedInversionState4(index, arg)
-
-  local temp = getSelectedInversionStates4()
-  temp[index] = arg
-  setTableValue(selectedInversionStates4Key, temp)
-end
-
---
-
-function getSelectedInversionStates5()
-  return getTableValue(selectedInversionStates5Key, defaultSelectedInversionStates)
-end
-
-function getSelectedInversionState5(index)
-
-  local temp = getTableValue(selectedInversionStates5Key, defaultSelectedInversionStates)
-  return tonumber(temp[index])
-end
-
-function setSelectedInversionState5(index, arg)
-
-  local temp = getSelectedInversionStates5()
-  temp[index] = arg
-  setTableValue(selectedInversionStates5Key, temp)
-end
-
---
-
-function getSelectedInversionStates6()
-  return getTableValue(selectedInversionStates6Key, defaultSelectedInversionStates)
-end
-
-function getSelectedInversionState6(index)
-
-  local temp = getTableValue(selectedInversionStates6Key, defaultSelectedInversionStates)
-  return tonumber(temp[index])
-end
-
-function setSelectedInversionState6(index, arg)
-
-  local temp = getSelectedInversionStates6()
-  temp[index] = arg
-  setTableValue(selectedInversionStates6Key, temp)
-end
-
---
-
-function getSelectedInversionStates7()
-  return getTableValue(selectedInversionStates7Key, defaultSelectedInversionStates)
-end
-
-function getSelectedInversionState7(index)
-
-  local temp = getTableValue(selectedInversionStates7Key, defaultSelectedInversionStates)
-  return tonumber(temp[index])
-end
-
-function setSelectedInversionState7(index, arg)
-
-  local temp = getSelectedInversionStates7()
-  temp[index] = arg
-  setTableValue(selectedInversionStates7Key, temp)
+  setTableValue(inversionStatesKey, temp)
 end
 
 --
@@ -458,18 +338,12 @@ function resetSelectedChordTypes()
   end
 end
 
-function resetSelectedInversionStates()
+function resetInversionStates()
 
-  local numberOfSelectedInversionStates = #defaultSelectedInversionStates
+  local numberOfInversionStates = 7
 
-  for i = 1, numberOfSelectedInversionStates do
-    setSelectedInversionState1(i, 0)
-    setSelectedInversionState2(i, 0)
-    setSelectedInversionState3(i, 0)
-    setSelectedInversionState4(i, 0)
-    setSelectedInversionState5(i, 0)
-    setSelectedInversionState6(i, 0)
-    setSelectedInversionState7(i, 0)
+  for i = 1, numberOfInversionStates do
+    setInversionState(i, 0)
   end
 end
 
@@ -1172,113 +1046,14 @@ function stopNotesFromPlaying()
 
   setNotesThatArePlaying({})
 end
-
-inversionStates = {}
-
-function updateInversionStates()
-
-  inversionStates = {}
-
-  local scaleNoteIndex = 1
-  for note = getScaleTonicNote(), getScaleTonicNote() + 11 do
-  
-    if noteIsInScale(note) then
-
-      if inversionStates[scaleNoteIndex] == nil then
-        inversionStates[scaleNoteIndex] = {}
-      end
-      
-      local chordCount = 0
-
-      for k, chord in ipairs(chords) do
-
-        if chordIsInScale(note, k) then
-          chordCount = chordCount + 1
-
-          if inversionStates[scaleNoteIndex][chordCount] == nil then
-            inversionStates[scaleNoteIndex][chordCount] = 0
-          end
-        end
-      end
-    
-      scaleNoteIndex = scaleNoteIndex + 1
-    end
-  end
-end
-
-function setInversionState(inversionValue)
-
-  local selectedScaleDegree = getSelectedScaleNote()
-  local selectedChordTypeIndex = getSelectedChordType(selectedScaleDegree)
-  
-  if selectedScaleDegree == 1 then
-    setSelectedInversionState1(selectedChordTypeIndex, inversionValue)
-  end
-  
-  if selectedScaleDegree == 2 then
-    setSelectedInversionState2(selectedChordTypeIndex, inversionValue)
-  end
-  
-  if selectedScaleDegree == 3 then
-    setSelectedInversionState3(selectedChordTypeIndex, inversionValue)
-  end
-  
-  if selectedScaleDegree == 4 then
-    setSelectedInversionState4(selectedChordTypeIndex, inversionValue)
-  end
-  
-  if selectedScaleDegree == 5 then
-    setSelectedInversionState5(selectedChordTypeIndex, inversionValue)
-  end
-  
-  if selectedScaleDegree == 6 then
-    setSelectedInversionState6(selectedChordTypeIndex, inversionValue)
-  end
-  
-  if selectedScaleDegree == 7 then
-    setSelectedInversionState7(selectedChordTypeIndex, inversionValue)
-  end
-end
-
-function getCurrentInversionValue()
-
-  local selectedScaleDegree = getSelectedScaleNote()
-  local selectedChordTypeIndex = getSelectedChordType(selectedScaleDegree)
-  
-  if selectedScaleDegree == 1 then
-    return getSelectedInversionState1(selectedChordTypeIndex)
-  end
-  
-  if selectedScaleDegree == 2 then
-    return getSelectedInversionState2(selectedChordTypeIndex)
-  end
-  
-  if selectedScaleDegree == 3 then
-    return getSelectedInversionState3(selectedChordTypeIndex)
-  end
-  
-  if selectedScaleDegree == 4 then
-    return getSelectedInversionState4(selectedChordTypeIndex)
-  end
-  
-  if selectedScaleDegree == 5 then
-    return getSelectedInversionState5(selectedChordTypeIndex)
-  end
-  
-  if selectedScaleDegree == 6 then
-    return getSelectedInversionState6(selectedChordTypeIndex)
-  end
-  
-  if selectedScaleDegree == 7 then
-    return getSelectedInversionState7(selectedChordTypeIndex)
-  end
-end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 function applyInversion(chord)
   
   local chordLength = #chord
-  local chordInversionValue = getCurrentInversionValue()
+
+  local selectedScaleNote = getSelectedScaleNote()
+  local chordInversionValue = getInversionState(selectedScaleNote)
   local chord_ = chord
   local oct = 0  
   
@@ -1624,7 +1399,8 @@ end
 
 function getChordInversionText(chordNotesArray)
 
-  local inversionValue = getCurrentInversionValue()
+  local selectedScaleNote = getSelectedScaleNote()
+  local inversionValue = getInversionState(selectedScaleNote)
   
   if inversionValue == 0 then
     return ''
@@ -1639,7 +1415,8 @@ end
 
 function getChordInversionOctaveIndicator(numberOfChordNotes)
 
-  local inversionValue = getCurrentInversionValue()
+  local selectedScaleNote = getSelectedScaleNote()
+  local inversionValue = getInversionState(selectedScaleNote)
 
   local octaveIndicator = nil
    
@@ -1741,14 +1518,16 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 local function decrementChordInversion()
 
+	local selectedScaleNote = getSelectedScaleNote()
+
   local chordInversionMin = getChordInversionMin()
-  local chordInversion = getCurrentInversionValue()
+  local chordInversion = getInversionState(selectedScaleNote)
 
   if chordInversion <= chordInversionMin then
     return
   end
 
-  setInversionState(chordInversion-1)
+  setInversionState(selectedScaleNote, chordInversion-1)
 end
 
 function decrementChordInversionAction()
@@ -1762,14 +1541,17 @@ end
 
 local function incrementChordInversion()
 
+	local selectedScaleNote = getSelectedScaleNote()
+
   local chordInversionMax = getChordInversionMax()
-  local chordInversion = getCurrentInversionValue()
+  local chordInversion = getInversionState(selectedScaleNote)
 
   if chordInversion >= chordInversionMax then
     return
   end
 
-  setInversionState(chordInversion+1)
+
+  setInversionState(selectedScaleNote, chordInversion+1)
 end
 
 function incrementChordInversionAction()
@@ -1904,7 +1686,7 @@ function decrementScaleTonicNoteAction()
 	setSelectedScaleNote(1)
 	setChordText("")
 	resetSelectedChordTypes()
-	resetSelectedInversionStates()
+	resetInversionStates()
 	updateScaleData()
 	updateScaleDegreeHeaders()
 	showScaleStatus()
@@ -1930,7 +1712,7 @@ function incrementScaleTonicNoteAction()
 	setSelectedScaleNote(1)
 	setChordText("")
 	resetSelectedChordTypes()
-	resetSelectedInversionStates()
+	resetInversionStates()
 	updateScaleData()
 	updateScaleDegreeHeaders()
 	showScaleStatus()
@@ -1957,7 +1739,7 @@ function decrementScaleTypeAction()
 	setSelectedScaleNote(1)
 	setChordText("")
 	resetSelectedChordTypes()
-	resetSelectedInversionStates()
+	resetInversionStates()
 	updateScaleData()
 	updateScaleDegreeHeaders()
 	showScaleStatus()
@@ -1983,7 +1765,7 @@ function incrementScaleTypeAction()
 	setSelectedScaleNote(1)
 	setChordText("")
 	resetSelectedChordTypes()
-	resetSelectedInversionStates()
+	resetInversionStates()
 	updateScaleData()
 	updateScaleDegreeHeaders()
 	showScaleStatus()

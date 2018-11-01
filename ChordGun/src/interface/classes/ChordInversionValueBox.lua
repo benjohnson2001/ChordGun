@@ -4,7 +4,6 @@ require(workingDirectory .. "/interface/colors")
 require(workingDirectory .. "/util")
 require(workingDirectory .. "/preferences")
 require(workingDirectory .. "/midiMessages")
-require(workingDirectory .. "/inversionStates")
 require(workingDirectory .. "/interface/classes/HitArea")
 require(workingDirectory .. "/interface/images/drawLeftArrow")
 require(workingDirectory .. "/interface/images/drawRightArrow")
@@ -65,7 +64,8 @@ end
 
 function ChordInversionValueBox:drawText()
 
-  local chordInversionText = getCurrentInversionValue()
+  local selectedScaleNote = getSelectedScaleNote()
+  local chordInversionText = getInversionState(selectedScaleNote)
 
   if chordInversionText > -1 then
     chordInversionText = "0" .. chordInversionText
@@ -92,26 +92,30 @@ end
 
 local function decrementChordInversion()
 
+  local selectedScaleNote = getSelectedScaleNote()
+
   local chordInversionMin = getChordInversionMin()
-  local chordInversion = getCurrentInversionValue()
+  local chordInversion = getInversionState(selectedScaleNote)
 
   if chordInversion <= chordInversionMin then
     return
   end
 
-  setInversionState(chordInversion-1)
+  setInversionState(selectedScaleNote, chordInversion-1)
 end
 
 local function incrementChordInversion()
 
+  local selectedScaleNote = getSelectedScaleNote()
+
   local chordInversionMax = getChordInversionMax()
-  local chordInversion = getCurrentInversionValue()
+  local chordInversion = getInversionState(selectedScaleNote)
 
   if chordInversion >= chordInversionMax then
     return
   end
 
-  setInversionState(chordInversion+1)
+  setInversionState(selectedScaleNote, chordInversion+1)
 end
 
 function ChordInversionValueBox:update()

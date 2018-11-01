@@ -4,14 +4,16 @@ require(workingDirectory .. "/scaleData")
 
 local function decrementChordInversion()
 
+	local selectedScaleNote = getSelectedScaleNote()
+
   local chordInversionMin = getChordInversionMin()
-  local chordInversion = getCurrentInversionValue()
+  local chordInversion = getInversionState(selectedScaleNote)
 
   if chordInversion <= chordInversionMin then
     return
   end
 
-  setInversionState(chordInversion-1)
+  setInversionState(selectedScaleNote, chordInversion-1)
 end
 
 function decrementChordInversionAction()
@@ -25,14 +27,17 @@ end
 
 local function incrementChordInversion()
 
+	local selectedScaleNote = getSelectedScaleNote()
+
   local chordInversionMax = getChordInversionMax()
-  local chordInversion = getCurrentInversionValue()
+  local chordInversion = getInversionState(selectedScaleNote)
 
   if chordInversion >= chordInversionMax then
     return
   end
 
-  setInversionState(chordInversion+1)
+
+  setInversionState(selectedScaleNote, chordInversion+1)
 end
 
 function incrementChordInversionAction()
@@ -167,7 +172,7 @@ function decrementScaleTonicNoteAction()
 	setSelectedScaleNote(1)
 	setChordText("")
 	resetSelectedChordTypes()
-	resetSelectedInversionStates()
+	resetInversionStates()
 	updateScaleData()
 	updateScaleDegreeHeaders()
 	showScaleStatus()
@@ -193,7 +198,7 @@ function incrementScaleTonicNoteAction()
 	setSelectedScaleNote(1)
 	setChordText("")
 	resetSelectedChordTypes()
-	resetSelectedInversionStates()
+	resetInversionStates()
 	updateScaleData()
 	updateScaleDegreeHeaders()
 	showScaleStatus()
@@ -220,7 +225,7 @@ function decrementScaleTypeAction()
 	setSelectedScaleNote(1)
 	setChordText("")
 	resetSelectedChordTypes()
-	resetSelectedInversionStates()
+	resetInversionStates()
 	updateScaleData()
 	updateScaleDegreeHeaders()
 	showScaleStatus()
@@ -246,7 +251,7 @@ function incrementScaleTypeAction()
 	setSelectedScaleNote(1)
 	setChordText("")
 	resetSelectedChordTypes()
-	resetSelectedInversionStates()
+	resetInversionStates()
 	updateScaleData()
 	updateScaleDegreeHeaders()
 	showScaleStatus()

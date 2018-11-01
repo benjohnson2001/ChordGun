@@ -16,13 +16,7 @@ local octaveKey = "octave"
 local selectedChordTypesKey = "selectedChordTypes"
 local scaleNoteNamesKey = "scaleNoteNames"
 local scaleDegreeHeadersKey = "scaleDegreeHeaders"
-local selectedInversionStates1Key = "selectedInversionStates1"
-local selectedInversionStates2Key = "selectedInversionStates2"
-local selectedInversionStates3Key = "selectedInversionStates3"
-local selectedInversionStates4Key = "selectedInversionStates4"
-local selectedInversionStates5Key = "selectedInversionStates5"
-local selectedInversionStates6Key = "selectedInversionStates6"
-local selectedInversionStates7Key = "selectedInversionStates7"
+local inversionStatesKey = "inversionStates"
 local notesThatArePlayingKey = "notesThatArePlaying"
 local dockStateKey = "dockState"
 
@@ -211,135 +205,21 @@ end
 
 --
 
-function getSelectedInversionStates1()
-  return getTableValue(selectedInversionStates1Key, defaultSelectedInversionStates)
+function getInversionStates()
+  return getTableValue(inversionStatesKey, defaultInversionStates)
 end
 
-function getSelectedInversionState1(index)
+function getInversionState(index)
 
-  local temp = getTableValue(selectedInversionStates1Key, defaultSelectedInversionStates)
+  local temp = getTableValue(inversionStatesKey, defaultInversionStates)
   return tonumber(temp[index])
 end
 
-function setSelectedInversionState1(index, arg)
+function setInversionState(index, arg)
 
-  local temp = getSelectedInversionStates1()
+  local temp = getInversionStates()
   temp[index] = arg
-  setTableValue(selectedInversionStates1Key, temp)
-end
-
---
-
-function getSelectedInversionStates2()
-  return getTableValue(selectedInversionStates2Key, defaultSelectedInversionStates)
-end
-
-function getSelectedInversionState2(index)
-
-  local temp = getTableValue(selectedInversionStates2Key, defaultSelectedInversionStates)
-  return tonumber(temp[index])
-end
-
-function setSelectedInversionState2(index, arg)
-
-  local temp = getSelectedInversionStates2()
-  temp[index] = arg
-  setTableValue(selectedInversionStates2Key, temp)
-end
-
---
-
-function getSelectedInversionStates3()
-  return getTableValue(selectedInversionStates3Key, defaultSelectedInversionStates)
-end
-
-function getSelectedInversionState3(index)
-
-  local temp = getTableValue(selectedInversionStates3Key, defaultSelectedInversionStates)
-  return tonumber(temp[index])
-end
-
-function setSelectedInversionState3(index, arg)
-
-  local temp = getSelectedInversionStates3()
-  temp[index] = arg
-  setTableValue(selectedInversionStates3Key, temp)
-end
-
---
-
-function getSelectedInversionStates4()
-  return getTableValue(selectedInversionStates4Key, defaultSelectedInversionStates)
-end
-
-function getSelectedInversionState4(index)
-
-  local temp = getTableValue(selectedInversionStates4Key, defaultSelectedInversionStates)
-  return tonumber(temp[index])
-end
-
-function setSelectedInversionState4(index, arg)
-
-  local temp = getSelectedInversionStates4()
-  temp[index] = arg
-  setTableValue(selectedInversionStates4Key, temp)
-end
-
---
-
-function getSelectedInversionStates5()
-  return getTableValue(selectedInversionStates5Key, defaultSelectedInversionStates)
-end
-
-function getSelectedInversionState5(index)
-
-  local temp = getTableValue(selectedInversionStates5Key, defaultSelectedInversionStates)
-  return tonumber(temp[index])
-end
-
-function setSelectedInversionState5(index, arg)
-
-  local temp = getSelectedInversionStates5()
-  temp[index] = arg
-  setTableValue(selectedInversionStates5Key, temp)
-end
-
---
-
-function getSelectedInversionStates6()
-  return getTableValue(selectedInversionStates6Key, defaultSelectedInversionStates)
-end
-
-function getSelectedInversionState6(index)
-
-  local temp = getTableValue(selectedInversionStates6Key, defaultSelectedInversionStates)
-  return tonumber(temp[index])
-end
-
-function setSelectedInversionState6(index, arg)
-
-  local temp = getSelectedInversionStates6()
-  temp[index] = arg
-  setTableValue(selectedInversionStates6Key, temp)
-end
-
---
-
-function getSelectedInversionStates7()
-  return getTableValue(selectedInversionStates7Key, defaultSelectedInversionStates)
-end
-
-function getSelectedInversionState7(index)
-
-  local temp = getTableValue(selectedInversionStates7Key, defaultSelectedInversionStates)
-  return tonumber(temp[index])
-end
-
-function setSelectedInversionState7(index, arg)
-
-  local temp = getSelectedInversionStates7()
-  temp[index] = arg
-  setTableValue(selectedInversionStates7Key, temp)
+  setTableValue(inversionStatesKey, temp)
 end
 
 --
@@ -353,18 +233,12 @@ function resetSelectedChordTypes()
   end
 end
 
-function resetSelectedInversionStates()
+function resetInversionStates()
 
-  local numberOfSelectedInversionStates = #defaultSelectedInversionStates
+  local numberOfInversionStates = 7
 
-  for i = 1, numberOfSelectedInversionStates do
-    setSelectedInversionState1(i, 0)
-    setSelectedInversionState2(i, 0)
-    setSelectedInversionState3(i, 0)
-    setSelectedInversionState4(i, 0)
-    setSelectedInversionState5(i, 0)
-    setSelectedInversionState6(i, 0)
-    setSelectedInversionState7(i, 0)
+  for i = 1, numberOfInversionStates do
+    setInversionState(i, 0)
   end
 end
 
