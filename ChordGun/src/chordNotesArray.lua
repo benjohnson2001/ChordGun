@@ -7,7 +7,7 @@ function applyInversion(chord)
   local chordLength = #chord
 
   local selectedScaleNote = getSelectedScaleNote()
-  local chordInversionValue = getInversionState(selectedScaleNote)
+  local chordInversionValue = getChordInversionState(selectedScaleNote)
   local chord_ = chord
   local oct = 0  
   

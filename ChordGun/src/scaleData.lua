@@ -138,7 +138,7 @@ end
 function getChordInversionText(chordNotesArray)
 
   local selectedScaleNote = getSelectedScaleNote()
-  local inversionValue = getInversionState(selectedScaleNote)
+  local inversionValue = getChordInversionState(selectedScaleNote)
   
   if inversionValue == 0 then
     return ''
@@ -154,7 +154,7 @@ end
 function getChordInversionOctaveIndicator(numberOfChordNotes)
 
   local selectedScaleNote = getSelectedScaleNote()
-  local inversionValue = getInversionState(selectedScaleNote)
+  local inversionValue = getChordInversionState(selectedScaleNote)
 
   local octaveIndicator = nil
    

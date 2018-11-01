@@ -65,7 +65,7 @@ end
 function ChordInversionValueBox:drawText()
 
   local selectedScaleNote = getSelectedScaleNote()
-  local chordInversionText = getInversionState(selectedScaleNote)
+  local chordInversionText = getChordInversionState(selectedScaleNote)
 
   if chordInversionText > -1 then
     chordInversionText = "0" .. chordInversionText
@@ -88,34 +88,6 @@ end
 local function rightButtonHasBeenClicked(valueBox)
   local hitArea = HitArea:new(valueBox.x+valueBox.width-hitAreaWidth, valueBox.y-1, hitAreaWidth, valueBox.height+1)
   return mouseIsHoveringOver(hitArea) and leftMouseButtonIsHeldDown()
-end
-
-local function decrementChordInversion()
-
-  local selectedScaleNote = getSelectedScaleNote()
-
-  local chordInversionMin = getChordInversionMin()
-  local chordInversion = getInversionState(selectedScaleNote)
-
-  if chordInversion <= chordInversionMin then
-    return
-  end
-
-  setInversionState(selectedScaleNote, chordInversion-1)
-end
-
-local function incrementChordInversion()
-
-  local selectedScaleNote = getSelectedScaleNote()
-
-  local chordInversionMax = getChordInversionMax()
-  local chordInversion = getInversionState(selectedScaleNote)
-
-  if chordInversion >= chordInversionMax then
-    return
-  end
-
-  setInversionState(selectedScaleNote, chordInversion+1)
 end
 
 function ChordInversionValueBox:update()

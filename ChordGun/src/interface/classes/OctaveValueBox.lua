@@ -84,28 +84,6 @@ local function rightButtonHasBeenClicked(valueBox)
   return mouseIsHoveringOver(hitArea) and leftMouseButtonIsHeldDown()
 end
 
-local function decrementOctave()
-
-  local octave = getOctave()
-
-  if octave <= -1 then
-    return
-  end
-
-  setOctave(octave-1)
-end
-
-local function incrementOctave()
-
-  local octave = getOctave()
-
-  if octave >= 8 then
-    return
-  end
-
-  setOctave(octave+1)
-end
-
 function OctaveValueBox:update()
 
   self:drawRectangles()

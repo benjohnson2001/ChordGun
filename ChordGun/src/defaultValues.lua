@@ -6,8 +6,6 @@ defaultScaleTonicNoteValue = 1
 defaultScaleTypeValue = 1
 defaultScaleNotesTextValue = ""
 defaultChordTextValue = ""
-defaultChordInversionMin = -8
-defaultChordInversionMax = 8
 defaultSelectedScaleNote = 1
 defaultOctave = 3
 

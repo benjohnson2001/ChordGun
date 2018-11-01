@@ -9,14 +9,12 @@ local scaleTonicNoteKey = "scaleTonicNote"
 local scaleTypeKey = "scaleType"
 local scaleNotesTextKey = "scaleNotesText"
 local chordTextKey = "chordText"
-local chordInversionMinKey = "chordInversionMin"
-local chordInversionMaxKey = "chordInversionMax"
+local chordInversionStatesKey = "chordInversionStates"
 local selectedScaleNoteKey = "selectedScaleNote"
 local octaveKey = "octave"
 local selectedChordTypesKey = "selectedChordTypes"
 local scaleNoteNamesKey = "scaleNoteNames"
 local scaleDegreeHeadersKey = "scaleDegreeHeaders"
-local inversionStatesKey = "inversionStates"
 local notesThatArePlayingKey = "notesThatArePlaying"
 local dockStateKey = "dockState"
 
@@ -110,21 +108,13 @@ end
 --
 
 function getChordInversionMin()
-  return tonumber(getValue(chordInversionMinKey, defaultChordInversionMin))
-end
-
-function setChordInversionMin(arg)
-  setValue(chordInversionMinKey, arg)
+  return -8
 end
 
 --
 
 function getChordInversionMax()
-  return tonumber(getValue(chordInversionMaxKey, defaultChordInversionMax))
-end
-
-function setChordInversionMax(arg)
-  setValue(chordInversionMaxKey, arg)
+  return 8
 end
 
 --
@@ -145,6 +135,18 @@ end
 
 function setOctave(arg)
   setValue(octaveKey, arg)
+end
+
+--
+
+function getOctaveMin()
+  return -1
+end
+
+--
+
+function getOctaveMax()
+  return 8
 end
 
 --
@@ -205,21 +207,21 @@ end
 
 --
 
-function getInversionStates()
-  return getTableValue(inversionStatesKey, defaultInversionStates)
+function getChordInversionStates()
+  return getTableValue(chordInversionStatesKey, defaultInversionStates)
 end
 
-function getInversionState(index)
+function getChordInversionState(index)
 
-  local temp = getTableValue(inversionStatesKey, defaultInversionStates)
+  local temp = getTableValue(chordInversionStatesKey, defaultInversionStates)
   return tonumber(temp[index])
 end
 
-function setInversionState(index, arg)
+function setChordInversionState(index, arg)
 
-  local temp = getInversionStates()
+  local temp = getChordInversionStates()
   temp[index] = arg
-  setTableValue(inversionStatesKey, temp)
+  setTableValue(chordInversionStatesKey, temp)
 end
 
 --
@@ -233,12 +235,12 @@ function resetSelectedChordTypes()
   end
 end
 
-function resetInversionStates()
+function resetChordInversionStates()
 
-  local numberOfInversionStates = 7
+  local numberOfChordInversionStates = 7
 
-  for i = 1, numberOfInversionStates do
-    setInversionState(i, 0)
+  for i = 1, numberOfChordInversionStates do
+    setChordInversionState(i, 0)
   end
 end
 

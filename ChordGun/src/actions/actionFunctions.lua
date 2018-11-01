@@ -7,13 +7,13 @@ local function decrementChordInversion()
 	local selectedScaleNote = getSelectedScaleNote()
 
   local chordInversionMin = getChordInversionMin()
-  local chordInversion = getInversionState(selectedScaleNote)
+  local chordInversion = getChordInversionState(selectedScaleNote)
 
   if chordInversion <= chordInversionMin then
     return
   end
 
-  setInversionState(selectedScaleNote, chordInversion-1)
+  setChordInversionState(selectedScaleNote, chordInversion-1)
 end
 
 function decrementChordInversionAction()
@@ -30,14 +30,14 @@ local function incrementChordInversion()
 	local selectedScaleNote = getSelectedScaleNote()
 
   local chordInversionMax = getChordInversionMax()
-  local chordInversion = getInversionState(selectedScaleNote)
+  local chordInversion = getChordInversionState(selectedScaleNote)
 
   if chordInversion >= chordInversionMax then
     return
   end
 
 
-  setInversionState(selectedScaleNote, chordInversion+1)
+  setChordInversionState(selectedScaleNote, chordInversion+1)
 end
 
 function incrementChordInversionAction()
@@ -106,7 +106,7 @@ local function decrementOctave()
 
   local octave = getOctave()
 
-  if octave <= -1 then
+  if octave <= getOctaveMin() then
     return
   end
 
@@ -132,7 +132,7 @@ local function incrementOctave()
 
   local octave = getOctave()
 
-  if octave >= 8 then
+  if octave >= getOctaveMax() then
     return
   end
 
@@ -172,7 +172,7 @@ function decrementScaleTonicNoteAction()
 	setSelectedScaleNote(1)
 	setChordText("")
 	resetSelectedChordTypes()
-	resetInversionStates()
+	resetChordInversionStates()
 	updateScaleData()
 	updateScaleDegreeHeaders()
 	showScaleStatus()
@@ -198,7 +198,7 @@ function incrementScaleTonicNoteAction()
 	setSelectedScaleNote(1)
 	setChordText("")
 	resetSelectedChordTypes()
-	resetInversionStates()
+	resetChordInversionStates()
 	updateScaleData()
 	updateScaleDegreeHeaders()
 	showScaleStatus()
@@ -225,7 +225,7 @@ function decrementScaleTypeAction()
 	setSelectedScaleNote(1)
 	setChordText("")
 	resetSelectedChordTypes()
-	resetInversionStates()
+	resetChordInversionStates()
 	updateScaleData()
 	updateScaleDegreeHeaders()
 	showScaleStatus()
@@ -251,7 +251,7 @@ function incrementScaleTypeAction()
 	setSelectedScaleNote(1)
 	setChordText("")
 	resetSelectedChordTypes()
-	resetInversionStates()
+	resetChordInversionStates()
 	updateScaleData()
 	updateScaleDegreeHeaders()
 	showScaleStatus()
@@ -283,7 +283,7 @@ end
 
 function lowerScaleNoteAction(scaleNoteIndex)
 
-  if getOctave() <= -1 then
+  if getOctave() <= getOctaveMin() then
     return
   end
 
@@ -296,7 +296,7 @@ end
 
 function higherScaleNoteAction(scaleNoteIndex)
 
-  if getOctave() >= 8 then
+  if getOctave() >= getOctaveMax() then
     return
   end
 
