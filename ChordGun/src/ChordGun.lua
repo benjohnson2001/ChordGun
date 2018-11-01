@@ -28,4 +28,3 @@ local function main()
 end
 
 main()
-reaper.atexit(stopAllNotesFromPlaying)
