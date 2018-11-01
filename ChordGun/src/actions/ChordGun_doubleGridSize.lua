@@ -4,3 +4,4 @@ require(workingDirectory .. "/actionFunctions")
 
 
 doubleGridSize()
+reaper.defer(emptyFunctionToPreventAutomaticCreationOfUndoPoint)

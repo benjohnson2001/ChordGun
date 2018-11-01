@@ -136,41 +136,32 @@ local function shiftModifierIsHeldDown()
 end
 
 function ChordButton:onPress()
-	
-	startUndoBlock()
-
-		local chord = scaleChords[self.scaleNoteIndex][self.chordTypeIndex]
-		previewChord()
-	
-	endUndoBlock("preview scale chord " .. self.scaleNoteIndex .. "  (" .. chord.code .. ")")
+	previewChord()
 end
 
 function ChordButton:onShiftPress()
 
-	startUndoBlock()
-
-		playOrInsertScaleChord()
-		local chord = scaleChords[self.scaleNoteIndex][self.chordTypeIndex]
-
-	endUndoBlock("scale chord " .. self.scaleNoteIndex .. "  (" .. chord.code .. ")")
+	local chord = scaleChords[self.scaleNoteIndex][self.chordTypeIndex]
+	local actionDescription = "scale chord " .. self.scaleNoteIndex .. "  (" .. chord.code .. ")"
+	playOrInsertScaleChord(actionDescription)
 end
 
 function ChordButton:update()
 
-		self:drawRectangles()
-		self:drawText()
+	self:drawRectangles()
+	self:drawText()
 
-		if mouseButtonIsNotPressedDown and buttonHasBeenClicked(self) then
+	if mouseButtonIsNotPressedDown and buttonHasBeenClicked(self) then
 
-			setSelectedScaleNote(self.scaleNoteIndex)
-			setSelectedChordType(self.scaleNoteIndex, self.chordTypeIndex)
+		setSelectedScaleNote(self.scaleNoteIndex)
+		setSelectedChordType(self.scaleNoteIndex, self.chordTypeIndex)
 
-			mouseButtonIsNotPressedDown = false
+		mouseButtonIsNotPressedDown = false
 
-			if shiftModifierIsHeldDown() then
-				self:onShiftPress()
-			else
-				self:onPress()
-			end
+		if shiftModifierIsHeldDown() then
+			self:onShiftPress()
+		else
+			self:onPress()
 		end
+	end
 end

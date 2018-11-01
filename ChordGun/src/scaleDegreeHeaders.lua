@@ -18,7 +18,7 @@ function updateScaleDegreeHeaders()
    
     local chord = scaleChords[i][1]
     
-    if string.match(chord.code, "maj") or chord.code == '7' then
+    if string.match(chord.code, "major") or chord.code == '7' then
       symbol = majorSymbols[i]
     else
       symbol = minorSymbols[i]

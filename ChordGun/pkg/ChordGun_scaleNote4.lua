@@ -3,13 +3,13 @@
 chords = {
   {
     name = 'major',
-    code = 'maj',
+    code = 'major',
     display = '',
     pattern = '10001001'
   },
   {
     name = 'minor',
-    code = 'min',
+    code = 'minor',
     display = 'm',
     pattern = '10010001'
   },
@@ -579,7 +579,8 @@ function endUndoBlock(actionDescription)
 	reaper.Undo_EndBlock(actionDescription, -1)
 end
 
-
+function emptyFunctionToPreventAutomaticCreationOfUndoPoint()
+end
 
 
 
@@ -830,7 +831,7 @@ function updateScaleDegreeHeaders()
    
     local chord = scaleChords[i][1]
     
-    if string.match(chord.code, "maj") or chord.code == '7' then
+    if string.match(chord.code, "major") or chord.code == '7' then
       symbol = majorSymbols[i]
     else
       symbol = minorSymbols[i]
@@ -1087,12 +1088,8 @@ function halveGridSize()
     return
   end
 
-  startUndoBlock()
-
-    local activeProjectIndex = 0
-    reaper.SetMIDIEditorGrid(activeProjectIndex, gridSize/2)
-
-  endUndoBlock("halve grid size")
+  local activeProjectIndex = 0
+  reaper.SetMIDIEditorGrid(activeProjectIndex, gridSize/2)
 end
 
 function doubleGridSize()
@@ -1107,12 +1104,8 @@ function doubleGridSize()
     return
   end
 
-  startUndoBlock()
-
-    local activeProjectIndex = 0
-    reaper.SetMIDIEditorGrid(activeProjectIndex, gridSize*2)
-
-  endUndoBlock("double grid size")
+  local activeProjectIndex = 0
+  reaper.SetMIDIEditorGrid(activeProjectIndex, gridSize*2)
 end
 
 --
@@ -1376,7 +1369,7 @@ function previewChord()
   playScaleChord(chordNotesArray)
 end
 
-function playOrInsertScaleChord()
+function playOrInsertScaleChord(actionDescription)
 
   local scaleNoteIndex = getSelectedScaleNote()
   local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
@@ -1389,11 +1382,15 @@ function playOrInsertScaleChord()
 
   if activeTake() ~= nil and notCurrentlyRecording() then
 
-    if thereAreNotesSelected() then 
-      changeSelectedNotesToScaleChords(chordNotesArray)
-    else
-      insertScaleChord(chordNotesArray, false)
-    end
+    startUndoBlock()
+
+      if thereAreNotesSelected() then 
+        changeSelectedNotesToScaleChords(chordNotesArray)
+      else
+        insertScaleChord(chordNotesArray, false)
+      end
+
+    endUndoBlock(actionDescription)
   end
 
   playScaleChord(chordNotesArray)
@@ -1418,7 +1415,7 @@ function insertScaleNote(noteValue, keepNotesSelected)
 	moveCursor()
 end
 
-function playOrInsertScaleNote(octaveAdjustment)
+function playOrInsertScaleNote(octaveAdjustment, actionDescription)
 
 	local scaleNoteIndex = getSelectedScaleNote()
 
@@ -1428,11 +1425,15 @@ function playOrInsertScaleNote(octaveAdjustment)
 
   if activeTake() ~= nil and notCurrentlyRecording() then
 
-	  if thereAreNotesSelected() then 
-	    changeSelectedNotesToScaleNotes(noteValue)
-	  else
-	    insertScaleNote(noteValue, false)
-	  end
+  	startUndoBlock()
+
+		  if thereAreNotesSelected() then 
+		    changeSelectedNotesToScaleNotes(noteValue)
+		  else
+		    insertScaleNote(noteValue, false)
+		  end
+
+		endUndoBlock(actionDescription)
   end
 
 	playScaleNote(noteValue)
@@ -1765,12 +1766,9 @@ end
 
 function decrementChordInversionAction()
 
-	startUndoBlock()
-
-		decrementChordInversion()
-		playOrInsertScaleChord()
-
-	endUndoBlock("decrement chord inversion")
+	local actionDescription = "decrement chord inversion"
+	decrementChordInversion()
+	playOrInsertScaleChord(actionDescription)
 end
 
 --
@@ -1789,12 +1787,9 @@ end
 
 function incrementChordInversionAction()
 
-	startUndoBlock()
-
-		incrementChordInversion()
-		playOrInsertScaleChord()
-
-	endUndoBlock("increment chord inversion")
+	local actionDescription = "increment chord inversion"
+	incrementChordInversion()
+	playOrInsertScaleChord(actionDescription)
 end
 
 --
@@ -1813,12 +1808,9 @@ end
 
 function decrementChordTypeAction()
 
-	startUndoBlock()
-
-		decrementChordType()
-		playOrInsertScaleChord()
-
-	endUndoBlock("decrement chord type")
+	local actionDescription = "decrement chord type"
+	decrementChordType()
+	playOrInsertScaleChord(actionDescription)
 end
 
 --
@@ -1837,12 +1829,9 @@ end
 
 function incrementChordTypeAction()
 
-	startUndoBlock()
-
-		incrementChordType()
-		playOrInsertScaleChord()
-
-	endUndoBlock("increment chord type")
+	local actionDescription = "increment chord type"
+	incrementChordType()
+	playOrInsertScaleChord(actionDescription)
 end
 
 --
@@ -1871,17 +1860,15 @@ end
 
 function decrementOctaveAction()
 
-	startUndoBlock()
+	decrementOctave()
 
-		decrementOctave()
-
-		if thereAreNotesSelected() then
-			transposeSelectedNotesDownOneOctave()
-		else
-			playTonicNote()
-		end
-
-	endUndoBlock("decrement octave")
+	if thereAreNotesSelected() then
+		startUndoBlock()
+		transposeSelectedNotesDownOneOctave()
+		endUndoBlock("decrement octave")
+	else
+		playTonicNote()
+	end
 end
 
 --
@@ -1899,17 +1886,15 @@ end
 
 function incrementOctaveAction()
 
-	startUndoBlock()
+	incrementOctave()
 
-		incrementOctave()
-
-		if thereAreNotesSelected() then
-			transposeSelectedNotesUpOneOctave()
-		else
-			playTonicNote()
-		end
-
-	endUndoBlock("increment octave")
+	if thereAreNotesSelected() then
+		startUndoBlock()
+		transposeSelectedNotesUpOneOctave()
+		endUndoBlock("increment octave")
+	else
+		playTonicNote()
+	end
 end
 
 --
@@ -1927,19 +1912,15 @@ end
 
 function decrementScaleTonicNoteAction()
 
-	startUndoBlock()
+	decrementScaleTonicNote()
 
-		decrementScaleTonicNote()
-
-		setSelectedScaleNote(1)
-		setChordText("")
-		resetSelectedChordTypes()
-		resetSelectedInversionStates()
-		updateScaleData()
-		updateScaleDegreeHeaders()
-		showScaleStatus()
-
-	endUndoBlock("decrement scale tonic note")
+	setSelectedScaleNote(1)
+	setChordText("")
+	resetSelectedChordTypes()
+	resetSelectedInversionStates()
+	updateScaleData()
+	updateScaleDegreeHeaders()
+	showScaleStatus()
 end
 
 --
@@ -1957,19 +1938,15 @@ end
 
 function incrementScaleTonicNoteAction()
 
-	startUndoBlock()
+	incrementScaleTonicNote()
 
-		incrementScaleTonicNote()
-
-		setSelectedScaleNote(1)
-		setChordText("")
-		resetSelectedChordTypes()
-		resetSelectedInversionStates()
-		updateScaleData()
-		updateScaleDegreeHeaders()
-		showScaleStatus()
-
-	endUndoBlock("increment scale tonic note")
+	setSelectedScaleNote(1)
+	setChordText("")
+	resetSelectedChordTypes()
+	resetSelectedInversionStates()
+	updateScaleData()
+	updateScaleDegreeHeaders()
+	showScaleStatus()
 end
 
 --
@@ -1988,19 +1965,15 @@ end
 
 function decrementScaleTypeAction()
 
-	startUndoBlock()
+	decrementScaleType()
 
-		decrementScaleType()
-
-		setSelectedScaleNote(1)
-		setChordText("")
-		resetSelectedChordTypes()
-		resetSelectedInversionStates()
-		updateScaleData()
-		updateScaleDegreeHeaders()
-		showScaleStatus()
-
-	endUndoBlock("decrement scale type")
+	setSelectedScaleNote(1)
+	setChordText("")
+	resetSelectedChordTypes()
+	resetSelectedInversionStates()
+	updateScaleData()
+	updateScaleDegreeHeaders()
+	showScaleStatus()
 end
 
 --
@@ -2018,46 +1991,37 @@ end
 
 function incrementScaleTypeAction()
 
-	startUndoBlock()
+	incrementScaleType()
 
-		incrementScaleType()
-
-		setSelectedScaleNote(1)
-		setChordText("")
-		resetSelectedChordTypes()
-		resetSelectedInversionStates()
-		updateScaleData()
-		updateScaleDegreeHeaders()
-		showScaleStatus()
-
-	endUndoBlock("increment scale type")
+	setSelectedScaleNote(1)
+	setChordText("")
+	resetSelectedChordTypes()
+	resetSelectedInversionStates()
+	updateScaleData()
+	updateScaleDegreeHeaders()
+	showScaleStatus()
 end
 
 ----
 
 function scaleChordAction(scaleNoteIndex)
 
-	startUndoBlock()
+	setSelectedScaleNote(scaleNoteIndex)
 
-		setSelectedScaleNote(scaleNoteIndex)
-		playOrInsertScaleChord()
+	local selectedChordType = getSelectedChordType(scaleNoteIndex)
+	local chord = scaleChords[scaleNoteIndex][selectedChordType]
+	local actionDescription = "scale chord " .. scaleNoteIndex .. "  (" .. chord.code .. ")"
 
-		local selectedChordType = getSelectedChordType(scaleNoteIndex)
-		local chord = scaleChords[scaleNoteIndex][selectedChordType]
-
-	endUndoBlock("scale chord " .. scaleNoteIndex .. "  (" .. chord.code .. ")")
+	playOrInsertScaleChord(actionDescription)
 end
 
 --
 
 function scaleNoteAction(scaleNoteIndex)
 
-	startUndoBlock()
-
-		setSelectedScaleNote(scaleNoteIndex)
-		playOrInsertScaleNote(0)
-
-	endUndoBlock("scale note " .. scaleNoteIndex)
+	setSelectedScaleNote(scaleNoteIndex)
+	local actionDescription = "scale note " .. scaleNoteIndex
+	playOrInsertScaleNote(0, actionDescription)
 end
 
 --
@@ -2068,12 +2032,9 @@ function lowerScaleNoteAction(scaleNoteIndex)
     return
   end
 
-	startUndoBlock()
-
-		setSelectedScaleNote(scaleNoteIndex)
-		playOrInsertScaleNote(-1)
-
-	endUndoBlock("lower scale note " .. scaleNoteIndex)
+	setSelectedScaleNote(scaleNoteIndex)
+	local actionDescription = "lower scale note " .. scaleNoteIndex
+	playOrInsertScaleNote(-1, actionDescription)
 end
 
 --
@@ -2084,15 +2045,13 @@ function higherScaleNoteAction(scaleNoteIndex)
     return
   end
 
-	startUndoBlock()
-
-		setSelectedScaleNote(scaleNoteIndex)
-		playOrInsertScaleNote(1)
-
-	endUndoBlock("higher scale note " .. scaleNoteIndex)
+	setSelectedScaleNote(scaleNoteIndex)
+	local actionDescription = "higher scale note " .. scaleNoteIndex
+	playOrInsertScaleNote(1, actionDescription)
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 
 updateScaleData()
 scaleNoteAction(4)
+reaper.defer(emptyFunctionToPreventAutomaticCreationOfUndoPoint)

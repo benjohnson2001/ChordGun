@@ -23,7 +23,7 @@ function insertScaleNote(noteValue, keepNotesSelected)
 	moveCursor()
 end
 
-function playOrInsertScaleNote(octaveAdjustment)
+function playOrInsertScaleNote(octaveAdjustment, actionDescription)
 
 	local scaleNoteIndex = getSelectedScaleNote()
 
@@ -33,11 +33,15 @@ function playOrInsertScaleNote(octaveAdjustment)
 
   if activeTake() ~= nil and notCurrentlyRecording() then
 
-	  if thereAreNotesSelected() then 
-	    changeSelectedNotesToScaleNotes(noteValue)
-	  else
-	    insertScaleNote(noteValue, false)
-	  end
+  	startUndoBlock()
+
+		  if thereAreNotesSelected() then 
+		    changeSelectedNotesToScaleNotes(noteValue)
+		  else
+		    insertScaleNote(noteValue, false)
+		  end
+
+		endUndoBlock(actionDescription)
   end
 
 	playScaleNote(noteValue)

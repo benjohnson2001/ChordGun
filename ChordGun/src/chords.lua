@@ -3,13 +3,13 @@
 chords = {
   {
     name = 'major',
-    code = 'maj',
+    code = 'major',
     display = '',
     pattern = '10001001'
   },
   {
     name = 'minor',
-    code = 'min',
+    code = 'minor',
     display = 'm',
     pattern = '10010001'
   },

@@ -5,3 +5,4 @@ require(workingDirectory .. "/actionFunctions")
 
 updateScaleData()
 scaleChordAction(4)
+reaper.defer(emptyFunctionToPreventAutomaticCreationOfUndoPoint)

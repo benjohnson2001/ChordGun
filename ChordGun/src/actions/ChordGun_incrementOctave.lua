@@ -5,3 +5,4 @@ require(workingDirectory .. "/actionFunctions")
 
 updateScaleData()
 incrementOctaveAction()
+reaper.defer(emptyFunctionToPreventAutomaticCreationOfUndoPoint)

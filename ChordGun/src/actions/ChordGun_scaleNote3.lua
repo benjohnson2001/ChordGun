@@ -5,3 +5,4 @@ require(workingDirectory .. "/actionFunctions")
 
 updateScaleData()
 scaleNoteAction(3)
+reaper.defer(emptyFunctionToPreventAutomaticCreationOfUndoPoint)

@@ -4,3 +4,4 @@ require(workingDirectory .. "/actionFunctions")
 
 
 halveGridSize()
+reaper.defer(emptyFunctionToPreventAutomaticCreationOfUndoPoint)

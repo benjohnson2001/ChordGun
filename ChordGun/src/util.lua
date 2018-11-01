@@ -86,6 +86,7 @@ function endUndoBlock(actionDescription)
 	reaper.Undo_EndBlock(actionDescription, -1)
 end
 
-
+function emptyFunctionToPreventAutomaticCreationOfUndoPoint()
+end
 
 

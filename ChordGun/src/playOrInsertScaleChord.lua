@@ -38,7 +38,7 @@ function previewChord()
   playScaleChord(chordNotesArray)
 end
 
-function playOrInsertScaleChord()
+function playOrInsertScaleChord(actionDescription)
 
   local scaleNoteIndex = getSelectedScaleNote()
   local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
@@ -51,11 +51,15 @@ function playOrInsertScaleChord()
 
   if activeTake() ~= nil and notCurrentlyRecording() then
 
-    if thereAreNotesSelected() then 
-      changeSelectedNotesToScaleChords(chordNotesArray)
-    else
-      insertScaleChord(chordNotesArray, false)
-    end
+    startUndoBlock()
+
+      if thereAreNotesSelected() then 
+        changeSelectedNotesToScaleChords(chordNotesArray)
+      else
+        insertScaleChord(chordNotesArray, false)
+      end
+
+    endUndoBlock(actionDescription)
   end
 
   playScaleChord(chordNotesArray)
