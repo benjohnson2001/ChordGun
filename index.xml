@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<index version="1" name="ChordGun" commit="99e16a948033d6cceac326eb8cf1e5e3e3eecb1a">
+<index version="1" name="ChordGun" commit="31c14f992a8fcd7efb3880148b2c136ae2462aed">
   <category name="ChordGun">
     <reapack name="ChordGunPackage.lua" type="script" desc="Chord Gun">
       <metadata>
@@ -11,7 +11,7 @@
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 What is it?\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Reaper tool that fires scale chords and notes into a composition, either by sequencing through the MIDI Editor or recording directly into Media Items.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \b \fs24 How do I use it?\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 There is an instructional video {\field{\*\fldinst{HYPERLINK "https://www.youtube.com/watch?v=imMDeInH-Yg"}}{\fldrslt{\ul
+{\pard \ql \f0 \sa180 \li0 \fi0 There is an instructional video {\field{\*\fldinst{HYPERLINK "www.youtube.com/watch?v=1CqVYcN3VAw"}}{\fldrslt{\ul
 here
 }}}
 \par}
@@ -22,76 +22,48 @@ here
         <link rel="donation">https://paypal.me/benjohnson2001</link>
       </metadata>
       <version name="1.0" author="pandabot" time="2018-10-29T16:21:54Z">
-        <source main="main midi_editor" file="pkg/ChordGun.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_decrementChordInversion.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_decrementChordInversion.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_decrementChordType.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_decrementChordType.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_decrementOctave.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_decrementOctave.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_decrementScaleTonicNote.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_decrementScaleTonicNote.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_decrementScaleType.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_decrementScaleType.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_doubleGridSize.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_doubleGridSize.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_halveGridSize.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_halveGridSize.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_incrementChordInversion.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_incrementChordInversion.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_incrementChordType.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_incrementChordType.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_incrementOctave.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_incrementOctave.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_incrementScaleTonicNote.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_incrementScaleTonicNote.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_incrementScaleType.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_incrementScaleType.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertHigherScaleNote1.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertHigherScaleNote1.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertHigherScaleNote2.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertHigherScaleNote2.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertHigherScaleNote3.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertHigherScaleNote3.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertHigherScaleNote4.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertHigherScaleNote4.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertHigherScaleNote5.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertHigherScaleNote5.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertHigherScaleNote6.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertHigherScaleNote6.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertHigherScaleNote7.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertHigherScaleNote7.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertLowerScaleNote1.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertLowerScaleNote1.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertLowerScaleNote2.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertLowerScaleNote2.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertLowerScaleNote3.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertLowerScaleNote3.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertLowerScaleNote4.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertLowerScaleNote4.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertLowerScaleNote5.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertLowerScaleNote5.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertLowerScaleNote6.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertLowerScaleNote6.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertLowerScaleNote7.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertLowerScaleNote7.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertScaleChord1.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertScaleChord1.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertScaleChord2.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertScaleChord2.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertScaleChord3.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertScaleChord3.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertScaleChord4.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertScaleChord4.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertScaleChord5.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertScaleChord5.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertScaleChord6.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertScaleChord6.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertScaleChord7.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertScaleChord7.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertScaleNote1.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertScaleNote1.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertScaleNote2.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertScaleNote2.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertScaleNote3.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertScaleNote3.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertScaleNote4.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertScaleNote4.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertScaleNote5.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertScaleNote5.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertScaleNote6.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertScaleNote6.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_insertScaleNote7.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_insertScaleNote7.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playHigherScaleNote1.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playHigherScaleNote1.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playHigherScaleNote2.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playHigherScaleNote2.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playHigherScaleNote3.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playHigherScaleNote3.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playHigherScaleNote4.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playHigherScaleNote4.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playHigherScaleNote5.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playHigherScaleNote5.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playHigherScaleNote6.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playHigherScaleNote6.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playHigherScaleNote7.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playHigherScaleNote7.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playLowerScaleNote1.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playLowerScaleNote1.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playLowerScaleNote2.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playLowerScaleNote2.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playLowerScaleNote3.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playLowerScaleNote3.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playLowerScaleNote4.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playLowerScaleNote4.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playLowerScaleNote5.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playLowerScaleNote5.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playLowerScaleNote6.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playLowerScaleNote6.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playLowerScaleNote7.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playLowerScaleNote7.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playScaleChord1.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playScaleChord1.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playScaleChord2.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playScaleChord2.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playScaleChord3.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playScaleChord3.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playScaleChord4.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playScaleChord4.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playScaleChord5.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playScaleChord5.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playScaleChord6.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playScaleChord6.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playScaleChord7.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playScaleChord7.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playScaleNote1.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playScaleNote1.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playScaleNote2.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playScaleNote2.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playScaleNote3.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playScaleNote3.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playScaleNote4.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playScaleNote4.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playScaleNote5.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playScaleNote5.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playScaleNote6.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playScaleNote6.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_playScaleNote7.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_playScaleNote7.lua</source>
-        <source main="main midi_editor" file="pkg/ChordGun_stopAllNotesFromPlaying.lua">https://github.com/benjohnson2001/ChordGun/raw/99e16a948033d6cceac326eb8cf1e5e3e3eecb1a/ChordGun/pkg/ChordGun_stopAllNotesFromPlaying.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_decrementChordInversion.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_decrementChordInversion.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_decrementChordType.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_decrementChordType.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_decrementOctave.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_decrementOctave.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_decrementScaleTonicNote.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_decrementScaleTonicNote.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_decrementScaleType.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_decrementScaleType.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_doubleGridSize.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_doubleGridSize.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_halveGridSize.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_halveGridSize.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_higherScaleNote1.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_higherScaleNote1.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_higherScaleNote2.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_higherScaleNote2.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_higherScaleNote3.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_higherScaleNote3.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_higherScaleNote4.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_higherScaleNote4.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_higherScaleNote5.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_higherScaleNote5.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_higherScaleNote6.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_higherScaleNote6.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_higherScaleNote7.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_higherScaleNote7.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_incrementChordInversion.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_incrementChordInversion.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_incrementChordType.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_incrementChordType.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_incrementOctave.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_incrementOctave.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_incrementScaleTonicNote.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_incrementScaleTonicNote.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_incrementScaleType.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_incrementScaleType.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_lowerScaleNote1.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_lowerScaleNote1.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_lowerScaleNote2.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_lowerScaleNote2.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_lowerScaleNote3.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_lowerScaleNote3.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_lowerScaleNote4.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_lowerScaleNote4.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_lowerScaleNote5.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_lowerScaleNote5.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_lowerScaleNote6.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_lowerScaleNote6.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_lowerScaleNote7.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_lowerScaleNote7.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_scaleChord1.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_scaleChord1.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_scaleChord2.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_scaleChord2.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_scaleChord3.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_scaleChord3.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_scaleChord4.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_scaleChord4.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_scaleChord5.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_scaleChord5.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_scaleChord6.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_scaleChord6.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_scaleChord7.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_scaleChord7.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_scaleNote1.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_scaleNote1.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_scaleNote2.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_scaleNote2.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_scaleNote3.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_scaleNote3.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_scaleNote4.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_scaleNote4.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_scaleNote5.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_scaleNote5.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_scaleNote6.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_scaleNote6.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_scaleNote7.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_scaleNote7.lua</source>
+        <source main="main midi_editor" file="pkg/ChordGun_stopAllNotesFromPlaying.lua">https://github.com/benjohnson2001/ChordGun/raw/31c14f992a8fcd7efb3880148b2c136ae2462aed/ChordGun/pkg/ChordGun_stopAllNotesFromPlaying.lua</source>
       </version>
     </reapack>
   </category>
