@@ -136,10 +136,11 @@ local function shiftModifierIsHeldDown()
 end
 
 function ChordButton:onPress()
-	previewChord()
-end
 
-function ChordButton:onShiftPress()
+	mouseButtonIsNotPressedDown = false
+
+	setSelectedScaleNote(self.scaleNoteIndex)
+	setSelectedChordType(self.scaleNoteIndex, self.chordTypeIndex)
 
 	local chord = scaleChords[self.scaleNoteIndex][self.chordTypeIndex]
 	local actionDescription = "scale chord " .. self.scaleNoteIndex .. "  (" .. chord.code .. ")"
@@ -152,16 +153,6 @@ function ChordButton:update()
 	self:drawText()
 
 	if mouseButtonIsNotPressedDown and buttonHasBeenClicked(self) then
-
-		setSelectedScaleNote(self.scaleNoteIndex)
-		setSelectedChordType(self.scaleNoteIndex, self.chordTypeIndex)
-
-		mouseButtonIsNotPressedDown = false
-
-		if shiftModifierIsHeldDown() then
-			self:onShiftPress()
-		else
-			self:onPress()
-		end
+		self:onPress()
 	end
 end
