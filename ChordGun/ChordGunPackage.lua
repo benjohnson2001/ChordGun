@@ -22,7 +22,7 @@ About:
 		<br/>
 
     #### keyboard shortcuts (when GUI has focus)
-    0 -- stop all notes from playing<br/>
+    0 - stop all notes from playing<br/>
     1 - play scale chord 1<br/>
     2 - play scale chord 2<br/>
     3 - play scale chord 3<br/>
