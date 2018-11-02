@@ -14,7 +14,7 @@ About:
     ### Chord Gun
     
     #### What is it?
-    Reaper tool that fires scale chords and notes into a composition, either by sequencing through the MIDI Editor or recording directly into Media Items.
+    Reaper tool that fires scale chords and notes into a composition, either by sequencing through the MIDI Editor or recording directly into Media Items
     
 
     #### How do I use it?
@@ -101,6 +101,6 @@ About:
     command+. - increment chord type
 
     command+shift+, - decrement chord inversion
-    
+
     command+shift+. - increment chord inversion
 --]]
