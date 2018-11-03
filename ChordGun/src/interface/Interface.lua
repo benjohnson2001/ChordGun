@@ -15,8 +15,8 @@ require(workingDirectory .. "/midiMessages")
 Interface = {}
 Interface.__index = Interface
 
-local interfaceWidth = 775
-local interfaceHeight = 620
+interfaceWidth = 705
+local interfaceHeight = 646
 
 local function getInterfaceXPos()
 

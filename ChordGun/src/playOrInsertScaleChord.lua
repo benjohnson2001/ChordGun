@@ -33,7 +33,7 @@ function playOrInsertScaleChord(actionDescription)
   local root = scaleNotes[scaleNoteIndex]
   local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
   local octave = getOctave()
-  
+
   local chordNotesArray = getChordNotesArray(root, chord, octave)
 
   if activeTake() ~= nil and notCurrentlyRecording() then

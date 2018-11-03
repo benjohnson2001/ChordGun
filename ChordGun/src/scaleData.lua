@@ -187,7 +187,13 @@ function updateChordText(root, chord, chordNotesArray)
   local rootNoteName = getNoteName(root)
   local chordInversionText = getChordInversionText(chordNotesArray)
   local chordInversionOctaveIndicator = getChordInversionOctaveIndicator(#chordNotesArray)
+
   local chordString = rootNoteName .. chord["display"]
+
+  if string.match(chord.code, "dyad") then
+    chordString = chord["display"]
+  end
+
   local notesString = getNotesString(chordNotesArray)
 
   local chordTextValue = ''

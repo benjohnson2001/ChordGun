@@ -5,79 +5,103 @@ chords = {
     name = 'major',
     code = 'major',
     display = '',
-    pattern = '10001001'
+    pattern = '1000100100000'
   },
   {
     name = 'minor',
     code = 'minor',
     display = 'm',
-    pattern = '10010001'
-  },
-  {
-    name = 'power chord',
-    code = 'power',
-    display = '5',
-    pattern = '10000001'
+    pattern = '1001000100000'
   },
   {
     name = 'suspended second',
     code = 'sus2',
     display = 'sus2',
-    pattern = '10100001'
+    pattern = '1010000100000'
   },
   {
     name = 'suspended fourth',
     code = 'sus4',
     display = 'sus4',
-    pattern = '10000101'
+    pattern = '1000010100000'
   },
   {
     name = 'diminished',
     code = 'dim',
     display = 'dim',
-    pattern = '1001001'
+    pattern = '1001001000000'
   },  
   {
     name = 'augmented',
     code = 'aug',
     display = 'aug',
-    pattern = '100010001'
+    pattern = '1000100010000'
   },
   {
     name = 'major sixth',
     code = 'maj6',
     display = '6',
-    pattern = '1000100101'
+    pattern = '1000100101000'
   },
   {
     name = 'minor sixth',
     code = 'min6',
     display = 'm6',
-    pattern = '1001000101'
+    pattern = '1001000101000'
   },
   {
     name = 'dominant seventh',
     code = '7',
     display = '7',
-    pattern = '10001001001'
+    pattern = '1000100100100'
   },
   {
     name = 'major seventh',
     code = 'maj7',
     display = 'maj7',
-    pattern = '100010010001'
+    pattern = '1000100100010'
   },
   {
     name = 'minor seventh',
     code = 'min7',
     display = 'm7',
-    pattern = '10010001001'
+    pattern = '1001000100100'
   },
   {
-    name = 'flat fifth',
-    code = 'flat5',
+    name = 'octave (dyad)',
+    code = '1_dyad',
+    display = '1',
+    pattern = '1000000000001'
+  },
+  {
+    name = 'second (dyad)',
+    code = '2_dyad',
+    display = '2',
+    pattern = '1010000000000'
+  },
+  {
+    name = 'minor third (dyad)',
+    code = 'min3_dyad',
+    display = 'm3',
+    pattern = '1001000000000'
+  },
+  {
+    name = 'major third (dyad)',
+    code = 'maj3_dyad',
+    display = '3',
+    pattern = '1000100000000'
+  },
+  {
+    name = 'flat fifth (dyad)',
+    code = 'flat5_dyad',
     display = '5-',
-    pattern = '10000010'
+    pattern = '1000001000000'
+  },
+  {
+    name = 'fifth (dyad)',
+    code = '5_dyad',
+    display = '5',
+    pattern = '1000000100000'
   },
 }
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
@@ -514,18 +538,18 @@ scaleType = getScaleType()
 guiShouldBeUpdated = false
 
 scales = {
-  { name = "Major", pattern = "101011010101" },
-  { name = "Natural Minor", pattern = "101101011010" },
-  { name = "Harmonic Minor", pattern = "101101011001" },
-  { name = "Melodic Minor", pattern = "101101010101" },
-  { name = "Pentatonic", pattern = "101010010100" },
-  { name = "Ionian", pattern = "101011010101" },
-  { name = "Aeolian", pattern = "101101011010" },
-  { name = "Dorian", pattern = "101101010110" },
-  { name = "Mixolydian", pattern = "101011010110" },
-  { name = "Phrygian", pattern = "110101011010" },
-  { name = "Lydian", pattern = "101010110101" },
-  { name = "Locrian", pattern = "110101101010" }
+  { name = "Major",           pattern = "101011010101" },
+  { name = "Natural Minor",   pattern = "101101011010" },
+  { name = "Harmonic Minor",  pattern = "101101011001" },
+  { name = "Melodic Minor",   pattern = "101101010101" },
+  { name = "Pentatonic",      pattern = "101010010100" },
+  { name = "Ionian",          pattern = "101011010101" },
+  { name = "Aeolian",         pattern = "101101011010" },
+  { name = "Dorian",          pattern = "101101010110" },
+  { name = "Mixolydian",      pattern = "101011010110" },
+  { name = "Phrygian",        pattern = "110101011010" },
+  { name = "Lydian",          pattern = "101010110101" },
+  { name = "Locrian",         pattern = "110101101010" }
 }
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
@@ -1139,7 +1163,7 @@ function playOrInsertScaleChord(actionDescription)
   local root = scaleNotes[scaleNoteIndex]
   local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
   local octave = getOctave()
-  
+
   local chordNotesArray = getChordNotesArray(root, chord, octave)
 
   if activeTake() ~= nil and notCurrentlyRecording() then
@@ -1449,7 +1473,13 @@ function updateChordText(root, chord, chordNotesArray)
   local rootNoteName = getNoteName(root)
   local chordInversionText = getChordInversionText(chordNotesArray)
   local chordInversionOctaveIndicator = getChordInversionOctaveIndicator(#chordNotesArray)
+
   local chordString = rootNoteName .. chord["display"]
+
+  if string.match(chord.code, "dyad") then
+    chordString = chord["display"]
+  end
+
   local notesString = getNotesString(chordNotesArray)
 
   local chordTextValue = ''
@@ -4125,8 +4155,8 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 Interface = {}
 Interface.__index = Interface
 
-local interfaceWidth = 775
-local interfaceHeight = 620
+interfaceWidth = 705
+local interfaceHeight = 646
 
 local function getInterfaceXPos()
 
@@ -4280,8 +4310,6 @@ end
 
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
-local windowWidth = 775
-
 scaleNames = {}
 for key, scale in ipairs(scales) do
   table.insert(scaleNames, scale['name'])
@@ -4369,7 +4397,7 @@ end
 function Interface:addScaleNotesTextLabel()
 
 	local getScaleNotesTextCallback = function() return getScaleNotesText() end
-	local scaleNotesXpos = xMargin+xPadding+scaleLabelWidth+scaleTonicNoteWidth+scaleTypeWidth+horizontalMargin*2+4
+	local scaleNotesXpos = xMargin+xPadding+scaleLabelWidth+scaleTonicNoteWidth+scaleTypeWidth+horizontalMargin*2+4-46
 	local scaleNotesYpos = yMargin+yPadding+1
 	local scaleNotesWidth = 360
 	local scaleNotesHeight = 15
@@ -4382,14 +4410,13 @@ function Interface:addOctaveLabel()
 	octaveLabelWidth = gfx.measurestr(labelText)	
 	local labelYpos = yMargin+yPadding+1
 	local labelHeight = 15
-	local labelXpos = windowWidth - 80 - octaveValueBoxWidth
+	local labelXpos = interfaceWidth - 80 - octaveValueBoxWidth
 	self:addLabel(labelXpos+dockerXPadding, labelYpos, octaveLabelWidth, labelHeight, function() return labelText end)
 end
 
 function Interface:addOctaveSelectorValueBox()
 
-	local windowWidth = 775
-	local valueBoxXPos = windowWidth - octaveValueBoxWidth - xMargin - xPadding + 3
+	local valueBoxXPos = interfaceWidth - octaveValueBoxWidth - xMargin - xPadding + 3
 	local valueBoxYPos = yMargin + 6
 	local valueBoxHeight = 15
 	self:addOctaveValueBox(valueBoxXPos+dockerXPadding, valueBoxYPos, octaveValueBoxWidth, valueBoxHeight)
@@ -4452,7 +4479,7 @@ function Interface:addHeaders()
   
   for i = 1, #scaleNotes do
 
-    local headerWidth = 104
+    local headerWidth = 94
     local innerSpacing = 2
 
     local headerXpos = xMargin+xPadding-1 + headerWidth * (i-1) + innerSpacing * i
@@ -4472,8 +4499,12 @@ function Interface:addChordButtons()
 
       	local text = getScaleNoteName(scaleNoteIndex) .. chord['display']
 
-      	local buttonWidth = 104
-      	local buttonHeight = 38
+        if string.match(chord.code, "dyad") then
+          text = chord["display"]
+        end
+
+      	local buttonWidth = 94
+      	local buttonHeight = 30
 				local innerSpacing = 2
       	
       	local xPos = xMargin + xPadding + buttonWidth * (scaleNoteIndex-1) + innerSpacing * scaleNoteIndex + dockerXPadding

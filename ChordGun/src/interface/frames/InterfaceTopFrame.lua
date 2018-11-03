@@ -3,8 +3,6 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/scales")
 require(workingDirectory .. "/scaleFunctions")
 
-local windowWidth = 775
-
 scaleNames = {}
 for key, scale in ipairs(scales) do
   table.insert(scaleNames, scale['name'])
@@ -92,7 +90,7 @@ end
 function Interface:addScaleNotesTextLabel()
 
 	local getScaleNotesTextCallback = function() return getScaleNotesText() end
-	local scaleNotesXpos = xMargin+xPadding+scaleLabelWidth+scaleTonicNoteWidth+scaleTypeWidth+horizontalMargin*2+4
+	local scaleNotesXpos = xMargin+xPadding+scaleLabelWidth+scaleTonicNoteWidth+scaleTypeWidth+horizontalMargin*2+4-46
 	local scaleNotesYpos = yMargin+yPadding+1
 	local scaleNotesWidth = 360
 	local scaleNotesHeight = 15
@@ -105,14 +103,13 @@ function Interface:addOctaveLabel()
 	octaveLabelWidth = gfx.measurestr(labelText)	
 	local labelYpos = yMargin+yPadding+1
 	local labelHeight = 15
-	local labelXpos = windowWidth - 80 - octaveValueBoxWidth
+	local labelXpos = interfaceWidth - 80 - octaveValueBoxWidth
 	self:addLabel(labelXpos+dockerXPadding, labelYpos, octaveLabelWidth, labelHeight, function() return labelText end)
 end
 
 function Interface:addOctaveSelectorValueBox()
 
-	local windowWidth = 775
-	local valueBoxXPos = windowWidth - octaveValueBoxWidth - xMargin - xPadding + 3
+	local valueBoxXPos = interfaceWidth - octaveValueBoxWidth - xMargin - xPadding + 3
 	local valueBoxYPos = yMargin + 6
 	local valueBoxHeight = 15
 	self:addOctaveValueBox(valueBoxXPos+dockerXPadding, valueBoxYPos, octaveValueBoxWidth, valueBoxHeight)
