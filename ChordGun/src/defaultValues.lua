@@ -22,4 +22,5 @@ end
 defaultScaleNoteNames = {'C', 'D', 'E', 'F', 'G', 'A', 'B'}
 defaultScaleDegreeHeaders = {'I', 'ii', 'iii', 'IV', 'V', 'vi', 'viio'}
 
-defaultNotesThatArePlaying = {}
+defaultNotesThatArePlayingOnChannelOne = {}
+defaultNotesThatArePlayingOnChannelTwo = {}

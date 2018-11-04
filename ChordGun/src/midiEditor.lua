@@ -161,7 +161,11 @@ function deselectAllNotes()
   reaper.MIDI_SelectAll(activeTake(), selectAllNotes)
 end
 
-function getCurrentNoteChannel()
+function getCurrentNoteChannel(channelArg)
+
+  if channelArg ~= nil then
+    return channelArg
+  end
 
   if activeMidiEditor() == nil then
     return 0

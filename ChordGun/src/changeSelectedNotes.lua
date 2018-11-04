@@ -56,6 +56,24 @@ function changeSelectedNotesToScaleChords(chordNotesArray)
 	end
 end
 
+function changeSelectedNotesToScaleChordsForGuitarTrack(chordNotesArray, modifierNotesArray)
+
+	local noteStartingPositions = getNoteStartingPositions()
+	deleteSelectedNotes()
+	
+	for i = 1, #noteStartingPositions do
+		
+		setEditCursorTo(noteStartingPositions[i])
+		
+		deleteExistingNotesInNextInsertionTimePeriod()
+		
+		insertScaleChordForGuitarTrack(chordNotesArray, true)
+		insertModifierNotesForGuitarTrack(modifierNotesArray, true)
+		
+		moveCursor()
+	end
+end
+
 function changeSelectedNotesToScaleNotes(noteValue)
 
 	local noteStartingPositions = getNoteStartingPositions()

@@ -126,7 +126,8 @@ end
 defaultScaleNoteNames = {'C', 'D', 'E', 'F', 'G', 'A', 'B'}
 defaultScaleDegreeHeaders = {'I', 'ii', 'iii', 'IV', 'V', 'vi', 'viio'}
 
-defaultNotesThatArePlaying = {}
+defaultNotesThatArePlayingOnChannelOne = {}
+defaultNotesThatArePlayingOnChannelTwo = {}
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 local activeProjectIndex = 0
@@ -142,7 +143,8 @@ local octaveKey = "octave"
 local selectedChordTypesKey = "selectedChordTypes"
 local scaleNoteNamesKey = "scaleNoteNames"
 local scaleDegreeHeadersKey = "scaleDegreeHeaders"
-local notesThatArePlayingKey = "notesThatArePlaying"
+local notesThatArePlayingOnChannelOneKey = "notesThatArePlayingOnChannelOne"
+local notesThatArePlayingOnChannelTwoKey = "notesThatArePlayingOnChannelTwo"
 local dockStateKey = "dockState"
 
 --
@@ -373,18 +375,28 @@ end
 
 --
 
-function getNotesThatArePlaying()
-  return getTableValue(notesThatArePlayingKey, defaultNotesThatArePlaying)
+function getNotesThatArePlayingOnChannelOne()
+  return getTableValue(notesThatArePlayingOnChannelOneKey, defaultNotesThatArePlayingOnChannelOne)
 end
 
-function setNotesThatArePlaying(arg)
-  setTableValue(notesThatArePlayingKey, arg)
+function setNotesThatArePlayingOnChannelOne(arg)
+  setTableValue(notesThatArePlayingOnChannelOneKey, arg)
+end
+
+--
+
+function getNotesThatArePlayingOnChannelTwo()
+  return getTableValue(notesThatArePlayingOnChannelTwoKey, defaultNotesThatArePlayingOnChannelTwo)
+end
+
+function setNotesThatArePlayingOnChannelTwo(arg)
+  setTableValue(notesThatArePlayingOnChannelTwoKey, arg)
 end
 
 --
 
 function getDockState()
-  return getTableValue(dockStateKey, defaultNotesThatArePlaying)
+  return getTableValue(dockStateKey, defaultNotesThatArePlayingOnChannelOne)
 end
 
 function setDockState(arg)
@@ -479,8 +491,6 @@ end
 
 function emptyFunctionToPreventAutomaticCreationOfUndoPoint()
 end
-
-
 
 Timer = {}
 Timer.__index = Timer
@@ -925,7 +935,11 @@ function deselectAllNotes()
   reaper.MIDI_SelectAll(activeTake(), selectAllNotes)
 end
 
-function getCurrentNoteChannel()
+function getCurrentNoteChannel(channelArg)
+
+  if channelArg ~= nil then
+    return channelArg
+  end
 
   if activeMidiEditor() == nil then
     return 0
@@ -1027,48 +1041,71 @@ function deleteExistingNotesInNextInsertionTimePeriod()
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
-function playMidiNote(midiNote)
+function playMidiNote(midiNote, channelArg)
 
   local virtualKeyboardMode = 0
-  local channel = getCurrentNoteChannel()
+  local channel = getCurrentNoteChannel(channelArg)
+
   local noteOnCommand = 0x90 + channel
   local velocity = getCurrentVelocity()
 
   reaper.StuffMIDIMessage(virtualKeyboardMode, noteOnCommand, midiNote, velocity)
 end
 
-function stopAllNotesFromPlaying()
+
+function stopAllNotesFromPlayingImpl(channelArg)
+
+  local virtualKeyboardMode = 0
+  local channel = getCurrentNoteChannel(channelArg)
+  local noteOffCommand = 0x80 + channel
+  local velocity = 0
 
   for midiNote = 0, 127 do
-
-    local virtualKeyboardMode = 0
-    local channel = getCurrentNoteChannel()
-    local noteOffCommand = 0x80 + channel
-    local velocity = 0
-
     reaper.StuffMIDIMessage(virtualKeyboardMode, noteOffCommand, midiNote, velocity)
   end
 end
 
-function stopNoteFromPlaying(midiNote)
+function stopAllNotesFromPlaying()
+
+  local channelOne = 0
+  stopAllNotesFromPlayingImpl(channelOne)
+
+  local channelTwo = 1
+  stopAllNotesFromPlayingImpl(channelTwo)
+end
+
+function stopNoteFromPlaying(midiNote, channelArg)
 
   local virtualKeyboardMode = 0
-  local channel = getCurrentNoteChannel()
+  local channel = getCurrentNoteChannel(channelArg)
   local noteOffCommand = 0x80 + channel
   local velocity = 0
 
   reaper.StuffMIDIMessage(virtualKeyboardMode, noteOffCommand, midiNote, velocity)
 end
 
-function stopNotesFromPlaying()
+function stopNotesThatArePlayingOnChannelOne()
 
-  local notesThatArePlaying = getNotesThatArePlaying()
+  local notesThatArePlayingOnChannelOne = getNotesThatArePlayingOnChannelOne()
 
-  for noteIndex = 1, #notesThatArePlaying do
-    stopNoteFromPlaying(notesThatArePlaying[noteIndex])
+  for noteIndex = 1, #notesThatArePlayingOnChannelOne do
+    local channel = 0
+    stopNoteFromPlaying(notesThatArePlayingOnChannelOne[noteIndex], channel)
   end
 
-  setNotesThatArePlaying({})
+  setNotesThatArePlayingOnChannelOne({})
+end
+
+function stopNotesThatArePlayingOnChannelTwo()
+
+  local notesThatArePlayingOnChannelTwo = getNotesThatArePlayingOnChannelTwo()
+
+  for noteIndex = 1, #notesThatArePlayingOnChannelTwo do
+    local channel = 1
+    stopNoteFromPlaying(notesThatArePlayingOnChannelTwo[noteIndex], channel)
+  end
+
+  setNotesThatArePlayingOnChannelTwo({})
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
@@ -1119,29 +1156,146 @@ function getChordNotesArray(root, chord, octave)
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
-function insertMidiNote(note, keepNotesSelected)
+function insertMidiNote(note, keepNotesSelected, channelArg)
 
 	local noteIsMuted = false
 	local startPosition = getCursorPositionPPQ()
 	local endPosition = getMidiEndPositionPPQ()
 
-	local channel = getCurrentNoteChannel()
+	local channel = getCurrentNoteChannel(channelArg)
 	local velocity = getCurrentVelocity()
 	local noSort = false
 
 	reaper.MIDI_InsertNote(activeTake(), keepNotesSelected, noteIsMuted, startPosition, endPosition, channel, note, velocity, noSort)
 end
+function trackIsArmed(trackNameArg)
+
+  local activeProjectIndex = 0
+  local numberOfTracks = reaper.CountTracks(activeProjectIndex)
+
+  for i = 0, numberOfTracks - 1 do
+
+    local track = reaper.GetTrack(activeProjectIndex, i)
+    local trackIsArmed = (reaper.GetMediaTrackInfo_Value(track, "I_RECARM") == 1)
+    local _, trackName = reaper.GetTrackName(track, "")
+
+    if trackIsArmed and (trackName == trackNameArg) then
+      return true
+    end
+  end
+
+  return false
+end
+
+local function getModiferNote(root, chord, octave)
+
+  local noteValue = root + ((octave+1) * 12) - 1
+
+  if chord.code == "1_dyad" then
+    return nil
+  end
+
+  if chord.code == "2_dyad" then
+    return noteValue + 11
+  end
+
+  if chord.code == "min3_dyad" then
+    return noteValue + 1
+  end
+
+  if chord.code == "maj3_dyad" then
+    return noteValue + 1
+  end
+
+  if chord.code == "flat5_dyad" then
+    return nil
+  end      
+
+  if chord.code == "5_dyad" then
+    return nil
+  end      
+end
+
+function insertScaleChordForGuitarTrack(chordNotesArray, keepNotesSelected)
+
+  for note = 1, #chordNotesArray do
+    insertMidiNote(chordNotesArray[note], keepNotesSelected)
+  end
+end
+
+function insertModifierNotesForGuitarTrack(modifierNotesArray, keepNotesSelected)
+
+  for note = 1, #modifierNotesArray do
+    local channel = 1
+    insertMidiNote(modifierNotesArray[note], keepNotesSelected, channel)
+  end
+end
+
+local function playOrInsertScaleChordForGuitarTrack(actionDescription)
+
+  local scaleNoteIndex = getSelectedScaleNote()
+  local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
+
+  local root = scaleNotes[scaleNoteIndex]
+  local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
+  local octave = getOctave()
+
+  local chordNotesArray = getChordNotesArray(root, chord, octave)
+
+  local modifierNotesArray = {}
+  local modifierNote = getModiferNote(root, chord, octave)
+  if modifierNote ~= nil then
+    table.insert(modifierNotesArray, modifierNote)
+  end
+  
+  local triggerNote = 12
+  table.insert(modifierNotesArray, triggerNote)
+
+  if activeTake() ~= nil and notCurrentlyRecording() then
+
+    startUndoBlock()
+
+      if thereAreNotesSelected() then 
+        changeSelectedNotesToScaleChordsForGuitarTrack(chordNotesArray, modifierNotesArray)
+      else
+
+        deleteExistingNotesInNextInsertionTimePeriod()
+        
+        insertScaleChordForGuitarTrack(chordNotesArray, false)
+        insertModifierNotesForGuitarTrack(modifierNotesArray, false)
+        
+        moveCursor()
+      end
+    
+    endUndoBlock(actionDescription)
+  end
+
+  playScaleChord(chordNotesArray)
+  playModifierNotes(modifierNotesArray)
+  updateChordText(root, chord, chordNotesArray)
+end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
-local function playScaleChord(chordNotesArray)
+function playScaleChord(chordNotesArray)
 
-  stopNotesFromPlaying()
+  stopNotesThatArePlayingOnChannelTwo()
+  stopNotesThatArePlayingOnChannelOne()
   
   for note = 1, #chordNotesArray do
     playMidiNote(chordNotesArray[note])
   end
 
-  setNotesThatArePlaying(chordNotesArray) 
+  setNotesThatArePlayingOnChannelOne(chordNotesArray)
+end
+
+function playModifierNotes(modifierNotesArray)
+  
+  for note = 1, #modifierNotesArray do
+    local channel = 1
+    playMidiNote(modifierNotesArray[note], channel)
+  end
+
+  setNotesThatArePlayingOnChannelTwo(modifierNotesArray)
 end
 
 function insertScaleChord(chordNotesArray, keepNotesSelected)
@@ -1156,6 +1310,11 @@ function insertScaleChord(chordNotesArray, keepNotesSelected)
 end
 
 function playOrInsertScaleChord(actionDescription)
+
+  if trackIsArmed("tele") or trackIsArmed("strat") then
+    playOrInsertScaleChordForGuitarTrack(actionDescription)
+    return
+  end
 
   local scaleNoteIndex = getSelectedScaleNote()
   local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
@@ -1187,9 +1346,9 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 local function playScaleNote(noteValue)
 
-  stopNotesFromPlaying()
+  stopNotesThatArePlayingOnChannelOne()
   playMidiNote(noteValue)
-  setNotesThatArePlaying({noteValue})
+  setNotesThatArePlayingOnChannelOne({noteValue})
   setChordText("")
 end
 
@@ -1277,6 +1436,24 @@ function changeSelectedNotesToScaleChords(chordNotesArray)
 	for i = 1, #noteStartingPositions do
 		setEditCursorTo(noteStartingPositions[i])
 		insertScaleChord(chordNotesArray, true)
+	end
+end
+
+function changeSelectedNotesToScaleChordsForGuitarTrack(chordNotesArray, modifierNotesArray)
+
+	local noteStartingPositions = getNoteStartingPositions()
+	deleteSelectedNotes()
+	
+	for i = 1, #noteStartingPositions do
+		
+		setEditCursorTo(noteStartingPositions[i])
+		
+		deleteExistingNotesInNextInsertionTimePeriod()
+		
+		insertScaleChordForGuitarTrack(chordNotesArray, true)
+		insertModifierNotesForGuitarTrack(modifierNotesArray, true)
+		
+		moveCursor()
 	end
 end
 
@@ -1641,9 +1818,9 @@ function playTonicNote()
   local octave = getOctave()
   local noteValue = root + ((octave+1) * 12) - 1
 
-  stopNotesFromPlaying()
+  stopNotesThatArePlayingOnChannelOne()
   playMidiNote(noteValue)
-  setNotesThatArePlaying({noteValue})
+  setNotesThatArePlayingOnChannelOne({noteValue})
 end
 
 local function decrementOctave()

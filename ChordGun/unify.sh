@@ -40,6 +40,7 @@ function unifyMainProgram() {
 	insertIntoFile src/midiMessages.lua $1
 	insertIntoFile src/chordNotesArray.lua $1
 	insertIntoFile src/insertMidiNote.lua $1
+	insertIntoFile src/playOrInsertScaleChordForGuitarTrack.lua $1
 	insertIntoFile src/playOrInsertScaleChord.lua $1
 	insertIntoFile src/playOrInsertScaleNote.lua $1
 	insertIntoFile src/changeSelectedNotes.lua $1
@@ -91,6 +92,7 @@ function unifyKeyboardShortcut() {
 	insertIntoFile src/midiMessages.lua $1
 	insertIntoFile src/chordNotesArray.lua $1
 	insertIntoFile src/insertMidiNote.lua $1
+	insertIntoFile src/playOrInsertScaleChordForGuitarTrack.lua $1
 	insertIntoFile src/playOrInsertScaleChord.lua $1
 	insertIntoFile src/playOrInsertScaleNote.lua $1
 	insertIntoFile src/changeSelectedNotes.lua $1

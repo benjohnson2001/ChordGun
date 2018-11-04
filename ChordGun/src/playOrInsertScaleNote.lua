@@ -9,9 +9,9 @@ require(workingDirectory .. "/changeSelectedNotes")
 
 local function playScaleNote(noteValue)
 
-  stopNotesFromPlaying()
+  stopNotesThatArePlayingOnChannelOne()
   playMidiNote(noteValue)
-  setNotesThatArePlaying({noteValue})
+  setNotesThatArePlayingOnChannelOne({noteValue})
   setChordText("")
 end
 

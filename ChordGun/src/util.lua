@@ -88,5 +88,3 @@ end
 
 function emptyFunctionToPreventAutomaticCreationOfUndoPoint()
 end
-
-

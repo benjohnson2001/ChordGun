@@ -97,9 +97,9 @@ function playTonicNote()
   local octave = getOctave()
   local noteValue = root + ((octave+1) * 12) - 1
 
-  stopNotesFromPlaying()
+  stopNotesThatArePlayingOnChannelOne()
   playMidiNote(noteValue)
-  setNotesThatArePlaying({noteValue})
+  setNotesThatArePlayingOnChannelOne({noteValue})
 end
 
 local function decrementOctave()

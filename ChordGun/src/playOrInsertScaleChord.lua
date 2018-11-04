@@ -1,17 +1,32 @@
 -- @noindex
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
-require(workingDirectory .. "/playScaleChord")
-require(workingDirectory .. "/insertScaleChord")
+require(workingDirectory .. "/chordNotesArray")
+require(workingDirectory .. "/midiMessages")
+require(workingDirectory .. "/preferences")
+require(workingDirectory .. "/insertMidiNote")
+require(workingDirectory .. "/changeSelectedNotes")
+require(workingDirectory .. "/playOrInsertScaleChordForGuitarTrack")
 
-local function playScaleChord(chordNotesArray)
+function playScaleChord(chordNotesArray)
 
-  stopNotesFromPlaying()
+  stopNotesThatArePlayingOnChannelTwo()
+  stopNotesThatArePlayingOnChannelOne()
   
   for note = 1, #chordNotesArray do
     playMidiNote(chordNotesArray[note])
   end
 
-  setNotesThatArePlaying(chordNotesArray) 
+  setNotesThatArePlayingOnChannelOne(chordNotesArray)
+end
+
+function playModifierNotes(modifierNotesArray)
+  
+  for note = 1, #modifierNotesArray do
+    local channel = 1
+    playMidiNote(modifierNotesArray[note], channel)
+  end
+
+  setNotesThatArePlayingOnChannelTwo(modifierNotesArray)
 end
 
 function insertScaleChord(chordNotesArray, keepNotesSelected)
@@ -26,6 +41,11 @@ function insertScaleChord(chordNotesArray, keepNotesSelected)
 end
 
 function playOrInsertScaleChord(actionDescription)
+
+  if trackIsArmed("tele") or trackIsArmed("strat") then
+    playOrInsertScaleChordForGuitarTrack(actionDescription)
+    return
+  end
 
   local scaleNoteIndex = getSelectedScaleNote()
   local chordTypeIndex = getSelectedChordType(scaleNoteIndex)

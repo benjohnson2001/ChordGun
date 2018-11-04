@@ -15,7 +15,8 @@ local octaveKey = "octave"
 local selectedChordTypesKey = "selectedChordTypes"
 local scaleNoteNamesKey = "scaleNoteNames"
 local scaleDegreeHeadersKey = "scaleDegreeHeaders"
-local notesThatArePlayingKey = "notesThatArePlaying"
+local notesThatArePlayingOnChannelOneKey = "notesThatArePlayingOnChannelOne"
+local notesThatArePlayingOnChannelTwoKey = "notesThatArePlayingOnChannelTwo"
 local dockStateKey = "dockState"
 
 --
@@ -246,18 +247,28 @@ end
 
 --
 
-function getNotesThatArePlaying()
-  return getTableValue(notesThatArePlayingKey, defaultNotesThatArePlaying)
+function getNotesThatArePlayingOnChannelOne()
+  return getTableValue(notesThatArePlayingOnChannelOneKey, defaultNotesThatArePlayingOnChannelOne)
 end
 
-function setNotesThatArePlaying(arg)
-  setTableValue(notesThatArePlayingKey, arg)
+function setNotesThatArePlayingOnChannelOne(arg)
+  setTableValue(notesThatArePlayingOnChannelOneKey, arg)
+end
+
+--
+
+function getNotesThatArePlayingOnChannelTwo()
+  return getTableValue(notesThatArePlayingOnChannelTwoKey, defaultNotesThatArePlayingOnChannelTwo)
+end
+
+function setNotesThatArePlayingOnChannelTwo(arg)
+  setTableValue(notesThatArePlayingOnChannelTwoKey, arg)
 end
 
 --
 
 function getDockState()
-  return getTableValue(dockStateKey, defaultNotesThatArePlaying)
+  return getTableValue(dockStateKey, defaultNotesThatArePlayingOnChannelOne)
 end
 
 function setDockState(arg)
