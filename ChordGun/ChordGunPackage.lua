@@ -1,11 +1,13 @@
 --[[
-Description: Chord Gun
+Description: ChordGun
 Author: pandabot
 License: MIT
 Version: 1.0
 Screenshot: https://github.com/benjohnson2001/ChordGun/raw/release/ChordGun/src/images/chordGunInterface.png
 Donate: https://paypal.me/benjohnson2001
-Link: https://forum.cockos.com/member.php?u=127396
+Links:
+  pandabot (Cockos forum) https://forum.cockos.com/member.php?u=127396
+  Source repository (GitHub) https://github.com/benjohnson2001/ChordGun/tree/release
 Metapackage: true
 Provides:
     [main=main,midi_editor] pkg/*.lua
