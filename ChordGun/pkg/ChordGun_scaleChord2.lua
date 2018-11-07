@@ -1248,7 +1248,7 @@ local function playOrInsertScaleChordForGuitarTrack(actionDescription)
     table.insert(modifierNotesArray, modifierNote)
   end
   
-  local triggerNote = 12
+  local triggerNote = 60
   table.insert(modifierNotesArray, triggerNote)
 
   if activeTake() ~= nil and notCurrentlyRecording() then
