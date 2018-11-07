@@ -3,7 +3,7 @@ Description: Chord Gun
 Author: pandabot
 License: MIT
 Version: 1.0
-Screenshot: https://github.com/benjohnson2001/ChordGun/raw/master/ChordGun/src/images/chordGunInterface.png
+Screenshot: https://github.com/benjohnson2001/ChordGun/raw/release/ChordGun/src/images/chordGunInterface.png
 Donate: https://paypal.me/benjohnson2001
 Link: https://forum.cockos.com/member.php?u=127396
 Metapackage: true
