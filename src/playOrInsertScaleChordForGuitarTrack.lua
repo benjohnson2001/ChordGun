@@ -1,3 +1,17 @@
+function activeTrackIs(trackNameArg)
+
+  if activeMidiEditor() == nil then
+    return trackIsArmed(trackNameArg)
+  else
+    return activeTrackNameIs(trackNameArg)
+  end
+end
+
+function activeTrackNameIs(trackNameArg)
+  local _, trackName = reaper.GetTrackName(activeTrack(), "")
+  return trackName == trackNameArg
+end
+
 function trackIsArmed(trackNameArg)
 
   local activeProjectIndex = 0
@@ -78,7 +92,7 @@ local function playOrInsertScaleChordForGuitarTrack(actionDescription)
     table.insert(modifierNotesArray, modifierNote)
   end
   
-  local triggerNote = 60
+  local triggerNote = 72
   table.insert(modifierNotesArray, triggerNote)
 
   if activeTake() ~= nil and notCurrentlyRecording() then

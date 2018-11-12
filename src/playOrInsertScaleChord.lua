@@ -42,7 +42,7 @@ end
 
 function playOrInsertScaleChord(actionDescription)
 
-  if trackIsArmed("tele") or trackIsArmed("strat") then
+  if activeTrackIs("tele") or activeTrackIs("strat") then
     playOrInsertScaleChordForGuitarTrack(actionDescription)
     return
   end

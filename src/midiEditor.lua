@@ -14,6 +14,10 @@ function activeMediaItem()
   return reaper.GetMediaItemTake_Item(activeTake())
 end
 
+function activeTrack()
+  return reaper.GetMediaItemTake_Track(activeTake())
+end
+
 local function mediaItemStartPosition()
   return reaper.GetMediaItemInfo_Value(activeMediaItem(), "D_POSITION")
 end

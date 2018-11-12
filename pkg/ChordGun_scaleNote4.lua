@@ -788,6 +788,10 @@ function activeMediaItem()
   return reaper.GetMediaItemTake_Item(activeTake())
 end
 
+function activeTrack()
+  return reaper.GetMediaItemTake_Track(activeTake())
+end
+
 local function mediaItemStartPosition()
   return reaper.GetMediaItemInfo_Value(activeMediaItem(), "D_POSITION")
 end
@@ -1168,6 +1172,20 @@ function insertMidiNote(note, keepNotesSelected, channelArg)
 
 	reaper.MIDI_InsertNote(activeTake(), keepNotesSelected, noteIsMuted, startPosition, endPosition, channel, note, velocity, noSort)
 end
+function activeTrackIs(trackNameArg)
+
+  if activeMidiEditor() == nil then
+    return trackIsArmed(trackNameArg)
+  else
+    return activeTrackNameIs(trackNameArg)
+  end
+end
+
+function activeTrackNameIs(trackNameArg)
+  local _, trackName = reaper.GetTrackName(activeTrack(), "")
+  return trackName == trackNameArg
+end
+
 function trackIsArmed(trackNameArg)
 
   local activeProjectIndex = 0
@@ -1248,7 +1266,7 @@ local function playOrInsertScaleChordForGuitarTrack(actionDescription)
     table.insert(modifierNotesArray, modifierNote)
   end
   
-  local triggerNote = 60
+  local triggerNote = 72
   table.insert(modifierNotesArray, triggerNote)
 
   if activeTake() ~= nil and notCurrentlyRecording() then
@@ -1311,7 +1329,7 @@ end
 
 function playOrInsertScaleChord(actionDescription)
 
-  if trackIsArmed("tele") or trackIsArmed("strat") then
+  if activeTrackIs("tele") or activeTrackIs("strat") then
     playOrInsertScaleChordForGuitarTrack(actionDescription)
     return
   end
