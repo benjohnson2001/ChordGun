@@ -75,7 +75,7 @@ function insertModifierNotesForGuitarTrack(modifierNotesArray, keepNotesSelected
   end
 end
 
-local function playOrInsertScaleChordForGuitarTrack(actionDescription)
+function playOrInsertScaleChordForGuitarTrack(actionDescription)
 
   local scaleNoteIndex = getSelectedScaleNote()
   local chordTypeIndex = getSelectedChordType(scaleNoteIndex)

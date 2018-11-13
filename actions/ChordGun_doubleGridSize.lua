@@ -1,6 +1,5 @@
--- @noindex
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
-require(workingDirectory .. "/actionFunctions")
+require(workingDirectory .. "/actions/actionFunctions")
 
 
 doubleGridSize()

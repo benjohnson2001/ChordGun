@@ -1,6 +1,8 @@
--- @noindex
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
 require(workingDirectory .. "/scaleData")
+require(workingDirectory .. "/playOrInsertScaleNote")
+require(workingDirectory .. "/playOrInsertScaleChord")
+require(workingDirectory .. "/midiEditor")
 
 local function decrementChordInversion()
 
