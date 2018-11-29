@@ -1,4 +1,6 @@
-
+local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun"
+require(workingDirectory .. "/midiMessages")
+require(workingDirectory .. "/util")
 
 
 

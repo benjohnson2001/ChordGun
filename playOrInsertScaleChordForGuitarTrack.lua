@@ -1,3 +1,6 @@
+
+local triggerNoteOctave = 1
+
 function activeTrackIs(trackNameArg)
 
   if activeMidiEditor() == nil then
@@ -71,13 +74,18 @@ function insertModifierNotesForGuitarTrack(modifierNotesArray, keepNotesSelected
 
   for note = 1, #modifierNotesArray do
     local channel = 1
-    insertMidiNote(modifierNotesArray[note], keepNotesSelected, channel)
+
+    if modifierNotesArray[note] == getTriggerNote() then
+      insertMidiNote(modifierNotesArray[note], keepNotesSelected, channel, 1)
+    else
+      insertMidiNote(modifierNotesArray[note], keepNotesSelected, channel)
+    end
   end
 end
 
-function getTriggerNote(octave)
+function getTriggerNote()
 
-  return (octave+2)*12
+  return (triggerNoteOctave+2)*12
 end
 
 function previewScaleChordForGuitarTrack(actionDescription)
@@ -97,7 +105,7 @@ function previewScaleChordForGuitarTrack(actionDescription)
     table.insert(modifierNotesArray, modifierNote)
   end
   
-  local triggerNote = getTriggerNote(1)
+  local triggerNote = getTriggerNote()
   table.insert(modifierNotesArray, triggerNote)
 
   playScaleChord(chordNotesArray)
@@ -122,7 +130,7 @@ function playOrInsertScaleChordForGuitarTrack(actionDescription)
     table.insert(modifierNotesArray, modifierNote)
   end
   
-  local triggerNote = getTriggerNote(1)
+  local triggerNote = getTriggerNote()
   table.insert(modifierNotesArray, triggerNote)
 
   if activeTake() ~= nil and notCurrentlyRecording() then
