@@ -75,6 +75,36 @@ function insertModifierNotesForGuitarTrack(modifierNotesArray, keepNotesSelected
   end
 end
 
+function getTriggerNote(octave)
+
+  return (octave+2)*12
+end
+
+function previewScaleChordForGuitarTrack(actionDescription)
+
+  local scaleNoteIndex = getSelectedScaleNote()
+  local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
+
+  local root = scaleNotes[scaleNoteIndex]
+  local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
+  local octave = getOctave()
+
+  local chordNotesArray = getChordNotesArray(root, chord, octave)
+
+  local modifierNotesArray = {}
+  local modifierNote = getModiferNote(root, chord, octave)
+  if modifierNote ~= nil then
+    table.insert(modifierNotesArray, modifierNote)
+  end
+  
+  local triggerNote = getTriggerNote(1)
+  table.insert(modifierNotesArray, triggerNote)
+
+  playScaleChord(chordNotesArray)
+  playModifierNotes(modifierNotesArray)
+  updateChordText(root, chord, chordNotesArray)
+end
+
 function playOrInsertScaleChordForGuitarTrack(actionDescription)
 
   local scaleNoteIndex = getSelectedScaleNote()
@@ -92,7 +122,7 @@ function playOrInsertScaleChordForGuitarTrack(actionDescription)
     table.insert(modifierNotesArray, modifierNote)
   end
   
-  local triggerNote = 72
+  local triggerNote = getTriggerNote(1)
   table.insert(modifierNotesArray, triggerNote)
 
   if activeTake() ~= nil and notCurrentlyRecording() then

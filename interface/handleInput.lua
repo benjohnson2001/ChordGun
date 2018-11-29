@@ -9,10 +9,6 @@ function handleInput()
 
 	inputCharacter = gfx.getchar()
 
-	if inputCharacter == inputCharacters["0"] then
-		stopAllNotesFromPlaying()
-	end
-
 	if inputCharacter == inputCharacters["1"] then
 		scaleChordAction(1)
 	end
@@ -39,6 +35,10 @@ function handleInput()
 
 	if inputCharacter == inputCharacters["7"] then
 		scaleChordAction(7)
+	end
+
+	if inputCharacter == inputCharacters["8"] then
+		stopAllNotesFromPlaying()
 	end
 
 	--

@@ -59,7 +59,7 @@ function notCurrentlyRecording()
   return reaper.GetPlayStateEx(activeProjectIndex) & 4 ~= 4
 end
 
-local function setEditCursorPosition(arg)
+function setEditCursorPosition(arg)
 
   local activeProjectIndex = 0
   local moveView = false

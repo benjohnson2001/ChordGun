@@ -40,6 +40,25 @@ function insertScaleChord(chordNotesArray, keepNotesSelected)
   moveCursor()
 end
 
+function previewScaleChord(actionDescription)
+
+  if activeTrackIs("tele") or activeTrackIs("strat") then
+    previewScaleChordForGuitarTrack(actionDescription)
+    return
+  end
+
+  local scaleNoteIndex = getSelectedScaleNote()
+  local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
+
+  local root = scaleNotes[scaleNoteIndex]
+  local chord = scaleChords[scaleNoteIndex][chordTypeIndex]
+  local octave = getOctave()
+
+  local chordNotesArray = getChordNotesArray(root, chord, octave)
+  playScaleChord(chordNotesArray)
+  updateChordText(root, chord, chordNotesArray)
+end
+
 function playOrInsertScaleChord(actionDescription)
 
   if activeTrackIs("tele") or activeTrackIs("strat") then

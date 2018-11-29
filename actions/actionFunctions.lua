@@ -3,6 +3,7 @@ require(workingDirectory .. "/scaleData")
 require(workingDirectory .. "/playOrInsertScaleNote")
 require(workingDirectory .. "/playOrInsertScaleChord")
 require(workingDirectory .. "/midiEditor")
+require(workingDirectory .. "/transposeSelectedNotes")
 
 local function decrementChordInversion()
 
