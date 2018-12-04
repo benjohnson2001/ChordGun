@@ -8,7 +8,7 @@ function insertMidiNote(note, keepNotesSelected, channelArg, offset)
 	local startPosition = getCursorPositionPPQ()
 
 	if offset ~= nil then
-		startPosition = startPosition + offset
+		--startPosition = startPosition + offset
 	end
 
 	local endPosition = getMidiEndPositionPPQ()

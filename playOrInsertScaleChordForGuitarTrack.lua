@@ -1,5 +1,5 @@
 
-local triggerNoteOctave = 1
+local triggerNoteOctave = 4
 
 function activeTrackIs(trackNameArg)
 
@@ -76,7 +76,8 @@ function insertModifierNotesForGuitarTrack(modifierNotesArray, keepNotesSelected
     local channel = 1
 
     if modifierNotesArray[note] == getTriggerNote() then
-      insertMidiNote(modifierNotesArray[note], keepNotesSelected, channel, 1)
+      local offset = 1
+      insertMidiNote(modifierNotesArray[note], keepNotesSelected, channel, offset)
     else
       insertMidiNote(modifierNotesArray[note], keepNotesSelected, channel)
     end
