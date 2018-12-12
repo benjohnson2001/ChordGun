@@ -61,10 +61,12 @@ end
 
 function playOrInsertScaleChord(actionDescription)
 
+--[[
   if activeTrackIs("tele") or activeTrackIs("strat") then
     playOrInsertScaleChordForGuitarTrack(actionDescription)
     return
   end
+]]--
 
   local scaleNoteIndex = getSelectedScaleNote()
   local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
