@@ -89,7 +89,7 @@ function getTriggerNote()
   return (triggerNoteOctave+2)*12
 end
 
-function previewScaleChordForGuitarTrack(actionDescription)
+function previewScaleChordForGuitarTrack()
 
   local scaleNoteIndex = getSelectedScaleNote()
   local chordTypeIndex = getSelectedChordType(scaleNoteIndex)

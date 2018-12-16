@@ -143,9 +143,7 @@ function ChordButton:onPress()
 	setSelectedScaleNote(self.scaleNoteIndex)
 	setSelectedChordType(self.scaleNoteIndex, self.chordTypeIndex)
 
-	local chord = scaleChords[self.scaleNoteIndex][self.chordTypeIndex]
-	local actionDescription = "scale chord " .. self.scaleNoteIndex .. "  (" .. chord.code .. ")"
-	previewScaleChord(actionDescription)
+	previewScaleChord()
 end
 
 function ChordButton:onShiftPress()

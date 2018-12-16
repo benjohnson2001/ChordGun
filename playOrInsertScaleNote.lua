@@ -23,6 +23,17 @@ function insertScaleNote(noteValue, keepNotesSelected)
 	moveCursor()
 end
 
+function previewScaleNote(octaveAdjustment)
+
+	local scaleNoteIndex = getSelectedScaleNote()
+
+  local root = scaleNotes[scaleNoteIndex]
+  local octave = getOctave()
+  local noteValue = root + ((octave+1+octaveAdjustment) * 12) - 1
+
+	playScaleNote(noteValue)
+end
+
 function playOrInsertScaleNote(octaveAdjustment, actionDescription)
 
 	local scaleNoteIndex = getSelectedScaleNote()

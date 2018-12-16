@@ -40,10 +40,10 @@ function insertScaleChord(chordNotesArray, keepNotesSelected)
   moveCursor()
 end
 
-function previewScaleChord(actionDescription)
+function previewScaleChord()
 
   if activeTrackIs("tele") or activeTrackIs("strat") then
-    previewScaleChordForGuitarTrack(actionDescription)
+    previewScaleChordForGuitarTrack()
     return
   end
 

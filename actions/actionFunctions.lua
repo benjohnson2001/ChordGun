@@ -275,6 +275,14 @@ end
 
 --
 
+function previewScaleChordAction(scaleNoteIndex)
+
+	setSelectedScaleNote(scaleNoteIndex)
+	previewScaleChord()
+end
+
+--
+
 function scaleNoteAction(scaleNoteIndex)
 
 	setSelectedScaleNote(scaleNoteIndex)
@@ -306,4 +314,39 @@ function higherScaleNoteAction(scaleNoteIndex)
 	setSelectedScaleNote(scaleNoteIndex)
 	local actionDescription = "higher scale note " .. scaleNoteIndex
 	playOrInsertScaleNote(1, actionDescription)
+end
+
+--
+
+
+--
+
+function previewScaleNoteAction(scaleNoteIndex)
+
+	setSelectedScaleNote(scaleNoteIndex)
+	previewScaleNote(0)
+end
+
+--
+
+function previewLowerScaleNoteAction(scaleNoteIndex)
+
+  if getOctave() <= getOctaveMin() then
+    return
+  end
+
+	setSelectedScaleNote(scaleNoteIndex)
+	previewScaleNote(-1)
+end
+
+--
+
+function previewHigherScaleNoteAction(scaleNoteIndex)
+
+  if getOctave() >= getOctaveMax() then
+    return
+  end
+
+	setSelectedScaleNote(scaleNoteIndex)
+	previewScaleNote(1)
 end
