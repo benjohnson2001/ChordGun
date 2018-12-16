@@ -42,10 +42,12 @@ end
 
 function previewScaleChord()
 
+--[[
   if activeTrackIs("tele") or activeTrackIs("strat") then
     previewScaleChordForGuitarTrack()
     return
   end
+]]--
 
   local scaleNoteIndex = getSelectedScaleNote()
   local chordTypeIndex = getSelectedChordType(scaleNoteIndex)
