@@ -18,9 +18,18 @@ end
 
 function insertScaleNote(noteValue, keepNotesSelected)
 
-	deleteExistingNotesInNextInsertionTimePeriod()
+  if keepNotesSelected then
+    deleteSelectedNotes()
+  else
+    deleteExistingNotesInNextInsertionTimePeriod()
+  end
+
 	insertMidiNote(noteValue, keepNotesSelected)
-	moveCursor()
+	reaper.MIDI_Sort(activeTake())
+
+  if not keepNotesSelected then
+    moveCursor()
+  end
 end
 
 function playOrInsertScaleNote(octaveAdjustment, actionDescription)

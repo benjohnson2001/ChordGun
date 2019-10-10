@@ -25,20 +25,6 @@ local function getNoteStartingPositions()
 	return noteStartingPositions
 end
 
-local function deleteSelectedNotes()
-
-	local numberOfNotes = getNumberOfNotes()
-
-	for noteIndex = numberOfNotes-1, 0, -1 do
-
-		local _, noteIsSelected = reaper.MIDI_GetNote(activeTake(), noteIndex)
-	
-		if noteIsSelected then
-			deleteNote(noteIndex)
-		end
-	end
-end
-
 local function setEditCursorTo(arg)
 
 	local cursorPosition = reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), arg)
@@ -48,7 +34,6 @@ end
 function changeSelectedNotesToScaleChords(chordNotesArray)
 
 	local noteStartingPositions = getNoteStartingPositions()
-	deleteSelectedNotes()
 	
 	for i = 1, #noteStartingPositions do
 		setEditCursorTo(noteStartingPositions[i])
@@ -59,7 +44,6 @@ end
 function changeSelectedNotesToScaleNotes(noteValue)
 
 	local noteStartingPositions = getNoteStartingPositions()
-	deleteSelectedNotes()
 
 	for i = 1, #noteStartingPositions do
 		setEditCursorTo(noteStartingPositions[i])
