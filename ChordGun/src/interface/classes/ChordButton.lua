@@ -3,6 +3,7 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/interface/colors")
 require(workingDirectory .. "/util")
 require(workingDirectory .. "/globalState")
+require(workingDirectory .. "/playOrInsertScaleChord")
 
 ChordButton = {}
 ChordButton.__index = ChordButton
@@ -137,10 +138,10 @@ end
 
 function ChordButton:onPress()
 
-	mouseButtonIsNotPressedDown = false
+	previewScaleChord()
+end
 
-	setSelectedScaleNote(self.scaleNoteIndex)
-	setSelectedChordType(self.scaleNoteIndex, self.chordTypeIndex)
+function ChordButton:onShiftPress()
 
 	local chord = scaleChords[self.scaleNoteIndex][self.chordTypeIndex]
 	local actionDescription = "scale chord " .. self.scaleNoteIndex .. "  (" .. chord.code .. ")"
@@ -153,6 +154,16 @@ function ChordButton:update()
 	self:drawText()
 
 	if mouseButtonIsNotPressedDown and buttonHasBeenClicked(self) then
-		self:onPress()
+
+		mouseButtonIsNotPressedDown = false
+
+		setSelectedScaleNote(self.scaleNoteIndex)
+		setSelectedChordType(self.scaleNoteIndex, self.chordTypeIndex)
+
+		if shiftModifierIsHeldDown() then
+			self:onShiftPress()
+		else
+			self:onPress()
+		end		
 	end
 end

@@ -90,6 +90,28 @@ local function rightButtonHasBeenClicked(valueBox)
   return mouseIsHoveringOver(hitArea) and leftMouseButtonIsHeldDown()
 end
 
+local function shiftModifierIsHeldDown()
+  return gfx.mouse_cap & 8 == 8
+end
+
+function ChordInversionValueBox:onLeftButtonPress()
+  decrementChordInversion()
+  previewScaleChord()
+end
+
+function ChordInversionValueBox:onLeftButtonShiftPress()
+  decrementChordInversionAction()
+end
+
+function ChordInversionValueBox:onRightButtonPress()
+  incrementChordInversion()
+  previewScaleChord()
+end
+
+function ChordInversionValueBox:onRightButtonShiftPress()
+  incrementChordInversionAction()
+end
+
 function ChordInversionValueBox:update()
 
   self:drawRectangles()
@@ -97,12 +119,22 @@ function ChordInversionValueBox:update()
 
   if mouseButtonIsNotPressedDown and leftButtonHasBeenClicked(self) then
     mouseButtonIsNotPressedDown = false
-    decrementChordInversionAction()
+
+    if shiftModifierIsHeldDown() then
+      self:onLeftButtonShiftPress()
+    else
+      self:onLeftButtonPress()
+    end
   end
 
   if mouseButtonIsNotPressedDown and rightButtonHasBeenClicked(self) then
     mouseButtonIsNotPressedDown = false
-    incrementChordInversionAction()
+
+    if shiftModifierIsHeldDown() then
+      self:onRightButtonShiftPress()
+    else
+      self:onRightButtonPress()
+    end
   end
 
   self:drawText()
