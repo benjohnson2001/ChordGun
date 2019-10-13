@@ -14,20 +14,8 @@ function activeMediaItem()
   return reaper.GetMediaItemTake_Item(activeTake())
 end
 
-function activeTrack()
-  return reaper.GetMediaItemTake_Track(activeTake())
-end
-
-function mediaItemStartPosition()
+local function mediaItemStartPosition()
   return reaper.GetMediaItemInfo_Value(activeMediaItem(), "D_POSITION")
-end
-
-function mediaItemStartPositionPPQ()
-  return reaper.MIDI_GetPPQPosFromProjTime(activeTake(), mediaItemStartPosition())
-end
-
-function mediaItemStartPositionQN()
-  return reaper.MIDI_GetProjQNFromPPQPos(activeTake(), mediaItemStartPositionPPQ())
 end
 
 local function mediaItemLength()
@@ -54,18 +42,12 @@ local function loopEndPosition()
   return loopEndPosition
 end
 
-local function noteLengthOld()
+local function noteLength()
 
   local noteLengthQN = getNoteLengthQN()
   local noteLengthPPQ = reaper.MIDI_GetPPQPosFromProjQN(activeTake(), noteLengthQN)
   return reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), noteLengthPPQ)
 end
-
-local function noteLength()
-
-  return gridUnitLength()
-end
-
 
 function notCurrentlyRecording()
   
@@ -73,7 +55,7 @@ function notCurrentlyRecording()
   return reaper.GetPlayStateEx(activeProjectIndex) & 4 ~= 4
 end
 
-function setEditCursorPosition(arg)
+local function setEditCursorPosition(arg)
 
   local activeProjectIndex = 0
   local moveView = false
@@ -166,20 +148,11 @@ function getNoteLengthQN()
   return gridLength
 end
 
-function gridUnitLength()
-
-  local gridLengthQN = reaper.MIDI_GetGrid(activeTake())
-  local mediaItemPlusGridLengthPPQ = reaper.MIDI_GetPPQPosFromProjQN(activeTake(), mediaItemStartPositionQN() + gridLengthQN)
-  local mediaItemPlusGridLength = reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), mediaItemPlusGridLengthPPQ)
-  return mediaItemPlusGridLength - mediaItemStartPosition()
-end
-
 function getMidiEndPositionPPQ()
 
-  local startPosition = reaper.GetCursorPosition()
-  local startPositionPPQ = reaper.MIDI_GetPPQPosFromProjTime(activeTake(), startPosition)
-  local endPositionPPQ = reaper.MIDI_GetPPQPosFromProjTime(activeTake(), startPosition+gridUnitLength())
-  return endPositionPPQ
+  local noteLength = getNoteLengthQN()
+  local startPosition = getCursorPositionQN()
+  return reaper.MIDI_GetPPQPosFromProjQN(activeTake(), startPosition + noteLength)
 end
 
 function deselectAllNotes()
@@ -188,11 +161,7 @@ function deselectAllNotes()
   reaper.MIDI_SelectAll(activeTake(), selectAllNotes)
 end
 
-function getCurrentNoteChannel(channelArg)
-
-  if channelArg ~= nil then
-    return channelArg
-  end
+function getCurrentNoteChannel()
 
   if activeMidiEditor() == nil then
     return 0
@@ -282,30 +251,13 @@ function deleteExistingNotesInNextInsertionTimePeriod()
 
   local numberOfNotes = getNumberOfNotes()
 
-  -- the indices change after deleting a note
-  for noteIndex = 0, numberOfNotes-1 do
+  for noteIndex = numberOfNotes-1, 0, -1 do
 
     local _, _, _, noteStartPositionPPQ = reaper.MIDI_GetNote(activeTake(), noteIndex)
     local noteStartTime = reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), noteStartPositionPPQ)
 
     if noteStartTime + tolerance >= insertionStartTime and noteStartTime + tolerance <= insertionEndTime then
       deleteNote(noteIndex)
-      deleteExistingNotesInNextInsertionTimePeriod()
-    end
-  end
-end
-
-function deleteSelectedNotes()
-
-  local numberOfNotes = getNumberOfNotes()
-
-  for noteIndex = 0, numberOfNotes-1 do
-
-    local _, noteIsSelected = reaper.MIDI_GetNote(activeTake(), noteIndex)
-
-    if noteIsSelected then
-      deleteNote(noteIndex)
-      deleteSelectedNotes()
     end
   end
 end

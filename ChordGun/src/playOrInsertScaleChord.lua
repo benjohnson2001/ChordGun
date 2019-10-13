@@ -16,21 +16,13 @@ end
 
 function insertScaleChord(chordNotesArray, keepNotesSelected)
 
-  if keepNotesSelected then
-    deleteSelectedNotes()
-  else
-    deleteExistingNotesInNextInsertionTimePeriod()
-  end
+  deleteExistingNotesInNextInsertionTimePeriod()
 
   for note = 1, #chordNotesArray do
     insertMidiNote(chordNotesArray[note], keepNotesSelected)
   end
 
-  reaper.MIDI_Sort(activeTake())
-
-  if not keepNotesSelected then
-    moveCursor()
-  end
+  moveCursor()
 end
 
 function playOrInsertScaleChord(actionDescription)

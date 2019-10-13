@@ -27,7 +27,6 @@ function unifyMainProgram() {
 
 	insertNoIndexHeader "$1"
 
-	insertIntoFile src/MidiNote.lua "$1"
 	insertIntoFile src/chords.lua "$1"
 	insertIntoFile src/defaultValues.lua "$1"
 	insertIntoFile src/preferences.lua "$1"
@@ -79,7 +78,6 @@ function unifyKeyboardShortcut() {
 
 	insertNoIndexHeader "$1"
 
-	insertIntoFile src/MidiNote.lua "$1"
 	insertIntoFile src/chords.lua "$1"
 	insertIntoFile src/defaultValues.lua "$1"
 	insertIntoFile src/preferences.lua "$1"

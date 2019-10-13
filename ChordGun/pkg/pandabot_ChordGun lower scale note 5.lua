@@ -1,22 +1,4 @@
 -- @noindex
-MidiNote = {}
-MidiNote.__index = MidiNote
-
-function MidiNote:new(noteIsSelectedArg, noteIsMutedArg, noteStartPositionPPQArg, noteEndPositionPPQArg, channelArg, pitchArg, velocityArg)
-
-  local self = {}
-  setmetatable(self, MidiNote)
-
-  self.noteIsSelected = noteIsSelectedArg
-  self.noteIsMuted = noteIsMutedArg
-  self.noteStartPositionPPQ = noteStartPositionPPQArg
-  self.noteEndPositionPPQ = noteEndPositionPPQArg
-  self.channel = channelArg
-  self.pitch = pitchArg
-  self.velocity = velocityArg
-
-  return self
-end
 
 chords = {
   {
@@ -772,20 +754,8 @@ function activeMediaItem()
   return reaper.GetMediaItemTake_Item(activeTake())
 end
 
-function activeTrack()
-  return reaper.GetMediaItemTake_Track(activeTake())
-end
-
-function mediaItemStartPosition()
+local function mediaItemStartPosition()
   return reaper.GetMediaItemInfo_Value(activeMediaItem(), "D_POSITION")
-end
-
-function mediaItemStartPositionPPQ()
-  return reaper.MIDI_GetPPQPosFromProjTime(activeTake(), mediaItemStartPosition())
-end
-
-function mediaItemStartPositionQN()
-  return reaper.MIDI_GetProjQNFromPPQPos(activeTake(), mediaItemStartPositionPPQ())
 end
 
 local function mediaItemLength()
@@ -812,18 +782,12 @@ local function loopEndPosition()
   return loopEndPosition
 end
 
-local function noteLengthOld()
+local function noteLength()
 
   local noteLengthQN = getNoteLengthQN()
   local noteLengthPPQ = reaper.MIDI_GetPPQPosFromProjQN(activeTake(), noteLengthQN)
   return reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), noteLengthPPQ)
 end
-
-local function noteLength()
-
-  return gridUnitLength()
-end
-
 
 function notCurrentlyRecording()
   
@@ -831,7 +795,7 @@ function notCurrentlyRecording()
   return reaper.GetPlayStateEx(activeProjectIndex) & 4 ~= 4
 end
 
-function setEditCursorPosition(arg)
+local function setEditCursorPosition(arg)
 
   local activeProjectIndex = 0
   local moveView = false
@@ -924,20 +888,11 @@ function getNoteLengthQN()
   return gridLength
 end
 
-function gridUnitLength()
-
-  local gridLengthQN = reaper.MIDI_GetGrid(activeTake())
-  local mediaItemPlusGridLengthPPQ = reaper.MIDI_GetPPQPosFromProjQN(activeTake(), mediaItemStartPositionQN() + gridLengthQN)
-  local mediaItemPlusGridLength = reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), mediaItemPlusGridLengthPPQ)
-  return mediaItemPlusGridLength - mediaItemStartPosition()
-end
-
 function getMidiEndPositionPPQ()
 
-  local startPosition = reaper.GetCursorPosition()
-  local startPositionPPQ = reaper.MIDI_GetPPQPosFromProjTime(activeTake(), startPosition)
-  local endPositionPPQ = reaper.MIDI_GetPPQPosFromProjTime(activeTake(), startPosition+gridUnitLength())
-  return endPositionPPQ
+  local noteLength = getNoteLengthQN()
+  local startPosition = getCursorPositionQN()
+  return reaper.MIDI_GetPPQPosFromProjQN(activeTake(), startPosition + noteLength)
 end
 
 function deselectAllNotes()
@@ -946,11 +901,7 @@ function deselectAllNotes()
   reaper.MIDI_SelectAll(activeTake(), selectAllNotes)
 end
 
-function getCurrentNoteChannel(channelArg)
-
-  if channelArg ~= nil then
-    return channelArg
-  end
+function getCurrentNoteChannel()
 
   if activeMidiEditor() == nil then
     return 0
@@ -1040,30 +991,13 @@ function deleteExistingNotesInNextInsertionTimePeriod()
 
   local numberOfNotes = getNumberOfNotes()
 
-  -- the indices change after deleting a note
-  for noteIndex = 0, numberOfNotes-1 do
+  for noteIndex = numberOfNotes-1, 0, -1 do
 
     local _, _, _, noteStartPositionPPQ = reaper.MIDI_GetNote(activeTake(), noteIndex)
     local noteStartTime = reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), noteStartPositionPPQ)
 
     if noteStartTime + tolerance >= insertionStartTime and noteStartTime + tolerance <= insertionEndTime then
       deleteNote(noteIndex)
-      deleteExistingNotesInNextInsertionTimePeriod()
-    end
-  end
-end
-
-function deleteSelectedNotes()
-
-  local numberOfNotes = getNumberOfNotes()
-
-  for noteIndex = 0, numberOfNotes-1 do
-
-    local _, noteIsSelected = reaper.MIDI_GetNote(activeTake(), noteIndex)
-
-    if noteIsSelected then
-      deleteNote(noteIndex)
-      deleteSelectedNotes()
     end
   end
 end
@@ -1169,7 +1103,7 @@ function insertMidiNote(note, keepNotesSelected)
 
 	local channel = getCurrentNoteChannel()
 	local velocity = getCurrentVelocity()
-	local noSort = true
+	local noSort = false
 
 	reaper.MIDI_InsertNote(activeTake(), keepNotesSelected, noteIsMuted, startPosition, endPosition, channel, note, velocity, noSort)
 end
@@ -1188,21 +1122,13 @@ end
 
 function insertScaleChord(chordNotesArray, keepNotesSelected)
 
-  if keepNotesSelected then
-    deleteSelectedNotes()
-  else
-    deleteExistingNotesInNextInsertionTimePeriod()
-  end
+  deleteExistingNotesInNextInsertionTimePeriod()
 
   for note = 1, #chordNotesArray do
     insertMidiNote(chordNotesArray[note], keepNotesSelected)
   end
 
-  reaper.MIDI_Sort(activeTake())
-
-  if not keepNotesSelected then
-    moveCursor()
-  end
+  moveCursor()
 end
 
 function playOrInsertScaleChord(actionDescription)
@@ -1246,18 +1172,9 @@ end
 
 function insertScaleNote(noteValue, keepNotesSelected)
 
-  if keepNotesSelected then
-    deleteSelectedNotes()
-  else
-    deleteExistingNotesInNextInsertionTimePeriod()
-  end
-
+	deleteExistingNotesInNextInsertionTimePeriod()
 	insertMidiNote(noteValue, keepNotesSelected)
-	reaper.MIDI_Sort(activeTake())
-
-  if not keepNotesSelected then
-    moveCursor()
-  end
+	moveCursor()
 end
 
 function playOrInsertScaleNote(octaveAdjustment, actionDescription)
@@ -1308,6 +1225,20 @@ local function getNoteStartingPositions()
 	return noteStartingPositions
 end
 
+local function deleteSelectedNotes()
+
+	local numberOfNotes = getNumberOfNotes()
+
+	for noteIndex = numberOfNotes-1, 0, -1 do
+
+		local _, noteIsSelected = reaper.MIDI_GetNote(activeTake(), noteIndex)
+	
+		if noteIsSelected then
+			deleteNote(noteIndex)
+		end
+	end
+end
+
 local function setEditCursorTo(arg)
 
 	local cursorPosition = reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), arg)
@@ -1317,6 +1248,7 @@ end
 function changeSelectedNotesToScaleChords(chordNotesArray)
 
 	local noteStartingPositions = getNoteStartingPositions()
+	deleteSelectedNotes()
 	
 	for i = 1, #noteStartingPositions do
 		setEditCursorTo(noteStartingPositions[i])
@@ -1327,6 +1259,7 @@ end
 function changeSelectedNotesToScaleNotes(noteValue)
 
 	local noteStartingPositions = getNoteStartingPositions()
+	deleteSelectedNotes()
 
 	for i = 1, #noteStartingPositions do
 		setEditCursorTo(noteStartingPositions[i])
@@ -1561,27 +1494,17 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 local function transposeSelectedNotes(numberOfSemitones)
 
   local numberOfNotes = getNumberOfNotes()
-  local midiNotes = {}
 
-  for noteIndex = 0, numberOfNotes-1 do
+  for noteIndex = numberOfNotes-1, 0, -1 do
 
     local _, noteIsSelected, noteIsMuted, noteStartPositionPPQ, noteEndPositionPPQ, channel, pitch, velocity = reaper.MIDI_GetNote(activeTake(), noteIndex)
-
+  
     if noteIsSelected then
-      table.insert(midiNotes, MidiNote:new(noteIsSelected, noteIsMuted, noteStartPositionPPQ, noteEndPositionPPQ, channel, pitch, velocity))
+      deleteNote(noteIndex)
+      local noSort = false
+      reaper.MIDI_InsertNote(activeTake(), noteIsSelected, noteIsMuted, noteStartPositionPPQ, noteEndPositionPPQ, channel, pitch+numberOfSemitones, velocity, noSort)
     end
   end
-
-  deleteSelectedNotes()
-
-  for i = 1, #midiNotes do
-
-    local midiNote = midiNotes[i]
-    local noSort = true
-    reaper.MIDI_InsertNote(activeTake(), midiNote.noteIsSelected, midiNote.noteIsMuted, midiNote.noteStartPositionPPQ, midiNote.noteEndPositionPPQ, midiNote.channel, midiNote.pitch+numberOfSemitones, midiNote.velocity, noSort)
-  end
-
-  reaper.MIDI_Sort(activeTake())
 end
 
 function transposeSelectedNotesUpOneOctave()
@@ -1850,19 +1773,7 @@ end
 
 ----
 
-local function scaleIsPentatonic()
-
-	local scaleType = getScaleType()
-	local scaleTypeName = string.lower(scales[scaleType].name)
-	return string.match(scaleTypeName, "pentatonic")
-end
-
-
 function scaleChordAction(scaleNoteIndex)
-
-	if scaleIsPentatonic() and scaleNoteIndex > 5 then
-		return
-	end 
 
 	setSelectedScaleNote(scaleNoteIndex)
 
@@ -1877,10 +1788,6 @@ end
 
 function scaleNoteAction(scaleNoteIndex)
 
-	if scaleIsPentatonic() and scaleNoteIndex > 5 then
-		return
-	end 
-
 	setSelectedScaleNote(scaleNoteIndex)
 	local actionDescription = "scale note " .. scaleNoteIndex
 	playOrInsertScaleNote(0, actionDescription)
@@ -1889,10 +1796,6 @@ end
 --
 
 function lowerScaleNoteAction(scaleNoteIndex)
-
-	if scaleIsPentatonic() and scaleNoteIndex > 5 then
-		return
-	end 
 
   if getOctave() <= getOctaveMin() then
     return
@@ -1906,10 +1809,6 @@ end
 --
 
 function higherScaleNoteAction(scaleNoteIndex)
-
-	if scaleIsPentatonic() and scaleNoteIndex > 5 then
-		return
-	end 
 
   if getOctave() >= getOctaveMax() then
     return
