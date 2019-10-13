@@ -259,7 +259,19 @@ end
 
 ----
 
+local function scaleIsPentatonic()
+
+	local scaleType = getScaleType()
+	local scaleTypeName = string.lower(scales[scaleType].name)
+	return string.match(scaleTypeName, "pentatonic")
+end
+
+
 function scaleChordAction(scaleNoteIndex)
+
+	if scaleIsPentatonic() and scaleNoteIndex > 5 then
+		return
+	end 
 
 	setSelectedScaleNote(scaleNoteIndex)
 
@@ -274,6 +286,10 @@ end
 
 function scaleNoteAction(scaleNoteIndex)
 
+	if scaleIsPentatonic() and scaleNoteIndex > 5 then
+		return
+	end 
+
 	setSelectedScaleNote(scaleNoteIndex)
 	local actionDescription = "scale note " .. scaleNoteIndex
 	playOrInsertScaleNote(0, actionDescription)
@@ -282,6 +298,10 @@ end
 --
 
 function lowerScaleNoteAction(scaleNoteIndex)
+
+	if scaleIsPentatonic() and scaleNoteIndex > 5 then
+		return
+	end 
 
   if getOctave() <= getOctaveMin() then
     return
@@ -295,6 +315,10 @@ end
 --
 
 function higherScaleNoteAction(scaleNoteIndex)
+
+	if scaleIsPentatonic() and scaleNoteIndex > 5 then
+		return
+	end 
 
   if getOctave() >= getOctaveMax() then
     return
