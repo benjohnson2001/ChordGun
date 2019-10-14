@@ -358,9 +358,9 @@ function previewLowerScaleNoteAction(scaleNoteIndex)
 		return
 	end
 
-  if getOctave() <= getOctaveMin() then
-    return
-  end
+	if getOctave() <= getOctaveMin() then
+		return
+	end
 
 	setSelectedScaleNote(scaleNoteIndex)
 	previewScaleNote(-1)
@@ -372,9 +372,9 @@ function previewHigherScaleNoteAction(scaleNoteIndex)
 		return
 	end
 
-  if getOctave() >= getOctaveMax() then
-    return
-  end
+	if getOctave() >= getOctaveMax() then
+		return
+	end
 
 	setSelectedScaleNote(scaleNoteIndex)
 	previewScaleNote(1)
