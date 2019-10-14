@@ -12,31 +12,64 @@ function handleInput()
 		stopAllNotesFromPlaying()
 	end
 
+	--
+
 	if inputCharacter == inputCharacters["1"] then
-		scaleChordAction(1)
+		previewScaleChordAction(1)
 	end
 
 	if inputCharacter == inputCharacters["2"] then
-		scaleChordAction(2)
+		previewScaleChordAction(2)
 	end
 
 	if inputCharacter == inputCharacters["3"] then
-		scaleChordAction(3)
+		previewScaleChordAction(3)
 	end
 
 	if inputCharacter == inputCharacters["4"] then
-		scaleChordAction(4)
+		previewScaleChordAction(4)
 	end
 
 	if inputCharacter == inputCharacters["5"] then
-		scaleChordAction(5)
+		previewScaleChordAction(5)
 	end
 
 	if inputCharacter == inputCharacters["6"] then
-		scaleChordAction(6)
+		previewScaleChordAction(6)
 	end
 
 	if inputCharacter == inputCharacters["7"] then
+		previewScaleChordAction(7)
+	end
+
+	--
+
+
+	if inputCharacter == inputCharacters["!"] then
+		scaleChordAction(1)
+	end
+
+	if inputCharacter == inputCharacters["@"] then
+		scaleChordAction(2)
+	end
+
+	if inputCharacter == inputCharacters["#"] then
+		scaleChordAction(3)
+	end
+
+	if inputCharacter == inputCharacters["$"] then
+		scaleChordAction(4)
+	end
+
+	if inputCharacter == inputCharacters["%"] then
+		scaleChordAction(5)
+	end
+
+	if inputCharacter == inputCharacters["^"] then
+		scaleChordAction(6)
+	end
+
+	if inputCharacter == inputCharacters["&"] then
 		scaleChordAction(7)
 	end
 
@@ -44,90 +77,183 @@ function handleInput()
 
 
 	if inputCharacter == inputCharacters["q"] then
-		higherScaleNoteAction(1)
+		previewHigherScaleNoteAction(1)
 	end
 
 	if inputCharacter == inputCharacters["w"] then
-		higherScaleNoteAction(2)
+		previewHigherScaleNoteAction(2)
 	end
 
 	if inputCharacter == inputCharacters["e"] then
-		higherScaleNoteAction(3)
+		previewHigherScaleNoteAction(3)
 	end
 
 	if inputCharacter == inputCharacters["r"] then
-		higherScaleNoteAction(4)
+		previewHigherScaleNoteAction(4)
 	end
 
 	if inputCharacter == inputCharacters["t"] then
-		higherScaleNoteAction(5)
+		previewHigherScaleNoteAction(5)
 	end
 
 	if inputCharacter == inputCharacters["y"] then
-		higherScaleNoteAction(6)
+		previewHigherScaleNoteAction(6)
 	end
 
 	if inputCharacter == inputCharacters["u"] then
-		higherScaleNoteAction(7)
+		previewHigherScaleNoteAction(7)
 	end
 
 	--
 
 	if inputCharacter == inputCharacters["a"] then
-		scaleNoteAction(1)
+		previewScaleNoteAction(1)
 	end
 
 	if inputCharacter == inputCharacters["s"] then
-		scaleNoteAction(2)
+		previewScaleNoteAction(2)
 	end
 
 	if inputCharacter == inputCharacters["d"] then
-		scaleNoteAction(3)
+		previewScaleNoteAction(3)
 	end
 
 	if inputCharacter == inputCharacters["f"] then
-		scaleNoteAction(4)
+		previewScaleNoteAction(4)
 	end
 
 	if inputCharacter == inputCharacters["g"] then
-		scaleNoteAction(5)
+		previewScaleNoteAction(5)
 	end
 
 	if inputCharacter == inputCharacters["h"] then
-		scaleNoteAction(6)
+		previewScaleNoteAction(6)
 	end
 
 	if inputCharacter == inputCharacters["j"] then
-		scaleNoteAction(7)
+		previewScaleNoteAction(7)
 	end
 
 	--
 
 	if inputCharacter == inputCharacters["z"] then
-		lowerScaleNoteAction(1)
+		previewLowerScaleNoteAction(1)
 	end
 
 	if inputCharacter == inputCharacters["x"] then
-		lowerScaleNoteAction(2)
+		previewLowerScaleNoteAction(2)
 	end
 
 	if inputCharacter == inputCharacters["c"] then
-		lowerScaleNoteAction(3)
+		previewLowerScaleNoteAction(3)
 	end
 
 	if inputCharacter == inputCharacters["v"] then
-		lowerScaleNoteAction(4)
+		previewLowerScaleNoteAction(4)
 	end
 
 	if inputCharacter == inputCharacters["b"] then
-		lowerScaleNoteAction(5)
+		previewLowerScaleNoteAction(5)
 	end
 
 	if inputCharacter == inputCharacters["n"] then
-		lowerScaleNoteAction(6)
+		previewLowerScaleNoteAction(6)
 	end
 
 	if inputCharacter == inputCharacters["m"] then
+		previewLowerScaleNoteAction(7)
+	end
+
+
+
+	--
+
+
+	if inputCharacter == inputCharacters["Q"] then
+		higherScaleNoteAction(1)
+	end
+
+	if inputCharacter == inputCharacters["W"] then
+		higherScaleNoteAction(2)
+	end
+
+	if inputCharacter == inputCharacters["E"] then
+		higherScaleNoteAction(3)
+	end
+
+	if inputCharacter == inputCharacters["R"] then
+		higherScaleNoteAction(4)
+	end
+
+	if inputCharacter == inputCharacters["T"] then
+		higherScaleNoteAction(5)
+	end
+
+	if inputCharacter == inputCharacters["Y"] then
+		higherScaleNoteAction(6)
+	end
+
+	if inputCharacter == inputCharacters["U"] then
+		higherScaleNoteAction(7)
+	end
+
+	--
+
+	if inputCharacter == inputCharacters["A"] then
+		scaleNoteAction(1)
+	end
+
+	if inputCharacter == inputCharacters["S"] then
+		scaleNoteAction(2)
+	end
+
+	if inputCharacter == inputCharacters["D"] then
+		scaleNoteAction(3)
+	end
+
+	if inputCharacter == inputCharacters["F"] then
+		scaleNoteAction(4)
+	end
+
+	if inputCharacter == inputCharacters["G"] then
+		scaleNoteAction(5)
+	end
+
+	if inputCharacter == inputCharacters["H"] then
+		scaleNoteAction(6)
+	end
+
+	if inputCharacter == inputCharacters["J"] then
+		scaleNoteAction(7)
+	end
+
+	--
+
+	if inputCharacter == inputCharacters["Z"] then
+		lowerScaleNoteAction(1)
+	end
+
+	if inputCharacter == inputCharacters["X"] then
+		lowerScaleNoteAction(2)
+	end
+
+	if inputCharacter == inputCharacters["C"] then
+		lowerScaleNoteAction(3)
+	end
+
+	if inputCharacter == inputCharacters["V"] then
+		lowerScaleNoteAction(4)
+	end
+
+	if inputCharacter == inputCharacters["B"] then
+		lowerScaleNoteAction(5)
+	end
+
+	if inputCharacter == inputCharacters["N"] then
+		lowerScaleNoteAction(6)
+	end
+
+	if inputCharacter == inputCharacters["M"] then
 		lowerScaleNoteAction(7)
 	end
 

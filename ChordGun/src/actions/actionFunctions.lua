@@ -271,7 +271,7 @@ function scaleChordAction(scaleNoteIndex)
 
 	if scaleIsPentatonic() and scaleNoteIndex > 5 then
 		return
-	end 
+	end
 
 	setSelectedScaleNote(scaleNoteIndex)
 
@@ -282,13 +282,23 @@ function scaleChordAction(scaleNoteIndex)
 	playOrInsertScaleChord(actionDescription)
 end
 
+function previewScaleChordAction(scaleNoteIndex)
+
+	if scaleIsPentatonic() and scaleNoteIndex > 5 then
+		return
+	end
+
+	setSelectedScaleNote(scaleNoteIndex)
+	previewScaleChord()
+end
+
 --
 
 function scaleNoteAction(scaleNoteIndex)
 
 	if scaleIsPentatonic() and scaleNoteIndex > 5 then
 		return
-	end 
+	end
 
 	setSelectedScaleNote(scaleNoteIndex)
 	local actionDescription = "scale note " .. scaleNoteIndex
@@ -301,7 +311,7 @@ function lowerScaleNoteAction(scaleNoteIndex)
 
 	if scaleIsPentatonic() and scaleNoteIndex > 5 then
 		return
-	end 
+	end
 
   if getOctave() <= getOctaveMin() then
     return
@@ -318,7 +328,7 @@ function higherScaleNoteAction(scaleNoteIndex)
 
 	if scaleIsPentatonic() and scaleNoteIndex > 5 then
 		return
-	end 
+	end
 
   if getOctave() >= getOctaveMax() then
     return
@@ -327,4 +337,45 @@ function higherScaleNoteAction(scaleNoteIndex)
 	setSelectedScaleNote(scaleNoteIndex)
 	local actionDescription = "higher scale note " .. scaleNoteIndex
 	playOrInsertScaleNote(1, actionDescription)
+end
+
+
+--
+
+function previewScaleNoteAction(scaleNoteIndex)
+
+	if scaleIsPentatonic() and scaleNoteIndex > 5 then
+		return
+	end
+
+	setSelectedScaleNote(scaleNoteIndex)
+	previewScaleNote(0)
+end
+
+function previewLowerScaleNoteAction(scaleNoteIndex)
+
+	if scaleIsPentatonic() and scaleNoteIndex > 5 then
+		return
+	end
+
+  if getOctave() <= getOctaveMin() then
+    return
+  end
+
+	setSelectedScaleNote(scaleNoteIndex)
+	previewScaleNote(-1)
+end
+
+function previewHigherScaleNoteAction(scaleNoteIndex)
+
+	if scaleIsPentatonic() and scaleNoteIndex > 5 then
+		return
+	end
+
+  if getOctave() >= getOctaveMax() then
+    return
+  end
+
+	setSelectedScaleNote(scaleNoteIndex)
+	previewScaleNote(1)
 end
