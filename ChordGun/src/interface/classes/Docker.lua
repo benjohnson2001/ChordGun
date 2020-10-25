@@ -16,8 +16,8 @@ end
 
 local function dockWindow()
 
-  local windowAtBottom = 0x0201
-  gfx.dock(windowAtBottom)
+  local windowAtRight = 0x0201
+  gfx.dock(windowAtRight)
   guiShouldBeUpdated = true
 end
 

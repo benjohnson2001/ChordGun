@@ -23,3 +23,4 @@ defaultScaleNoteNames = {'C', 'D', 'E', 'F', 'G', 'A', 'B'}
 defaultScaleDegreeHeaders = {'I', 'ii', 'iii', 'IV', 'V', 'vi', 'viio'}
 
 defaultNotesThatArePlaying = {}
+defaultDockState = 0

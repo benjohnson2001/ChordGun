@@ -77,7 +77,7 @@ end
 function Interface:addMainWindow()
 
 	gfx.clear = reaper.ColorToNative(36, 36, 36)
-	local dockState = gfx.dock(-1)
+	local dockState = getDockState()
 	gfx.init(self.name, self.width, self.height, dockState, self.x, self.y)
 end
 

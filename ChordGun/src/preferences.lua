@@ -257,9 +257,9 @@ end
 --
 
 function getDockState()
-  return getTableValue(dockStateKey, defaultNotesThatArePlaying)
+  return getValue(dockStateKey, defaultDockState)
 end
 
 function setDockState(arg)
-  setTableValue(dockStateKey, arg)
+  setValue(dockStateKey, arg)
 end
