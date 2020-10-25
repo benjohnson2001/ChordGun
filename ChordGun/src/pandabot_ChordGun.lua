@@ -28,9 +28,3 @@ local function main()
 end
 
 main()
-
-local function saveDockState()
-  setDockState(gfx.dock(-1))
-end
-
-reaper.atexit(saveDockState)

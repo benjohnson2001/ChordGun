@@ -17,13 +17,8 @@ end
 local function dockWindow()
 
   local dockState = getDockState()
-
-  if tonumber(dockState) == 0 then
-    local windowAtRight = 0x0201
-    gfx.dock(windowAtRight)
-  else
-    gfx.dock(dockState)
-  end
+  gfx.dock(dockState)
+  setWindowShouldBeDocked(true)
 
   guiShouldBeUpdated = true
 end
@@ -43,7 +38,7 @@ end
 
 local function undockWindow()
 
-  setDockState(gfx.dock(-1))
+  setWindowShouldBeDocked(false)
   gfx.dock(0)
   guiShouldBeUpdated = true
 end

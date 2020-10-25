@@ -77,7 +77,13 @@ end
 function Interface:addMainWindow()
 
 	gfx.clear = reaper.ColorToNative(36, 36, 36)
-	local dockState = getDockState()
+
+	local dockState = 0
+
+  if windowShouldBeDocked() then
+    dockState = getDockState()
+  end
+  
 	gfx.init(self.name, self.width, self.height, dockState, self.x, self.y)
 end
 
@@ -166,6 +172,10 @@ function Interface:update()
 		self:restartGui()
 		guiShouldBeUpdated = false
 	end
+
+  if windowIsDocked() and (getDockState() ~= gfx.dock(-1)) then
+    setDockState(gfx.dock(-1))
+  end
 end
 
 require(workingDirectory .. "/interface/frames/InterfaceTopFrame")

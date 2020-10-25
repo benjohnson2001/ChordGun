@@ -17,6 +17,7 @@ local scaleNoteNamesKey = "scaleNoteNames"
 local scaleDegreeHeadersKey = "scaleDegreeHeaders"
 local notesThatArePlayingKey = "notesThatArePlaying"
 local dockStateKey = "dockState"
+local windowShouldBeDockedKey = "shouldBeDocked"
 
 --
 
@@ -262,4 +263,12 @@ end
 
 function setDockState(arg)
   setValue(dockStateKey, arg)
+end
+
+function windowShouldBeDocked()
+  return getValue(windowShouldBeDockedKey, defaultWindowShouldBeDocked) == tostring(true)
+end
+
+function setWindowShouldBeDocked(arg)
+  setValue(windowShouldBeDockedKey, tostring(arg))
 end
