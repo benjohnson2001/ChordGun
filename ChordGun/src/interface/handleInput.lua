@@ -7,6 +7,10 @@ require(workingDirectory .. "/inputCharacters")
 function handleInput()
 
 	inputCharacter = gfx.getchar()
+	
+	if inputCharacter == inputCharacters["ESC"] then
+		gfx.quit()
+	end
 
 	if inputCharacter == inputCharacters["0"] then
 		stopAllNotesFromPlaying()

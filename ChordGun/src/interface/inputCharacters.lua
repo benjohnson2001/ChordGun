@@ -78,3 +78,5 @@ inputCharacters[","] = 44
 inputCharacters["."] = 46
 inputCharacters["<"] = 60
 inputCharacters[">"] = 62
+
+inputCharacters["ESC"] = 27
