@@ -16,11 +16,11 @@ local function playScaleNote(noteValue)
 end
 
 
-function insertScaleNote(noteValue, keepNotesSelected)
+function insertScaleNote(noteValue, keepNotesSelected, noteEndPosition)
 
-	deleteExistingNotesInNextInsertionTimePeriod()
-	insertMidiNote(noteValue, keepNotesSelected)
-	moveCursor()
+	deleteExistingNotesInNextInsertionTimePeriod(keepNotesSelected, noteEndPosition)
+	insertMidiNote(noteValue, keepNotesSelected, noteEndPosition)
+	moveCursor(keepNotesSelected, noteEndPosition)
 end
 
 function previewScaleNote(octaveAdjustment)

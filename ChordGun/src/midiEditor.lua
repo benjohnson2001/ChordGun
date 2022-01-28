@@ -112,42 +112,89 @@ local function loopIsActive()
   end
 end
 
-function moveCursor()
+function moveCursor(keepNotesSelected, noteEndPosition)
 
-  if loopIsActive() and loopEndPosition() < mediaItemEndPosition() then
+  if keepNotesSelected then
 
-    if cursorPosition() + noteLength() >= loopEndPosition() - tolerance then
+    local noteEndPositionInProjTime = reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), noteEndPosition)
+    local noteLengthOfSelectedNote = noteEndPositionInProjTime-cursorPosition()
 
-      if loopStartPosition() > mediaItemStartPosition() then
-        setEditCursorPosition(loopStartPosition())
+    if loopIsActive() and loopEndPosition() < mediaItemEndPosition() then
+
+      if cursorPosition() + noteLengthOfSelectedNote >= loopEndPosition() - tolerance then
+
+        if loopStartPosition() > mediaItemStartPosition() then
+          setEditCursorPosition(loopStartPosition())
+        else
+          setEditCursorPosition(mediaItemStartPosition())
+        end
+
       else
-        setEditCursorPosition(mediaItemStartPosition())
+        
+        moveEditCursorPosition(noteLengthOfSelectedNote)  
       end
 
-    else
-      moveEditCursorPosition(noteLength())
-    end
+    elseif loopIsActive() and mediaItemEndPosition() <= loopEndPosition() then 
 
-  elseif loopIsActive() and mediaItemEndPosition() <= loopEndPosition() then 
+      if cursorPosition() + noteLengthOfSelectedNote >= mediaItemEndPosition() - tolerance then
 
-    if cursorPosition() + noteLength() >= mediaItemEndPosition() - tolerance then
+        if loopStartPosition() > mediaItemStartPosition() then
+          setEditCursorPosition(loopStartPosition())
+        else
+          setEditCursorPosition(mediaItemStartPosition())
+        end
 
-      if loopStartPosition() > mediaItemStartPosition() then
-        setEditCursorPosition(loopStartPosition())
       else
-        setEditCursorPosition(mediaItemStartPosition())
+      
+        moveEditCursorPosition(noteLengthOfSelectedNote)
       end
 
-    else
-      moveEditCursorPosition(noteLength())
-    end
-
-  elseif cursorPosition() + noteLength() >= mediaItemEndPosition() - tolerance then
+    elseif cursorPosition() + noteLengthOfSelectedNote >= mediaItemEndPosition() - tolerance then
       setEditCursorPosition(mediaItemStartPosition())
+    else
+
+      moveEditCursorPosition(noteLengthOfSelectedNote)
+    end
+
   else
 
-    moveEditCursorPosition(noteLength())
+    if loopIsActive() and loopEndPosition() < mediaItemEndPosition() then
+
+      if cursorPosition() + noteLength() >= loopEndPosition() - tolerance then
+
+        if loopStartPosition() > mediaItemStartPosition() then
+          setEditCursorPosition(loopStartPosition())
+        else
+          setEditCursorPosition(mediaItemStartPosition())
+        end
+
+      else
+        moveEditCursorPosition(noteLength())
+      end
+
+    elseif loopIsActive() and mediaItemEndPosition() <= loopEndPosition() then 
+
+      if cursorPosition() + noteLength() >= mediaItemEndPosition() - tolerance then
+
+        if loopStartPosition() > mediaItemStartPosition() then
+          setEditCursorPosition(loopStartPosition())
+        else
+          setEditCursorPosition(mediaItemStartPosition())
+        end
+
+      else
+        moveEditCursorPosition(noteLength())
+      end
+
+    elseif cursorPosition() + noteLength() >= mediaItemEndPosition() - tolerance then
+        setEditCursorPosition(mediaItemStartPosition())
+    else
+
+      moveEditCursorPosition(noteLength())
+    end
+
   end
+
 end
 
 --
@@ -275,10 +322,17 @@ end
 
 --
 
-function deleteExistingNotesInNextInsertionTimePeriod()
+function deleteExistingNotesInNextInsertionTimePeriod(keepNotesSelected, noteEndPosition)
 
   local insertionStartTime = cursorPosition()
-  local insertionEndTime = insertionStartTime + noteLength()
+
+  local insertionEndTime = nil
+  
+  if keepNotesSelected then
+    insertionEndTime = reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), noteEndPosition)
+  else
+    insertionEndTime = insertionStartTime + noteLength()
+  end
 
   local numberOfNotes = getNumberOfNotes()
 

@@ -28,15 +28,15 @@ function previewScaleChord()
   updateChordText(root, chord, chordNotesArray)
 end
 
-function insertScaleChord(chordNotesArray, keepNotesSelected)
+function insertScaleChord(chordNotesArray, keepNotesSelected, noteEndPosition)
 
-  deleteExistingNotesInNextInsertionTimePeriod()
+  deleteExistingNotesInNextInsertionTimePeriod(keepNotesSelected, noteEndPosition)
 
   for note = 1, #chordNotesArray do
-    insertMidiNote(chordNotesArray[note], keepNotesSelected)
+    insertMidiNote(chordNotesArray[note], keepNotesSelected, noteEndPosition)
   end
 
-  moveCursor()
+  moveCursor(keepNotesSelected, noteEndPosition)
 end
 
 function playOrInsertScaleChord(actionDescription)

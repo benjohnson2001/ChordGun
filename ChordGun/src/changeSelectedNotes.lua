@@ -2,11 +2,48 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/midiEditor")
 
-local function getNoteStartingPositions()
+NotePosition = {}
+NotePosition.__index = NotePosition
+
+function NotePosition:new(startPosition, endPosition)
+  local self = {}
+  setmetatable(self, NotePosition)
+
+  self.startPosition = startPosition
+  self.endPosition = endPosition
+
+  return self
+end
+
+local function noteStartPositionDoesNotExist(notePositions, startPositionArg)
+
+	for index, notePosition in pairs(notePositions) do
+
+		if notePosition.startPosition == startPositionArg then
+			return false
+		end
+	end
+
+	return true
+end
+
+local function updateNoteEndPositionToBeTheLongerValue(notePositions, startPositionArg, endPositionArg)
+
+	for index, notePosition in pairs(notePositions) do
+
+		if notePosition.startPosition == startPositionArg then
+
+			if endPositionArg > notePosition.endPosition then
+				notePosition.endPosition = endPositionArg
+			end
+		end
+	end
+end
+
+local function getNotePositions()
 
 	local numberOfNotes = getNumberOfNotes()
-	local previousNoteStartPositionPPQ = -1
-	local noteStartingPositions = {}
+	local notePositions = {}
 
 	for noteIndex = 0, numberOfNotes-1 do
 
@@ -14,15 +51,15 @@ local function getNoteStartingPositions()
 	
 		if noteIsSelected then
 
-			if noteStartPositionPPQ ~= previousNoteStartPositionPPQ then
-				table.insert(noteStartingPositions, noteStartPositionPPQ)
+			if noteStartPositionDoesNotExist(notePositions, noteStartPositionPPQ) then
+				table.insert(notePositions, NotePosition:new(noteStartPositionPPQ, noteEndPositionPPQ))
+			else
+				updateNoteEndPositionToBeTheLongerValue(notePositions, noteStartPositionPPQ, noteEndPositionPPQ)
 			end
-
-			previousNoteStartPositionPPQ = noteStartPositionPPQ
 		end
 	end
 
-	return noteStartingPositions
+	return notePositions
 end
 
 local function deleteSelectedNotes()
@@ -47,22 +84,22 @@ end
 
 function changeSelectedNotesToScaleChords(chordNotesArray)
 
-	local noteStartingPositions = getNoteStartingPositions()
+	local notePositions = getNotePositions()
 	deleteSelectedNotes()
 	
-	for i = 1, #noteStartingPositions do
-		setEditCursorTo(noteStartingPositions[i])
-		insertScaleChord(chordNotesArray, true)
+	for i = 1, #notePositions do
+		setEditCursorTo(notePositions[i].startPosition)
+		insertScaleChord(chordNotesArray, true, notePositions[i].endPosition)
 	end
 end
 
 function changeSelectedNotesToScaleNotes(noteValue)
 
-	local noteStartingPositions = getNoteStartingPositions()
+	local notePositions = getNotePositions()
 	deleteSelectedNotes()
 
-	for i = 1, #noteStartingPositions do
-		setEditCursorTo(noteStartingPositions[i])
-		insertScaleNote(noteValue, true)
+	for i = 1, #notePositions do
+		setEditCursorTo(notePositions[i].startPosition)
+		insertScaleNote(noteValue, true, notePositions[i].endPosition)
 	end
 end

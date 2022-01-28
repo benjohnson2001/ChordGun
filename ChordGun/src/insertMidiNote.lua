@@ -2,11 +2,18 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/midiEditor")
 
-function insertMidiNote(note, keepNotesSelected)
+function insertMidiNote(note, keepNotesSelected, noteEndPosition)
 
 	local noteIsMuted = false
 	local startPosition = getCursorPositionPPQ()
-	local endPosition = getMidiEndPositionPPQ()
+
+	local endPosition = nil
+	
+	if keepNotesSelected then
+		endPosition = noteEndPosition
+	else
+		endPosition = getMidiEndPositionPPQ()
+	end
 
 	local channel = getCurrentNoteChannel()
 	local velocity = getCurrentVelocity()

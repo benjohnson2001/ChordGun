@@ -103,6 +103,8 @@ defaultScaleNoteNames = {'C', 'D', 'E', 'F', 'G', 'A', 'B'}
 defaultScaleDegreeHeaders = {'I', 'ii', 'iii', 'IV', 'V', 'vi', 'viio'}
 
 defaultNotesThatArePlaying = {}
+defaultDockState = 0x0201
+defaultWindowShouldBeDocked = tostring(false)
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 local activeProjectIndex = 0
@@ -120,6 +122,7 @@ local scaleNoteNamesKey = "scaleNoteNames"
 local scaleDegreeHeadersKey = "scaleDegreeHeaders"
 local notesThatArePlayingKey = "notesThatArePlaying"
 local dockStateKey = "dockState"
+local windowShouldBeDockedKey = "shouldBeDocked"
 
 --
 
@@ -360,11 +363,19 @@ end
 --
 
 function getDockState()
-  return getTableValue(dockStateKey, defaultNotesThatArePlaying)
+  return getValue(dockStateKey, defaultDockState)
 end
 
 function setDockState(arg)
-  setTableValue(dockStateKey, arg)
+  setValue(dockStateKey, arg)
+end
+
+function windowShouldBeDocked()
+  return getValue(windowShouldBeDockedKey, defaultWindowShouldBeDocked) == tostring(true)
+end
+
+function setWindowShouldBeDocked(arg)
+  setValue(windowShouldBeDockedKey, tostring(arg))
 end
 
 function mouseIsHoveringOver(element)
@@ -852,42 +863,89 @@ local function loopIsActive()
   end
 end
 
-function moveCursor()
+function moveCursor(keepNotesSelected, noteEndPosition)
 
-  if loopIsActive() and loopEndPosition() < mediaItemEndPosition() then
+  if keepNotesSelected then
 
-    if cursorPosition() + noteLength() >= loopEndPosition() - tolerance then
+    local noteEndPositionInProjTime = reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), noteEndPosition)
+    local noteLengthOfSelectedNote = noteEndPositionInProjTime-cursorPosition()
 
-      if loopStartPosition() > mediaItemStartPosition() then
-        setEditCursorPosition(loopStartPosition())
+    if loopIsActive() and loopEndPosition() < mediaItemEndPosition() then
+
+      if cursorPosition() + noteLengthOfSelectedNote >= loopEndPosition() - tolerance then
+
+        if loopStartPosition() > mediaItemStartPosition() then
+          setEditCursorPosition(loopStartPosition())
+        else
+          setEditCursorPosition(mediaItemStartPosition())
+        end
+
       else
-        setEditCursorPosition(mediaItemStartPosition())
+        
+        moveEditCursorPosition(noteLengthOfSelectedNote)  
       end
 
-    else
-      moveEditCursorPosition(noteLength())
-    end
+    elseif loopIsActive() and mediaItemEndPosition() <= loopEndPosition() then 
 
-  elseif loopIsActive() and mediaItemEndPosition() <= loopEndPosition() then 
+      if cursorPosition() + noteLengthOfSelectedNote >= mediaItemEndPosition() - tolerance then
 
-    if cursorPosition() + noteLength() >= mediaItemEndPosition() - tolerance then
+        if loopStartPosition() > mediaItemStartPosition() then
+          setEditCursorPosition(loopStartPosition())
+        else
+          setEditCursorPosition(mediaItemStartPosition())
+        end
 
-      if loopStartPosition() > mediaItemStartPosition() then
-        setEditCursorPosition(loopStartPosition())
       else
-        setEditCursorPosition(mediaItemStartPosition())
+      
+        moveEditCursorPosition(noteLengthOfSelectedNote)
       end
 
-    else
-      moveEditCursorPosition(noteLength())
-    end
-
-  elseif cursorPosition() + noteLength() >= mediaItemEndPosition() - tolerance then
+    elseif cursorPosition() + noteLengthOfSelectedNote >= mediaItemEndPosition() - tolerance then
       setEditCursorPosition(mediaItemStartPosition())
+    else
+
+      moveEditCursorPosition(noteLengthOfSelectedNote)
+    end
+
   else
 
-    moveEditCursorPosition(noteLength())
+    if loopIsActive() and loopEndPosition() < mediaItemEndPosition() then
+
+      if cursorPosition() + noteLength() >= loopEndPosition() - tolerance then
+
+        if loopStartPosition() > mediaItemStartPosition() then
+          setEditCursorPosition(loopStartPosition())
+        else
+          setEditCursorPosition(mediaItemStartPosition())
+        end
+
+      else
+        moveEditCursorPosition(noteLength())
+      end
+
+    elseif loopIsActive() and mediaItemEndPosition() <= loopEndPosition() then 
+
+      if cursorPosition() + noteLength() >= mediaItemEndPosition() - tolerance then
+
+        if loopStartPosition() > mediaItemStartPosition() then
+          setEditCursorPosition(loopStartPosition())
+        else
+          setEditCursorPosition(mediaItemStartPosition())
+        end
+
+      else
+        moveEditCursorPosition(noteLength())
+      end
+
+    elseif cursorPosition() + noteLength() >= mediaItemEndPosition() - tolerance then
+        setEditCursorPosition(mediaItemStartPosition())
+    else
+
+      moveEditCursorPosition(noteLength())
+    end
+
   end
+
 end
 
 --
@@ -1015,10 +1073,17 @@ end
 
 --
 
-function deleteExistingNotesInNextInsertionTimePeriod()
+function deleteExistingNotesInNextInsertionTimePeriod(keepNotesSelected, noteEndPosition)
 
   local insertionStartTime = cursorPosition()
-  local insertionEndTime = insertionStartTime + noteLength()
+
+  local insertionEndTime = nil
+  
+  if keepNotesSelected then
+    insertionEndTime = reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), noteEndPosition)
+  else
+    insertionEndTime = insertionStartTime + noteLength()
+  end
 
   local numberOfNotes = getNumberOfNotes()
 
@@ -1126,11 +1191,18 @@ function getChordNotesArray(root, chord, octave)
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
-function insertMidiNote(note, keepNotesSelected)
+function insertMidiNote(note, keepNotesSelected, noteEndPosition)
 
 	local noteIsMuted = false
 	local startPosition = getCursorPositionPPQ()
-	local endPosition = getMidiEndPositionPPQ()
+
+	local endPosition = nil
+	
+	if keepNotesSelected then
+		endPosition = noteEndPosition
+	else
+		endPosition = getMidiEndPositionPPQ()
+	end
 
 	local channel = getCurrentNoteChannel()
 	local velocity = getCurrentVelocity()
@@ -1165,15 +1237,15 @@ function previewScaleChord()
   updateChordText(root, chord, chordNotesArray)
 end
 
-function insertScaleChord(chordNotesArray, keepNotesSelected)
+function insertScaleChord(chordNotesArray, keepNotesSelected, noteEndPosition)
 
-  deleteExistingNotesInNextInsertionTimePeriod()
+  deleteExistingNotesInNextInsertionTimePeriod(keepNotesSelected, noteEndPosition)
 
   for note = 1, #chordNotesArray do
-    insertMidiNote(chordNotesArray[note], keepNotesSelected)
+    insertMidiNote(chordNotesArray[note], keepNotesSelected, noteEndPosition)
   end
 
-  moveCursor()
+  moveCursor(keepNotesSelected, noteEndPosition)
 end
 
 function playOrInsertScaleChord(actionDescription)
@@ -1215,11 +1287,11 @@ local function playScaleNote(noteValue)
 end
 
 
-function insertScaleNote(noteValue, keepNotesSelected)
+function insertScaleNote(noteValue, keepNotesSelected, noteEndPosition)
 
-	deleteExistingNotesInNextInsertionTimePeriod()
-	insertMidiNote(noteValue, keepNotesSelected)
-	moveCursor()
+	deleteExistingNotesInNextInsertionTimePeriod(keepNotesSelected, noteEndPosition)
+	insertMidiNote(noteValue, keepNotesSelected, noteEndPosition)
+	moveCursor(keepNotesSelected, noteEndPosition)
 end
 
 function previewScaleNote(octaveAdjustment)
@@ -1258,11 +1330,48 @@ function playOrInsertScaleNote(octaveAdjustment, actionDescription)
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
-local function getNoteStartingPositions()
+NotePosition = {}
+NotePosition.__index = NotePosition
+
+function NotePosition:new(startPosition, endPosition)
+  local self = {}
+  setmetatable(self, NotePosition)
+
+  self.startPosition = startPosition
+  self.endPosition = endPosition
+
+  return self
+end
+
+local function noteStartPositionDoesNotExist(notePositions, startPositionArg)
+
+	for index, notePosition in pairs(notePositions) do
+
+		if notePosition.startPosition == startPositionArg then
+			return false
+		end
+	end
+
+	return true
+end
+
+local function updateNoteEndPositionToBeTheLongerValue(notePositions, startPositionArg, endPositionArg)
+
+	for index, notePosition in pairs(notePositions) do
+
+		if notePosition.startPosition == startPositionArg then
+
+			if endPositionArg > notePosition.endPosition then
+				notePosition.endPosition = endPositionArg
+			end
+		end
+	end
+end
+
+local function getNotePositions()
 
 	local numberOfNotes = getNumberOfNotes()
-	local previousNoteStartPositionPPQ = -1
-	local noteStartingPositions = {}
+	local notePositions = {}
 
 	for noteIndex = 0, numberOfNotes-1 do
 
@@ -1270,15 +1379,15 @@ local function getNoteStartingPositions()
 	
 		if noteIsSelected then
 
-			if noteStartPositionPPQ ~= previousNoteStartPositionPPQ then
-				table.insert(noteStartingPositions, noteStartPositionPPQ)
+			if noteStartPositionDoesNotExist(notePositions, noteStartPositionPPQ) then
+				table.insert(notePositions, NotePosition:new(noteStartPositionPPQ, noteEndPositionPPQ))
+			else
+				updateNoteEndPositionToBeTheLongerValue(notePositions, noteStartPositionPPQ, noteEndPositionPPQ)
 			end
-
-			previousNoteStartPositionPPQ = noteStartPositionPPQ
 		end
 	end
 
-	return noteStartingPositions
+	return notePositions
 end
 
 local function deleteSelectedNotes()
@@ -1303,23 +1412,23 @@ end
 
 function changeSelectedNotesToScaleChords(chordNotesArray)
 
-	local noteStartingPositions = getNoteStartingPositions()
+	local notePositions = getNotePositions()
 	deleteSelectedNotes()
 	
-	for i = 1, #noteStartingPositions do
-		setEditCursorTo(noteStartingPositions[i])
-		insertScaleChord(chordNotesArray, true)
+	for i = 1, #notePositions do
+		setEditCursorTo(notePositions[i].startPosition)
+		insertScaleChord(chordNotesArray, true, notePositions[i].endPosition)
 	end
 end
 
 function changeSelectedNotesToScaleNotes(noteValue)
 
-	local noteStartingPositions = getNoteStartingPositions()
+	local notePositions = getNotePositions()
 	deleteSelectedNotes()
 
-	for i = 1, #noteStartingPositions do
-		setEditCursorTo(noteStartingPositions[i])
-		insertScaleNote(noteValue, true)
+	for i = 1, #notePositions do
+		setEditCursorTo(notePositions[i].startPosition)
+		insertScaleNote(noteValue, true, notePositions[i].endPosition)
 	end
 end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
