@@ -4220,8 +4220,21 @@ inputCharacters["<"] = 60
 inputCharacters[">"] = 62
 
 inputCharacters["ESC"] = 27
+
+inputCharacters["LEFTARROW"] = 1818584692
+inputCharacters["RIGHTARROW"] = 1919379572
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
+
+local function moveEditCursorLeftByGrid()
+	local commandId = 40047
+	reaper.MIDIEditor_OnCommand(activeMidiEditor(), commandId)
+end
+
+local function moveEditCursorRightByGrid()
+	local commandId = 40048
+	reaper.MIDIEditor_OnCommand(activeMidiEditor(), commandId)
+end
 
 function handleInput()
 
@@ -4229,6 +4242,14 @@ function handleInput()
 	
 	if inputCharacter == inputCharacters["ESC"] then
 		gfx.quit()
+	end
+
+	if inputCharacter == inputCharacters["LEFTARROW"] then
+		moveEditCursorLeftByGrid()
+	end
+
+	if inputCharacter == inputCharacters["RIGHTARROW"] then
+		moveEditCursorRightByGrid()
 	end
 
 	if inputCharacter == inputCharacters["0"] then

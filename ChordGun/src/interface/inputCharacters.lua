@@ -80,3 +80,6 @@ inputCharacters["<"] = 60
 inputCharacters[">"] = 62
 
 inputCharacters["ESC"] = 27
+
+inputCharacters["LEFTARROW"] = 1818584692
+inputCharacters["RIGHTARROW"] = 1919379572

@@ -4,12 +4,30 @@ require(workingDirectory .. "/midiMessages")
 require(workingDirectory .. "/inputCharacters")
 
 
+local function moveEditCursorLeftByGrid()
+	local commandId = 40047
+	reaper.MIDIEditor_OnCommand(activeMidiEditor(), commandId)
+end
+
+local function moveEditCursorRightByGrid()
+	local commandId = 40048
+	reaper.MIDIEditor_OnCommand(activeMidiEditor(), commandId)
+end
+
 function handleInput()
 
 	inputCharacter = gfx.getchar()
 	
 	if inputCharacter == inputCharacters["ESC"] then
 		gfx.quit()
+	end
+
+	if inputCharacter == inputCharacters["LEFTARROW"] then
+		moveEditCursorLeftByGrid()
+	end
+
+	if inputCharacter == inputCharacters["RIGHTARROW"] then
+		moveEditCursorRightByGrid()
 	end
 
 	if inputCharacter == inputCharacters["0"] then
