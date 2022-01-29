@@ -25,3 +25,18 @@ defaultScaleDegreeHeaders = {'I', 'ii', 'iii', 'IV', 'V', 'vi', 'viio'}
 defaultNotesThatArePlaying = {}
 defaultDockState = 0x0201
 defaultWindowShouldBeDocked = tostring(false)
+
+interfaceWidth = 775
+interfaceHeight = 620
+
+function defaultInterfaceXPosition()
+
+  local screenWidth = getScreenWidth()
+  return screenWidth/2 - interfaceWidth/2
+end
+
+function defaultInterfaceYPosition()
+
+  local screenHeight = getScreenHeight()
+  return screenHeight/2 - interfaceHeight/2
+end

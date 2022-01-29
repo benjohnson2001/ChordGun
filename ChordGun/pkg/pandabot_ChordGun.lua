@@ -80,6 +80,97 @@ chords = {
     pattern = '10000010'
   },
 }
+
+function mouseIsHoveringOver(element)
+
+	local x = gfx.mouse_x
+	local y = gfx.mouse_y
+
+	local isInHorizontalRegion = (x >= element.x and x < element.x+element.width)
+	local isInVerticalRegion = (y >= element.y and y < element.y+element.height)
+	return isInHorizontalRegion and isInVerticalRegion
+end
+
+function setPositionAtMouseCursor()
+
+  gfx.x = gfx.mouse_x
+  gfx.y = gfx.mouse_y
+end
+
+function leftMouseButtonIsHeldDown()
+  return gfx.mouse_cap & 1 == 1
+end
+
+function leftMouseButtonIsNotHeldDown()
+  return gfx.mouse_cap & 1 ~= 1
+end
+
+function rightMouseButtonIsHeldDown()
+  return gfx.mouse_cap & 2 == 2
+end
+
+function clearConsoleWindow()
+  reaper.ShowConsoleMsg("")
+end
+
+function print(arg)
+  reaper.ShowConsoleMsg(tostring(arg) .. "\n")
+end
+
+function getScreenWidth()
+	local _, _, screenWidth, _ = reaper.my_getViewport(0, 0, 0, 0, 0, 0, 0, 0, true)
+	return screenWidth
+end
+
+function getScreenHeight()
+	local _, _, _, screenHeight = reaper.my_getViewport(0, 0, 0, 0, 0, 0, 0, 0, true)
+	return screenHeight
+end
+
+function windowIsDocked()
+	return gfx.dock(-1) > 0
+end
+
+function windowIsNotDocked()
+	return not windowIsDocked()
+end
+
+function notesAreSelected()
+
+	local activeMidiEditor = reaper.MIDIEditor_GetActive()
+	local activeTake = reaper.MIDIEditor_GetTake(activeMidiEditor)
+
+	local noteIndex = 0
+	local noteExists = true
+	local noteIsSelected = false
+
+	while noteExists do
+
+		noteExists, noteIsSelected = reaper.MIDI_GetNote(activeTake, noteIndex)
+
+		if noteIsSelected then
+			return true
+		end
+	
+		noteIndex = noteIndex + 1
+	end
+
+	return false
+end
+
+function startUndoBlock()
+	reaper.Undo_BeginBlock()
+end
+
+function endUndoBlock(actionDescription)
+	reaper.Undo_OnStateChange(actionDescription)
+	reaper.Undo_EndBlock(actionDescription, -1)
+end
+
+function emptyFunctionToPreventAutomaticCreationOfUndoPoint()
+end
+
+
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 defaultScaleTonicNoteValue = 1
@@ -105,6 +196,21 @@ defaultScaleDegreeHeaders = {'I', 'ii', 'iii', 'IV', 'V', 'vi', 'viio'}
 defaultNotesThatArePlaying = {}
 defaultDockState = 0x0201
 defaultWindowShouldBeDocked = tostring(false)
+
+interfaceWidth = 775
+interfaceHeight = 620
+
+function defaultInterfaceXPosition()
+
+  local screenWidth = getScreenWidth()
+  return screenWidth/2 - interfaceWidth/2
+end
+
+function defaultInterfaceYPosition()
+
+  local screenHeight = getScreenHeight()
+  return screenHeight/2 - interfaceHeight/2
+end
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 
 local activeProjectIndex = 0
@@ -123,6 +229,8 @@ local scaleDegreeHeadersKey = "scaleDegreeHeaders"
 local notesThatArePlayingKey = "notesThatArePlaying"
 local dockStateKey = "dockState"
 local windowShouldBeDockedKey = "shouldBeDocked"
+local interfaceXPositionKey = "interfaceXPosition"
+local interfaceYPositionKey = "interfaceYPosition"
 
 --
 
@@ -378,96 +486,21 @@ function setWindowShouldBeDocked(arg)
   setValue(windowShouldBeDockedKey, tostring(arg))
 end
 
-function mouseIsHoveringOver(element)
-
-	local x = gfx.mouse_x
-	local y = gfx.mouse_y
-
-	local isInHorizontalRegion = (x >= element.x and x < element.x+element.width)
-	local isInVerticalRegion = (y >= element.y and y < element.y+element.height)
-	return isInHorizontalRegion and isInVerticalRegion
+function getInterfaceXPosition()
+  return getValue(interfaceXPositionKey, defaultInterfaceXPosition())
 end
 
-function setPositionAtMouseCursor()
-
-  gfx.x = gfx.mouse_x
-  gfx.y = gfx.mouse_y
+function setInterfaceXPosition(arg)
+  setValue(interfaceXPositionKey, arg)
 end
 
-function leftMouseButtonIsHeldDown()
-  return gfx.mouse_cap & 1 == 1
+function getInterfaceYPosition()
+  return getValue(interfaceYPositionKey, defaultInterfaceYPosition())
 end
 
-function leftMouseButtonIsNotHeldDown()
-  return gfx.mouse_cap & 1 ~= 1
+function setInterfaceYPosition(arg)
+  setValue(interfaceYPositionKey, arg)
 end
-
-function rightMouseButtonIsHeldDown()
-  return gfx.mouse_cap & 2 == 2
-end
-
-function clearConsoleWindow()
-  reaper.ShowConsoleMsg("")
-end
-
-function print(arg)
-  reaper.ShowConsoleMsg(tostring(arg) .. "\n")
-end
-
-function getScreenWidth()
-	local _, _, screenWidth, _ = reaper.my_getViewport(0, 0, 0, 0, 0, 0, 0, 0, true)
-	return screenWidth
-end
-
-function getScreenHeight()
-	local _, _, _, screenHeight = reaper.my_getViewport(0, 0, 0, 0, 0, 0, 0, 0, true)
-	return screenHeight
-end
-
-function windowIsDocked()
-	return gfx.dock(-1) > 0
-end
-
-function windowIsNotDocked()
-	return not windowIsDocked()
-end
-
-function notesAreSelected()
-
-	local activeMidiEditor = reaper.MIDIEditor_GetActive()
-	local activeTake = reaper.MIDIEditor_GetTake(activeMidiEditor)
-
-	local noteIndex = 0
-	local noteExists = true
-	local noteIsSelected = false
-
-	while noteExists do
-
-		noteExists, noteIsSelected = reaper.MIDI_GetNote(activeTake, noteIndex)
-
-		if noteIsSelected then
-			return true
-		end
-	
-		noteIndex = noteIndex + 1
-	end
-
-	return false
-end
-
-function startUndoBlock()
-	reaper.Undo_BeginBlock()
-end
-
-function endUndoBlock(actionDescription)
-	reaper.Undo_OnStateChange(actionDescription)
-	reaper.Undo_EndBlock(actionDescription, -1)
-end
-
-function emptyFunctionToPreventAutomaticCreationOfUndoPoint()
-end
-
-
 
 Timer = {}
 Timer.__index = Timer
@@ -4615,21 +4648,6 @@ local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 Interface = {}
 Interface.__index = Interface
 
-local interfaceWidth = 775
-local interfaceHeight = 620
-
-local function getInterfaceXPos()
-
-	local screenWidth = getScreenWidth()
-	return screenWidth/2 - interfaceWidth/2
-end
-
-local function getInterfaceYPos()
-
-	local screenHeight = getScreenHeight()
-	return screenHeight/2 - interfaceHeight/2
-end
-
 local dockerXPadding = 0
 local dockerYPadding = 0
 
@@ -4639,8 +4657,8 @@ function Interface:init(name)
   setmetatable(self, Interface)
 
   self.name = name
-  self.x = getInterfaceXPos()
-  self.y = getInterfaceYPos()
+  self.x = getInterfaceXPosition()
+  self.y = getInterfaceYPosition()
   self.width = interfaceWidth
   self.height = interfaceHeight
 
@@ -4776,6 +4794,11 @@ function Interface:update()
   if windowIsDocked() and (getDockState() ~= gfx.dock(-1)) then
     setDockState(gfx.dock(-1))
   end
+
+	local _, xpos, ypos, _, _ = gfx.dock(-1,0,0,0,0)
+	setInterfaceXPosition(xpos)
+	setInterfaceYPosition(ypos)
+
 end
 
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"

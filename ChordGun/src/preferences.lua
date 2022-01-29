@@ -18,6 +18,8 @@ local scaleDegreeHeadersKey = "scaleDegreeHeaders"
 local notesThatArePlayingKey = "notesThatArePlaying"
 local dockStateKey = "dockState"
 local windowShouldBeDockedKey = "shouldBeDocked"
+local interfaceXPositionKey = "interfaceXPosition"
+local interfaceYPositionKey = "interfaceYPosition"
 
 --
 
@@ -271,4 +273,20 @@ end
 
 function setWindowShouldBeDocked(arg)
   setValue(windowShouldBeDockedKey, tostring(arg))
+end
+
+function getInterfaceXPosition()
+  return getValue(interfaceXPositionKey, defaultInterfaceXPosition())
+end
+
+function setInterfaceXPosition(arg)
+  setValue(interfaceXPositionKey, arg)
+end
+
+function getInterfaceYPosition()
+  return getValue(interfaceYPositionKey, defaultInterfaceYPosition())
+end
+
+function setInterfaceYPosition(arg)
+  setValue(interfaceYPositionKey, arg)
 end

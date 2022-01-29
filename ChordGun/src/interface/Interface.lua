@@ -15,21 +15,6 @@ require(workingDirectory .. "/midiMessages")
 Interface = {}
 Interface.__index = Interface
 
-local interfaceWidth = 775
-local interfaceHeight = 620
-
-local function getInterfaceXPos()
-
-	local screenWidth = getScreenWidth()
-	return screenWidth/2 - interfaceWidth/2
-end
-
-local function getInterfaceYPos()
-
-	local screenHeight = getScreenHeight()
-	return screenHeight/2 - interfaceHeight/2
-end
-
 local dockerXPadding = 0
 local dockerYPadding = 0
 
@@ -39,8 +24,8 @@ function Interface:init(name)
   setmetatable(self, Interface)
 
   self.name = name
-  self.x = getInterfaceXPos()
-  self.y = getInterfaceYPos()
+  self.x = getInterfaceXPosition()
+  self.y = getInterfaceYPosition()
   self.width = interfaceWidth
   self.height = interfaceHeight
 
@@ -176,6 +161,11 @@ function Interface:update()
   if windowIsDocked() and (getDockState() ~= gfx.dock(-1)) then
     setDockState(gfx.dock(-1))
   end
+
+	local _, xpos, ypos, _, _ = gfx.dock(-1,0,0,0,0)
+	setInterfaceXPosition(xpos)
+	setInterfaceYPosition(ypos)
+
 end
 
 require(workingDirectory .. "/interface/frames/InterfaceTopFrame")
