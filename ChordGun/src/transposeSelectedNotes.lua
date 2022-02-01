@@ -8,12 +8,12 @@ local function transposeSelectedNotes(numberOfSemitones)
 
   for noteIndex = numberOfNotes-1, 0, -1 do
 
-    local _, noteIsSelected, noteIsMuted, noteStartPositionPPQ, noteEndPositionPPQ, channel, pitch, velocity = reaper.MIDI_GetNote(activeTake(), noteIndex)
+    local _, noteIsSelected, muteState, noteStartPositionPPQ, noteEndPositionPPQ, channel, pitch, velocity = reaper.MIDI_GetNote(activeTake(), noteIndex)
   
     if noteIsSelected then
       deleteNote(noteIndex)
       local noSort = false
-      reaper.MIDI_InsertNote(activeTake(), noteIsSelected, noteIsMuted, noteStartPositionPPQ, noteEndPositionPPQ, channel, pitch+numberOfSemitones, velocity, noSort)
+      reaper.MIDI_InsertNote(activeTake(), noteIsSelected, muteState, noteStartPositionPPQ, noteEndPositionPPQ, channel, pitch+numberOfSemitones, velocity, noSort)
     end
   end
 end

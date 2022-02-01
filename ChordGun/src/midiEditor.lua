@@ -112,11 +112,11 @@ local function loopIsActive()
   end
 end
 
-function moveCursor(keepNotesSelected, noteEndPosition)
+function moveCursor(keepNotesSelected, selectedChord)
 
   if keepNotesSelected then
 
-    local noteEndPositionInProjTime = reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), noteEndPosition)
+    local noteEndPositionInProjTime = reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), selectedChord.longestEndPosition)
     local noteLengthOfSelectedNote = noteEndPositionInProjTime-cursorPosition()
 
     if loopIsActive() and loopEndPosition() < mediaItemEndPosition() then
@@ -322,14 +322,14 @@ end
 
 --
 
-function deleteExistingNotesInNextInsertionTimePeriod(keepNotesSelected, noteEndPosition)
+function deleteExistingNotesInNextInsertionTimePeriod(keepNotesSelected, selectedChord)
 
   local insertionStartTime = cursorPosition()
 
   local insertionEndTime = nil
   
   if keepNotesSelected then
-    insertionEndTime = reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), noteEndPosition)
+    insertionEndTime = reaper.MIDI_GetProjTimeFromPPQPos(activeTake(), selectedChord.longestEndPosition)
   else
     insertionEndTime = insertionStartTime + noteLength()
   end

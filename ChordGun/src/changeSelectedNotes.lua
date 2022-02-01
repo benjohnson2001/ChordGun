@@ -2,24 +2,45 @@
 local workingDirectory = reaper.GetResourcePath() .. "/Scripts/ChordGun/src"
 require(workingDirectory .. "/midiEditor")
 
-NotePosition = {}
-NotePosition.__index = NotePosition
+SelectedNote = {}
+SelectedNote.__index = SelectedNote
 
-function NotePosition:new(startPosition, endPosition)
+function SelectedNote:new(endPosition, velocity, channel, muteState, pitch)
   local self = {}
-  setmetatable(self, NotePosition)
+  setmetatable(self, SelectedNote)
 
-  self.startPosition = startPosition
   self.endPosition = endPosition
+  self.velocity = velocity
+  self.channel = channel
+  self.muteState = muteState
+  self.pitch = pitch
 
   return self
 end
 
-local function noteStartPositionDoesNotExist(notePositions, startPositionArg)
+SelectedChord = {}
+SelectedChord.__index = SelectedChord
 
-	for index, notePosition in pairs(notePositions) do
+function SelectedChord:new(startPosition, endPosition, velocity, channel, muteState, pitch)
+  local self = {}
+  setmetatable(self, SelectedChord)
 
-		if notePosition.startPosition == startPositionArg then
+  self.startPosition = startPosition
+  self.longestEndPosition = endPosition
+
+  self.selectedNotes = {}
+  table.insert(self.selectedNotes, SelectedNote:new(endPosition, velocity, channel, muteState, pitch))
+
+  return self
+end
+
+
+
+local function noteStartPositionDoesNotExist(selectedChords, startPositionArg)
+
+	for index, selectedChord in pairs(selectedChords) do
+
+		if selectedChord.startPosition == startPositionArg then
 			return false
 		end
 	end
@@ -27,39 +48,46 @@ local function noteStartPositionDoesNotExist(notePositions, startPositionArg)
 	return true
 end
 
-local function updateNoteEndPositionToBeTheLongerValue(notePositions, startPositionArg, endPositionArg)
+local function updateSelectedChord(selectedChords, startPositionArg, endPositionArg, velocityArg, channelArg, muteStateArg, pitchArg)
 
-	for index, notePosition in pairs(notePositions) do
+	for index, selectedChord in pairs(selectedChords) do
 
-		if notePosition.startPosition == startPositionArg then
+		if selectedChord.startPosition == startPositionArg then
 
-			if endPositionArg > notePosition.endPosition then
-				notePosition.endPosition = endPositionArg
+			table.insert(selectedChord.selectedNotes, SelectedNote:new(endPositionArg, velocityArg, channelArg, muteStateArg, pitchArg))
+
+			if endPositionArg > selectedChord.longestEndPosition then
+				selectedChord.longestEndPosition = endPositionArg
 			end
+
 		end
 	end
 end
 
-local function getNotePositions()
+local function getSelectedChords()
 
 	local numberOfNotes = getNumberOfNotes()
-	local notePositions = {}
+	local selectedChords = {}
 
 	for noteIndex = 0, numberOfNotes-1 do
 
-		local _, noteIsSelected, noteIsMuted, noteStartPositionPPQ, noteEndPositionPPQ = reaper.MIDI_GetNote(activeTake(), noteIndex)
-	
+		local _, noteIsSelected, muteState, noteStartPositionPPQ, noteEndPositionPPQ, channel, pitch, velocity = reaper.MIDI_GetNote(activeTake(), noteIndex)
+
 		if noteIsSelected then
 
-			if noteStartPositionDoesNotExist(notePositions, noteStartPositionPPQ) then
-				table.insert(notePositions, NotePosition:new(noteStartPositionPPQ, noteEndPositionPPQ))
+			if noteStartPositionDoesNotExist(selectedChords, noteStartPositionPPQ) then
+				table.insert(selectedChords, SelectedChord:new(noteStartPositionPPQ, noteEndPositionPPQ, velocity, channel, muteState, pitch))
 			else
-				updateNoteEndPositionToBeTheLongerValue(notePositions, noteStartPositionPPQ, noteEndPositionPPQ)
+				updateSelectedChord(selectedChords, noteStartPositionPPQ, noteEndPositionPPQ, velocity, channel, muteState, pitch)
 			end
 		end
 	end
 
-	return notePositions
+	for selectedChordIndex = 1, #selectedChords do
+		table.sort(selectedChords[selectedChordIndex].selectedNotes, function(a,b) return a.pitch < b.pitch end)
+	end
+
+	return selectedChords
 end
 
 local function deleteSelectedNotes()
@@ -84,22 +112,22 @@ end
 
 function changeSelectedNotesToScaleChords(chordNotesArray)
 
-	local notePositions = getNotePositions()
+	local selectedChords = getSelectedChords()
 	deleteSelectedNotes()
 	
-	for i = 1, #notePositions do
-		setEditCursorTo(notePositions[i].startPosition)
-		insertScaleChord(chordNotesArray, true, notePositions[i].endPosition)
+	for i = 1, #selectedChords do
+		setEditCursorTo(selectedChords[i].startPosition)
+		insertScaleChord(chordNotesArray, true, selectedChords[i])
 	end
 end
 
 function changeSelectedNotesToScaleNotes(noteValue)
 
-	local notePositions = getNotePositions()
+	local selectedChords = getSelectedChords()
 	deleteSelectedNotes()
 
-	for i = 1, #notePositions do
-		setEditCursorTo(notePositions[i].startPosition)
-		insertScaleNote(noteValue, true, notePositions[i].endPosition)
+	for i = 1, #selectedChords do
+		setEditCursorTo(selectedChords[i].startPosition)
+		insertScaleNote(noteValue, true, selectedChords[i])
 	end
 end

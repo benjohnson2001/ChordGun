@@ -7,8 +7,8 @@ local function playScaleChord(chordNotesArray)
 
   stopNotesFromPlaying()
   
-  for note = 1, #chordNotesArray do
-    playMidiNote(chordNotesArray[note])
+  for noteIndex = 1, #chordNotesArray do
+    playMidiNote(chordNotesArray[noteIndex])
   end
 
   setNotesThatArePlaying(chordNotesArray) 
@@ -28,15 +28,15 @@ function previewScaleChord()
   updateChordText(root, chord, chordNotesArray)
 end
 
-function insertScaleChord(chordNotesArray, keepNotesSelected, noteEndPosition)
+function insertScaleChord(chordNotesArray, keepNotesSelected, selectedChord)
 
-  deleteExistingNotesInNextInsertionTimePeriod(keepNotesSelected, noteEndPosition)
+  deleteExistingNotesInNextInsertionTimePeriod(keepNotesSelected, selectedChord)
 
-  for note = 1, #chordNotesArray do
-    insertMidiNote(chordNotesArray[note], keepNotesSelected, noteEndPosition)
+  for noteIndex = 1, #chordNotesArray do
+    insertMidiNote(chordNotesArray[noteIndex], keepNotesSelected, selectedChord, noteIndex)
   end
 
-  moveCursor(keepNotesSelected, noteEndPosition)
+  moveCursor(keepNotesSelected, selectedChord)
 end
 
 function playOrInsertScaleChord(actionDescription)
