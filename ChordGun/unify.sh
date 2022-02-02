@@ -72,6 +72,57 @@ function unifyMainProgram() {
 	insertIntoFile "src/$1" "$1"
 }
 
+function unifySmallGuiVersion() {
+
+	removeFile "$1"
+
+	insertNoIndexHeader "$1"
+
+	insertIntoFile ChordGunMini_src/chords.lua "$1"
+	insertIntoFile ChordGunMini_src/util.lua "$1"
+	insertIntoFile ChordGunMini_src/defaultValues.lua "$1"
+	insertIntoFile ChordGunMini_src/preferences.lua "$1"
+	insertIntoFile ChordGunMini_src/Timer.lua "$1"
+	insertIntoFile ChordGunMini_src/globalState.lua "$1"
+	insertIntoFile ChordGunMini_src/scales.lua "$1"
+	insertIntoFile ChordGunMini_src/scaleFunctions.lua "$1"
+	insertIntoFile ChordGunMini_src/scaleDegreeHeaders.lua "$1"
+	insertIntoFile ChordGunMini_src/midiEditor.lua "$1"
+	insertIntoFile ChordGunMini_src/midiMessages.lua "$1"
+	insertIntoFile ChordGunMini_src/chordNotesArray.lua "$1"
+	insertIntoFile ChordGunMini_src/insertMidiNote.lua "$1"
+	insertIntoFile ChordGunMini_src/playOrInsertScaleChord.lua "$1"
+	insertIntoFile ChordGunMini_src/playOrInsertScaleNote.lua "$1"
+	insertIntoFile ChordGunMini_src/changeSelectedNotes.lua "$1"
+	insertIntoFile ChordGunMini_src/scaleData.lua "$1"
+	insertIntoFile ChordGunMini_src/transposeSelectedNotes.lua "$1"
+
+	insertIntoFile ChordGunMini_src/actions/actionFunctions.lua "$1"
+
+	insertIntoFile ChordGunMini_src/interface/images/drawDropdownIcon.lua "$1"
+	insertIntoFile ChordGunMini_src/interface/images/drawLeftArrow.lua "$1"
+	insertIntoFile ChordGunMini_src/interface/images/drawRightArrow.lua "$1"
+
+	insertIntoFile ChordGunMini_src/interface/colors.lua "$1"
+	insertIntoFile ChordGunMini_src/interface/classes/Docker.lua "$1"
+	insertIntoFile ChordGunMini_src/interface/classes/HitArea.lua "$1"
+	insertIntoFile ChordGunMini_src/interface/classes/OctaveValueBox.lua "$1"
+	insertIntoFile ChordGunMini_src/interface/classes/Label.lua "$1"
+	insertIntoFile ChordGunMini_src/interface/classes/Header.lua "$1"
+	insertIntoFile ChordGunMini_src/interface/classes/Frame.lua "$1"
+	insertIntoFile ChordGunMini_src/interface/classes/Dropdown.lua "$1"
+	insertIntoFile ChordGunMini_src/interface/classes/ChordInversionValueBox.lua "$1"
+	insertIntoFile ChordGunMini_src/interface/classes/ChordButton.lua "$1"
+	insertIntoFile ChordGunMini_src/interface/inputCharacters.lua "$1"
+	insertIntoFile ChordGunMini_src/interface/handleInput.lua "$1"
+
+	insertIntoFile ChordGunMini_src/interface/Interface.lua "$1"
+	insertIntoFile ChordGunMini_src/interface/frames/InterfaceTopFrame.lua "$1"
+	insertIntoFile ChordGunMini_src/interface/frames/InterfaceBottomFrame.lua "$1"
+
+	insertIntoFile "ChordGunMini_src/$1" "$1"
+}
+
 function unifyKeyboardShortcut() {
 
 	removeFile "$1"
@@ -103,6 +154,8 @@ function unifyKeyboardShortcut() {
 }
 
 unifyMainProgram pandabot_ChordGun.lua
+
+unifySmallGuiVersion pandabot_ChordGunMini.lua
 
 unifyKeyboardShortcut "actions/pandabot_ChordGun decrement chord inversion.lua"
 unifyKeyboardShortcut "actions/pandabot_ChordGun decrement chord type.lua"
