@@ -20,7 +20,12 @@ function decrementChordInversionAction()
 
 	local actionDescription = "decrement chord inversion"
 	decrementChordInversion()
-	playOrInsertScaleChord(actionDescription)
+
+	if thereAreNotesSelected() then
+		playOrInsertScaleChord(actionDescription)
+	else
+		previewScaleChord()
+	end
 end
 
 --
@@ -44,7 +49,12 @@ function incrementChordInversionAction()
 
 	local actionDescription = "increment chord inversion"
 	incrementChordInversion()
-	playOrInsertScaleChord(actionDescription)
+
+	if thereAreNotesSelected() then
+		playOrInsertScaleChord(actionDescription)
+	else
+		previewScaleChord()
+	end
 end
 
 --
@@ -65,7 +75,12 @@ function decrementChordTypeAction()
 
 	local actionDescription = "decrement chord type"
 	decrementChordType()
-	playOrInsertScaleChord(actionDescription)
+
+	if thereAreNotesSelected() then
+		playOrInsertScaleChord(actionDescription)
+	else
+		previewScaleChord()
+	end
 end
 
 --
@@ -86,7 +101,12 @@ function incrementChordTypeAction()
 
 	local actionDescription = "increment chord type"
 	incrementChordType()
-	playOrInsertScaleChord(actionDescription)
+
+	if thereAreNotesSelected() then
+		playOrInsertScaleChord(actionDescription)
+	else
+		previewScaleChord()
+	end
 end
 
 --
