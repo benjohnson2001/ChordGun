@@ -2,8 +2,8 @@
 Description: ChordGun
 Author: pandabot
 License: MIT
-Version: 1.9
-Changelog: + now preserving existing note velocity, mute state and channel if notes are selected
+Version: 1.11
+Changelog: + added ability to stop all notes from playing using middle mouse button
 Screenshot: https://github.com/benjohnson2001/ChordGun/raw/release/ChordGun/src/images/chordGunInterface.png
 Donate: https://paypal.me/benjohnson2001
 Links:
