@@ -2,8 +2,12 @@
 Description: ChordGun
 Author: pandabot
 License: MIT
-Version: 1.12
-Changelog: + added mini version for small screen users
+Version: 1.9
+Changelog: - now preserving existing velocity, mute state and channel if notes are selected
+  - fixed bug where some keyboard shortcuts did not work on Windows machines
+  - added ability to stop all notes from playing using middle mouse button
+  - added some optional code at bottom of the file to make ChordGun window be always on top (Windows only)
+  - added mini version for small screen users
 Screenshot: https://github.com/benjohnson2001/ChordGun/raw/release/ChordGun/src/images/chordGunInterface.png
 Donate: https://paypal.me/benjohnson2001
 Links:
